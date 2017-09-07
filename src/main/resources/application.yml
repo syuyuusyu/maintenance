@@ -1,0 +1,106 @@
+# eureka:
+#   client:
+#     service-url:
+#       defaultZone: http://localhost:8761/eureka/
+# 数据源及连接池配置.
+spring:
+  application:
+    name: bzh-maintenance
+  datasource:
+    #数据库初始化
+    # schema: classpath:schema/inital.sql
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: 1234
+    #初始化连接数量，最大最小连接数
+    initial-size: 5
+    maxActive: 10
+    minIdle: 3
+    #获取连接等待超时的时间
+    maxWait: 600000
+    #超过时间限制是否回收
+    removeAbandoned: true
+    #超过时间限制多长
+    removeAbandonedTimeout: 180
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 600000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    #用来检测连接是否有效的sql，要求是一个查询语句
+    validationQuery: SELECT 'x'
+    #申请连接的时候检测
+    testWhileIdle: true
+    #申请连接时执行validationQuery检测连接是否有效，配置为true会降低性能
+    testOnBorrow: false
+    #归还连接时执行validationQuery检测连接是否有效，配置为true会降低性能
+    testOnReturn: false
+    #打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 50
+    #属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+    #监控统计用的filter:stat 日志用的filter:log4j 防御SQL注入的filter:wall
+    filters: stat
+
+  jpa:
+    database: MYSQL
+    # Show or not log for each sql query
+    show-sql: true
+    #generate-ddl: true
+    # Hibernate ddl auto (create, create-drop, update)
+    hibernate:
+      #ddl-auto: create
+    #spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
+      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    #spring.jpa.database=org.hibernate.dialect.MySQL5InnoDBDialect
+      dialect: org.hibernate.dialect.MySQL5Dialect
+# mybatis 配置
+# Redis数据库索引（默认为0
+  redis:
+    database: 1
+# Redis服务器地址
+    host: 127.0.0.1
+# Redis服务器连接端口
+    port: 6379
+# Redis服务器连接密码（默认为空）
+    password:
+# 连接池最大连接数（使用负值表示没有限制）
+    pool.max-active: 8
+# 连接池最大阻塞等待时间（使用负值表示没有限制）
+    pool.max-wait: -1
+# 连接池中的最大空闲连接
+    pool.max-idle: 8
+# 连接池中的最小空闲连接
+    pool.min-idle: 0
+# 连接超时时间（毫秒）
+    timeout: 0
+
+  thymeleaf:
+    cache: false
+    # 这个是配置模板路径的，默认就是templates，可不用配置
+    prefix: classpath:templates/
+    # 这个可以不配置，检查模板位置
+    check-template-location: true
+    # 下面3个不做解释了，可以不配置
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+    # 模板的模式
+    mode: HTML5
+
+# 日志配置
+logging:
+  config: classpath:config/logback-spring.xml
+  path: /var/log/applications/maintenance
+  level:
+    com.bzkj.sunsrise.dao: DEBUG
+
+selfProperties:
+  token-expiration-time: 30
+management:
+  security:
+    enabled: false
+
+server:
+  port: 4400

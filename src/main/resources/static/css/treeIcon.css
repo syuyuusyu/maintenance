@@ -1,0 +1,44 @@
+.icon{
+	background: url(../image/common.png) no-repeat; /*url为png图片的路径*/
+	/*width和line-height分别对应每个小图标的宽和高*/
+	width: 15px;
+	height: 15px;
+	line-height: :20px;
+	display: inline-block;
+}
+.icon-home{
+	background: url(../image/common.png) no-repeat; /*url为png图片的路径*/
+	/*width和line-height分别对应每个小图标的宽和高*/
+	width: 15px;
+	height: 15px;
+	line-height: :20px;
+	display: inline-block;   
+	background-position: 0px -23px;
+}
+.icon-dictionary{   /*png图片左上角为原点,往右往下均为负值*/
+	background: url(../image/common.png) no-repeat; /*url为png图片的路径*/
+	/*width和line-height分别对应每个小图标的宽和高*/
+	width: 15px;
+	height: 15px;
+	line-height: :20px;
+	display: inline-block;
+	background-position: -264px -24px;
+}
+.icon-arrow{   
+	background: url(../image/common.png) no-repeat; /*url为png图片的路径*/
+	/*width和line-height分别对应每个小图标的宽和高*/
+	width: 15px;
+	height: 15px;
+	line-height: :20px;
+	display: inline-block;
+	background-position: -120px -73px;
+}
+.icon-list{
+	background: url(../image/common.png) no-repeat; /*url为png图片的路径*/
+	/*width和line-height分别对应每个小图标的宽和高*/
+	width: 15px;
+	height: 15px;
+	line-height: :20px;
+	display: inline-block;  
+	background-position: -360px -49px;
+}

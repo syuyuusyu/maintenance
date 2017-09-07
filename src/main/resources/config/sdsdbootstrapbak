@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: sunrise
+  cloud:
+    config:
+      profile: test
+      label: master
+      uri: http://localhost:8889/
