@@ -128,6 +128,7 @@ public class TEntity {
     }
 
 	public String getIconCls() {
+		
 		switch(type){
 		  case "0":
 			  return "icon-list";
@@ -135,6 +136,8 @@ public class TEntity {
 			  return "icon-dictionary";
 		  case "2":
 			  return "icon-arrow";
+//		  default:
+//			  return "";
 		}
 		return iconCls;
 	}

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-@RequestMapping(value = "/api")
+//@RequestMapping(value = "/api")
 public class PageController {
 	
 	@RequestMapping(value="/entityPage")
@@ -14,5 +14,6 @@ public class PageController {
 		System.out.println("sdsdsds");
 		return "entity";
 	}
+
 
 }

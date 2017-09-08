@@ -2,6 +2,7 @@ package com.bzh.cloud.maintenance.controller;
 
 import com.bzh.cloud.maintenance.dao.TDictionaryDao;
 import com.bzh.cloud.maintenance.dao.TEntityDao;
+import com.bzh.cloud.maintenance.entity.TDictionary;
 import com.bzh.cloud.maintenance.entity.TEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,40 @@ public class EntityController {
     	}
     	
     	
+    }
+    
+    
+    @RequestMapping(value="/saveOrupdateDic")
+    @ResponseBody
+    public Map<String, Object> saveOrupdateDic(TDictionary entity){
+    	Map<String, Object> map=new HashMap<String, Object>();
+    	
+    	System.out.println(entity);
+    	try {
+    		dictionaryDao.save(entity);
+    		map.put("success", "true");
+		} catch (Exception e) {
+			map.put("success", e.getStackTrace());
+		}
+    	return map;
+    }
+    
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public Map<String, Object> delete(Integer id,Integer type){
+    	Map<String, Object> map=new HashMap<String, Object>();
+    	
+    	try {
+    		if(1==type){
+    			dictionaryDao.delete(id);
+    		}else{
+    			entityDao.delete(id);
+    		}   		
+    		map.put("success", "true");
+		} catch (Exception e) {
+			map.put("success", e.getStackTrace());
+		}
+    	return map;
     }
     
 }

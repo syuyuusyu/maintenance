@@ -26,7 +26,7 @@ public class TDictionary implements Serializable{
     @Column
 	private String name;
 	
-    @Column(name="dic_test")
+    @Column(name="dic_text")
 	private String dicText;
 
     @Column(name="dic_value")

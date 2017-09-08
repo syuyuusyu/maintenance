@@ -364,15 +364,21 @@ function createGrid(entity){
 	            root: 'content',
 	            totalProperty:'totalElements'
 	            }
-            }
+         },
+        autoLoad :true
 		}
+		
 	);
+
 	var grid=Ext.create('Ext.grid.Panel',{
 		store:store
 		,columns:columns
 		,viewConfig:{
 			enableTextSelection :true
 		}
+		,gridType:entity.type
+		,parentEntityId:entity.entityId
+		,parentEntityName:entity.entityName
 		,forceFit:true
 		,autohight:true
 		,autoScroll:true
@@ -396,13 +402,210 @@ function createGrid(entity){
 			       {
 			    	   xtype: 'button',
 			           text: '增加',
-			           handler:function(){}
-			       }     
+					   iconCls:'icon-add',
+			           handler:function(){
+							var grid=this.up('grid'),
+								items=createGridFormItems(grid,'add'),
+								buttons=fromButton(grid.gridType);
+							var form=Ext.create('Ext.form.Panel',{
+								autoScroll: true,
+								spilt:true,
+								minHeight :75,
+								layout:'column',
+							    defaults: {
+							        border: 0
+							    },
+							    items:items,
+							    buttons:buttons
+							
+							});
+							Ext.create('Ext.window.Window', {
+		        				//id:'win_'+entity.entityName,
+		        			    title: '修改',
+		        			    height: 200,
+		        			    width: 800,
+		        			    layout: 'fit',
+		        			    items: [form] 
+		        			}).show()
+			           }
+			       },{
+			    	   xtype: 'button',
+			           text: '修改',
+					   iconCls:'icon-add',
+			           handler:function(){
+							var grid=this.up('grid');
+							if(grid.getSelectionModel().getSelection().length==0){
+								Ext.Msg.alert('!','先选中一条');
+			        			return;
+							}
+							var	items=createGridFormItems(grid,'update'),
+								buttons=fromButton(grid.gridType);
+							
+							
+							
+							var form=Ext.create('Ext.form.Panel',{
+								autoScroll: true,
+								spilt:true,
+								minHeight :75,
+								layout:'column',
+							    defaults: {
+							        border: 0
+							    },
+							    items:items,
+							    buttons:buttons
+							});
+							
+		        			var data=grid.getSelectionModel().getSelection()[0].getData();
+		        			form.getForm().setValues(data);
+			        		
+							Ext.create('Ext.window.Window', {
+		        				//id:'win_'+entity.entityName,
+		        			    title: '修改',
+		        			    height: 200,
+		        			    width: 800,
+		        			    layout: 'fit',
+		        			    items: [form] 
+		        			}).show()
+			           }
+			       },{
+			    	   xtype: 'button',
+			           text: '删除',
+					   iconCls:'icon-add',
+			           handler:function(){
+			        	   var grid=this.up('grid');
+			        	   if(grid.getSelectionModel().getSelection().length==0){
+								Ext.Msg.alert('!','先选中一条');
+			        			return;
+							}
+			        	   var data=grid.getSelectionModel().getSelection()[0].getData();
+			        	   Ext.Ajax.request({
+		                		method:'post',        		
+		                		url:'./../entity/delete',
+		                		params:{
+		                			id:grid.gridType=='1'?data.id:data.entityId,
+		                			type:grid.gridType
+		                		},
+		                		failure:function(r,data){
+
+		                		},
+		                		success:function(r,data){
+		                			var result = Ext.JSON.decode(r.responseText);
+		                			if(result.success=='true'){
+		                				Ext.Msg.alert('!','成功');
+		                			
+		                			}else{
+		                				Ext.Msg.alert('!','错误');
+		                			}
+
+		                		}
+		                	});
+			           }
+			       }
 			    ]
 		    }         
 		]
 	});
 	return grid;
+}
+
+function createGridFormItems(grid,action){
+	console.log(grid.parentEntityName);
+	var formItems=[{columnWidth:.5,type:'form',padding:'10 0 0 5',items:[]},
+                   {columnWidth:.5,type:'form',padding:'10 0 0 5',items:[]}];
+	if(grid.gridType=='1'){
+		formItems[0].items.push({
+			xtype:'textfield',
+			fieldLabel: '字典字段',
+			name:'dicText',
+			allowBlank:false
+		});
+		formItems[1].items.push({
+			xtype:'textfield',
+			fieldLabel: '字典值',
+			name:'dicValue',
+			allowBlank:false
+		});
+		formItems.push({xtype:'hiddenfield',name:'entityId',value:grid.parentEntityId});
+		formItems.push({xtype:'hiddenfield',name:'name',value:grid.parentEntityName});
+	}else{
+		formItems[0].items.push({
+			xtype:'textfield',
+			fieldLabel: '名称',
+			name:'entityName',
+			allowBlank:false
+		});
+		formItems[1].items.push({
+			xtype:'textfield',
+			fieldLabel: '描述',
+			name:'description'
+		    //allowBlank:false
+		});
+		formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
+		if(grid.gridType=='0'){
+			formItems.push({xtype:'hiddenfield',name:'type',value:4});
+		}
+		if(grid.gridType=='2'){
+			formItems.push({xtype:'hiddenfield',name:'type',value:3});
+		}
+	}
+	if(action=='update'){
+		var data=grid.getSelectionModel().getSelection()[0].getData();
+		formItems.push({xtype:'hiddenfield'
+				,name:grid.gridType=='1'?'id':'entityId'
+				,value:grid.gridType=='1'?data.id:data.entityId
+				})
+	}
+	return formItems;
+	
+}
+
+function fromButton(type){
+	var url='';
+	if(type=='1'){
+		url='./../entity/saveOrupdateDic'
+	}else{
+		url='./../entity/saveOrupdate'
+	}
+	var buttons=[
+		{
+		    text: '重置',
+		    handler: function() {
+		        this.up('form').getForm().reset();
+		    }
+		},{
+			 text:'提交',
+			 handler:function(){
+				var form = this.up('form');
+		    	var baseForm=form.getForm();
+		    	var data = baseForm.getValues(); 
+		    	if(!form.isValid()){
+		   		Ext.Msg.alert('!','填入合法内容');
+		   			return;
+		    	}
+		    	Ext.Ajax.request({
+			   		method:'post',        		
+			   		url:url,
+			   		params:data,
+			   		failure:function(r,data){
+			
+			   		},
+			   		success:function(r,data){
+			   			var result = Ext.JSON.decode(r.responseText);
+			   			if(result.success=='true'){
+			   				Ext.Msg.alert('!','成功');
+			   				this.up('window').close();
+			   			}else{
+			   				Ext.Msg.alert('!','错误');
+			   			}
+			
+			   		},
+			   		scope:form
+		    	});
+			 }
+		
+		}	   
+	   ];
+	return buttons;
 }
 
 var mainPanle=Ext.create('Ext.tab.Panel',{
