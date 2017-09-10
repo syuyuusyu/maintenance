@@ -10,15 +10,15 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "t_status", schema = "maintenance")
-public class TStatus implements Serializable {
+@Table(name = "record", schema = "maintenance")
+public class Record implements Serializable {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stats_id")
+    @Column(name = "record_id")
     private Integer statusId;
 
     @Column(name = "create_time")
@@ -33,7 +33,7 @@ public class TStatus implements Serializable {
 
     @ManyToOne(cascade=CascadeType.REFRESH,fetch=FetchType.EAGER)
     @JoinColumn(name="group_id")
-    private TStatusGroup group;
+    private RecordGroup group;
 
     @Column(name = "entity_id")
     private Integer entityId;
@@ -44,8 +44,8 @@ public class TStatus implements Serializable {
 
 
     public TEntity getEntity() {
-        Assert.notNull(this.statusId);
-        Assert.notNull(this.entityId);
+        Assert.notNull(this.statusId,"");
+        Assert.notNull(this.entityId,"");
         TEntityDao dao= (TEntityDao)SpringUtil.getBean("TEntityDao");
         return dao.findOne(this.entityId);
     }
@@ -99,13 +99,13 @@ public class TStatus implements Serializable {
 
 
 
-	public TStatusGroup getGroup() {
+	public RecordGroup getGroup() {
 		return group;
 	}
 
 
 
-	public void setGroup(TStatusGroup group) {
+	public void setGroup(RecordGroup group) {
 		this.group = group;
 	}
 

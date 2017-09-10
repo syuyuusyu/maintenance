@@ -126,7 +126,7 @@ var treeStore = Ext.create('Ext.data.TreeStore', {
         url : './../entity/tree'
     },
     root:{
-    	text:'实体'
+    	text:'实体类型'
     	,iconCls:'icon-home'
     }
 });
@@ -287,9 +287,9 @@ function createEntityForm(entity,action){
 	    	    	   store:Ext.create('Ext.data.Store',{
 	    					fields:['value','text'],
 	    					data : [
-	    					         {text: '普通类型', value: '0'},
-	    					         {text: '字典类型', value: '1'},
-	    					         {text: '监控接口', value: '2'}
+	    					         {text: '服务类型', value: '0'},
+	    					         //{text: '字典类型', value: '1'},
+	    					         {text: '记录组类型', value: '2'}
 	    					     ]
 
 	    				}),
@@ -402,7 +402,7 @@ function createGrid(entity){
 			       {
 			    	   xtype: 'button',
 			           text: '增加',
-					   iconCls:'icon-add',
+					   iconCls:'icon-edit',
 			           handler:function(){
 							var grid=this.up('grid'),
 								items=createGridFormItems(grid,'add'),
@@ -431,7 +431,7 @@ function createGrid(entity){
 			       },{
 			    	   xtype: 'button',
 			           text: '修改',
-					   iconCls:'icon-add',
+					   iconCls:'icon-edit',
 			           handler:function(){
 							var grid=this.up('grid');
 							if(grid.getSelectionModel().getSelection().length==0){
@@ -470,7 +470,7 @@ function createGrid(entity){
 			       },{
 			    	   xtype: 'button',
 			           text: '删除',
-					   iconCls:'icon-add',
+					   iconCls:'icon-delete',
 			           handler:function(){
 			        	   var grid=this.up('grid');
 			        	   if(grid.getSelectionModel().getSelection().length==0){

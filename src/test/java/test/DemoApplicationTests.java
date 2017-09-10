@@ -148,10 +148,10 @@ public class DemoApplicationTests {
 		System.out.println(app);
 		System.out.println(app.getNode());
 
-		List<TStatus> status=app.getStatus();
+		List<Record> status=app.getStatus();
 		status.forEach(System.out::println);
 
-		TStatus cur=app.getCurrentStatus();
+		Record cur=app.getCurrentStatus();
 		System.out.println(cur);
 
 	}
@@ -167,7 +167,7 @@ public class DemoApplicationTests {
 //		list2.forEach(System.out::println);
 //		TAppStatus s1=tAppStatusDao.findOne(1);
 //		System.out.println(s1);
-		TStatus s=tAppStatusDao.queryCurrentStat(19);
+		Record s=tAppStatusDao.queryCurrentStat(19);
 		System.out.println(s);
 	}
 	

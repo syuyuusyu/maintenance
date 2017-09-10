@@ -11,8 +11,7 @@ public class PageController {
 	
 	@RequestMapping(value="/entityPage")
 	public String entity(Model model){
-		System.out.println("sdsdsds");
-		return "entity";
+		return "entityConf";
 	}
 
 

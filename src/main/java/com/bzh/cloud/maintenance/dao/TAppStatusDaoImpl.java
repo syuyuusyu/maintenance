@@ -1,6 +1,6 @@
 package com.bzh.cloud.maintenance.dao;
 
-import com.bzh.cloud.maintenance.entity.TStatus;
+import com.bzh.cloud.maintenance.entity.Record;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;

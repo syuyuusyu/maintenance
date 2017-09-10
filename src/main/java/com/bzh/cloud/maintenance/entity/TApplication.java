@@ -44,10 +44,10 @@ public class TApplication implements Serializable {
 
     //@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="app")
     @Transient
-    private List<TStatus> status;
+    private List<Record> status;
 
     @Transient
-    private  TStatus currentStatus;
+    private  Record currentStatus;
 
 
 
@@ -113,23 +113,23 @@ public class TApplication implements Serializable {
         this.node = node;
     }
 
-    public List<TStatus> getStatus() {
+    public List<Record> getStatus() {
         return status;
     }
 
-    public void setStatus(List<TStatus> status) {
+    public void setStatus(List<Record> status) {
         this.status = status;
     }
 
-    public TStatus getCurrentStatus() {
+    public Record getCurrentStatus() {
         Assert.notNull(this.appId);
         TAppStatusDao dao= (TAppStatusDao) SpringUtil.getBean("TAppStatusDao");
-        TStatus s=dao.queryCurrentStat(this.appId);
+        Record s=dao.queryCurrentStat(this.appId);
         return s;
 
     }
 
-    public void setCurrentStatus(TStatus currentStatus) {
+    public void setCurrentStatus(Record currentStatus) {
         this.currentStatus = currentStatus;
     }
 

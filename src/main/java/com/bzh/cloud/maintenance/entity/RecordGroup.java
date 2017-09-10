@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name = "t_status_group", schema = "maintenance")
-public class TStatusGroup implements Serializable{
+@Table(name = "record_group", schema = "maintenance")
+public class RecordGroup implements Serializable{
 
 	/**
 	 * 
@@ -30,8 +30,8 @@ public class TStatusGroup implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer group_id;
     
-    @Column(name = "entity_id")
-    private Integer entity_id;
+    @Column(name = "up_entity_id")
+    private Integer upEntityId;
     
     @Column(name = "up_id")
     private Integer upId;
@@ -41,7 +41,7 @@ public class TStatusGroup implements Serializable{
     private Date createTime;
     
     @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="group")
-    private List<TStatus> status;
+    private List<Record> records;
 
     public Integer getGroup_id() {
         return group_id;
@@ -51,15 +51,16 @@ public class TStatusGroup implements Serializable{
         this.group_id = group_id;
     }
 
-    public Integer getEntity_id() {
-        return entity_id;
-    }
+ 
+    public Integer getUpEntityId() {
+		return upEntityId;
+	}
 
-    public void setEntity_id(Integer entity_id) {
-        this.entity_id = entity_id;
-    }
+	public void setUpEntityId(Integer upEntityId) {
+		this.upEntityId = upEntityId;
+	}
 
-    public Integer getUpId() {
+	public Integer getUpId() {
         return upId;
     }
 
@@ -75,11 +76,13 @@ public class TStatusGroup implements Serializable{
         this.createTime = createTime;
     }
 
-    public List<TStatus> getStatus() {
-        return status;
-    }
+	public List<Record> getRecords() {
+		return records;
+	}
 
-    public void setStatus(List<TStatus> status) {
-        this.status = status;
-    }
+	public void setRecords(List<Record> records) {
+		this.records = records;
+	}
+
+    
 }
