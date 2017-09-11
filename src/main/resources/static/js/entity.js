@@ -340,6 +340,7 @@ function createGrid(entity){
 
 
 function createGridFormItems(grid,action){
+    console.log(grid.gridHierarchy+1);
     if(grid.gridType==6){
         //字典类型
         var formItems=[
@@ -376,7 +377,7 @@ function createGridFormItems(grid,action){
 
         ];
         formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
-        formItems.push({xtype:'hiddenfield',name:'type',value:grid.gridType});
+        formItems.push({xtype:'hiddenfield',name:'type',value:(grid.gridType==5 && grid.gridHierarchy==2)?6:grid.gridType});
         formItems.push({xtype:'hiddenfield',name:'hierarchy',value:grid.gridHierarchy+1});
         if(action=='update'){
             formItems.push({xtype:'hiddenfield',name:'entityId',value:null});
