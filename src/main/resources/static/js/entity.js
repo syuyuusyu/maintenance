@@ -32,13 +32,20 @@ var tree=Ext.create('Ext.tree.Panel', {
     split: true,
     listeners: {
 	   beforeitemexpand: function (node, index, item, eOpts){
-	      node.data.iconCls='icon-home'
+	      //node.data.iconCls='icon-home';
+	      console.log("beforeitemexpand");
+	      console.log(node);
+	      console.log(item);
+
 	    },
 	    beforeitemcollapse: function (node, index, item, eOpts){
-	    	node.data.iconCls='icon-home'
+            //node.data.iconCls='icon-home';
+            console.log("beforeitemcollapse");
+            console.log(node);
+            console.log(item);
 	    },
         'select': function(node, record,item) {
-        	if(record.isLeaf()){
+        	if(record.isLeaf() || record.raw.type=='5'){
         		if(Ext.getCmp('tab_'+record.raw.entityName)){
 	    			var tab=Ext.getCmp('tab_'+record.raw.entityName);
 	    			mainPanle.setActiveTab(tab);
@@ -129,12 +136,16 @@ function createGrid(entity){
             entityName='安全平台应用名称';
             break;
         case '5':
-            entityCode='记录组类型编码';
-            entityName='记录组类型名称';
+            if(entity.hierarchy==1){
+                entityCode='记录组类型编码';
+                entityName='记录组类型名称';
+            }else{
+                entityCode='记录类型编码';
+                entityName='记录类型名称';
+            }
             break;
-        case '6':
-			entityCode='记录类型编码';
-			entityName='记录类型名称';
+        // case '6':
+
         break;
 
 	}
@@ -149,6 +160,18 @@ function createGrid(entity){
 
         ];
     var fields=['entityId','parentId','entityCode','entityName','hierarchy','type'];
+    if(entity.type=='6'){
+        columns=[
+            {dataIndex:'id',text:'ID',width:100},
+            {dataIndex:'entityId',text:'父节点ID',width:100},
+            {dataIndex:'name',text:'字典名称',width:100},
+            {dataIndex:'dicText',text:'字典字段',width:200},
+            {dataIndex:'dicValue',text:'字典值',width:200}
+
+        ];
+        fields=['id','entityId','name','dicText','dicValue'];
+    }
+
 
     var store=Ext.create('Ext.data.Store',{
             fields:fields,
@@ -174,6 +197,7 @@ function createGrid(entity){
             enableTextSelection :true
         }
         ,gridType:entity.type
+        ,gridHierarchy:entity.hierarchy
         ,parentEntityId:entity.entityId
         ,parentEntityName:entity.entityName
         ,entityCodeText:entityCode
@@ -316,31 +340,57 @@ function createGrid(entity){
 
 
 function createGridFormItems(grid,action){
-
-    var formItems=[
-        {columnWidth:.5,type:'form',padding:'10 0 0 5'
-            ,items:[
-                {xtype:'textfield',fieldLabel: grid.entityCodeText,name:'entityCode',allowBlank:false}
+    console.log(grid.gridHierarchy+1);
+    if(grid.gridType==6){
+        //字典类型
+        var formItems=[
+            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+                ,items:[
+                {xtype:'textfield',fieldLabel:'字典字段',name:'dicText',allowBlank:false}
             ]
-        },
-        {columnWidth:.5,type:'form',padding:'10 0 0 5'
-            ,items:[
-                {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
+            },
+            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+                ,items:[
+                {xtype:'textfield',fieldLabel: '字典值',name:'dicValue',allowBlank:false}
             ]
-        }
+            }
 
         ];
-    formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
-    formItems.push({xtype:'hiddenfield',name:'type',value:grid.gridType});
-    if(action=='update'){
-        formItems.push({xtype:'hiddenfield',name:'entityId',value:null});
+        formItems.push({xtype:'hiddenfield',name:'entityId',value:grid.parentEntityId});
+        formItems.push({xtype:'hiddenfield',name:'name',value:grid.parentEntityName});
+        if(action=='update'){
+            formItems.push({xtype:'hiddenfield',name:'id',value:null});
+        }
+        return formItems;
+    }else{
+        var formItems=[
+            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+                ,items:[
+                {xtype:'textfield',fieldLabel: grid.entityCodeText,name:'entityCode',allowBlank:false}
+            ]
+            },
+            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+                ,items:[
+                {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
+            ]
+            }
+
+        ];
+        formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
+        formItems.push({xtype:'hiddenfield',name:'type',value:(grid.gridType==5 && grid.gridHierarchy==2)?6:grid.gridType});
+        formItems.push({xtype:'hiddenfield',name:'hierarchy',value:grid.gridHierarchy+1});
+        if(action=='update'){
+            formItems.push({xtype:'hiddenfield',name:'entityId',value:null});
+        }
+        return formItems;
     }
-    return formItems;
+
 
 }
 
 
 function gridFromButton(grid){
+    console.log(grid);
     var url='./../entityConf/saveOrupdate';
     var buttons=[
         {
@@ -354,6 +404,7 @@ function gridFromButton(grid){
                 var form = this.up('form');
                 var baseForm=form.getForm();
                 var data = baseForm.getValues();
+                data.objType=grid.gridType;
                 if(!form.isValid()){
                     Ext.Msg.alert('!','填入合法内容');
                     return;

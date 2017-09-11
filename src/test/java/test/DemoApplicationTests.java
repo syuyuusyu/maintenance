@@ -57,6 +57,9 @@ public class DemoApplicationTests {
 
 	@Autowired
 	TAppStatusDao tAppStatusDao;
+
+	@Autowired
+	EntityConfDao ecd;
 	
 	
 	@Test
@@ -174,10 +177,16 @@ public class DemoApplicationTests {
 	
 	@Test
 	public void test7(){
-		PageRequest pr=new PageRequest(2, 5);
-		Page<TEntity> page=tEntityDao.findByParentId(2, pr);
-		page.forEach(T->{
-			System.out.println(T);
+		List<EntityConf> list=ecd.findByParentId(1);
+		list.forEach(E->{
+			System.out.println(E.getEntityName());
+			System.out.println(E.getType());
+			if("5".equals(E.getType())){
+				List<EntityConf> list2=E.getChild(EntityConf.class);
+				list.forEach(E2->{
+					System.out.println("----"+E2.getEntityName());
+				});
+			}
 		});
 	}
 

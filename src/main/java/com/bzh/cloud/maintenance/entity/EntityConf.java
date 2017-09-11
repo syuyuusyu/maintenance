@@ -1,16 +1,16 @@
 package com.bzh.cloud.maintenance.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.bzh.cloud.maintenance.dao.EntityConfDao;
+import com.bzh.cloud.maintenance.dao.TDictionaryDao;
+import com.bzh.cloud.maintenance.util.SpringUtil;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
 @Table(name = "entity", schema = "maintenance")
-public class EntityConf {
+public class EntityConf implements TreeEntity{
 
     @Id
     @Column(name = "entity_id")
@@ -19,6 +19,8 @@ public class EntityConf {
 
     @Column(name = "parent_id")
     private Integer parentId;
+
+
     
     @Column(name = "entity_code")
     private String entityCode;
@@ -32,6 +34,7 @@ public class EntityConf {
     @Column(name = "type")
     private String type;
 //sdsdsds
+
 
 	public Integer getEntityId() {
 		return entityId;
@@ -90,10 +93,15 @@ public class EntityConf {
 	}
 
 	public String getLeaf() {
-		if(this.hierarchy>0)
+		if(this.hierarchy>0){
+			if("5".equals(this.type)){
+				return "false";
+			}
 			return "true";
-		else
+		} else{
 			return "false";
+		}
+
 	}
 
 	public String getIconCls() {
@@ -115,7 +123,27 @@ public class EntityConf {
 		}
 	}
 
+	@Override
+	public <T> List<T> getChild( Class<T> clzz) {
+		if("6".equals(this.type)){
+			TDictionaryDao td= (TDictionaryDao) SpringUtil.getBean("TDictionaryDao");
+			return (List<T>) td.findByEntityId(this.entityId);
+		}else{
+			EntityConfDao ed= (EntityConfDao) SpringUtil.getBean("entityConfDao");
+			return (List<T>) ed.findByParentId(this.entityId);
+		}
+	}
 
-    
-    
+
+	@Override
+	public String toString() {
+		return "EntityConf{" +
+				"entityId=" + entityId +
+				", parentId=" + parentId +
+				", entityCode='" + entityCode + '\'' +
+				", entityName='" + entityName + '\'' +
+				", hierarchy=" + hierarchy +
+				", type='" + type + '\'' +
+				'}';
+	}
 }
