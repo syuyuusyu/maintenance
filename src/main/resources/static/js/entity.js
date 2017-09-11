@@ -59,18 +59,18 @@ var tree=Ext.create('Ext.tree.Panel', {
         }		
 	    ,'itemcontextmenu': function(_this, record, item, index, e, eOpts) {
 			//e.preventDefault();menu.showAt(e.getPoint());		
-	    	var items=[];
-            if(record.isLeaf()){
-            	items.push({text:'删除当前节点',iconCls: 'report-add',handler:Ext.Function.pass(this.deleteEntity,[record.raw.id])});            	
-            	items.push({text:'修改当前节点',iconCls:'report-edit',handler:Ext.Function.pass(this.editEntity,[record.raw])});
-            }else{
-            	items.push({text:'增加子节点',iconCls: 'report-add',handler:Ext.Function.pass(this.createEntity,[record.raw.id])});
-            }
-    		Ext.create('Ext.menu.Menu',{
-    			plain: true,
-    			margin: '0 0 10 0',
-    			items:items
-    		}).showAt(e.getPoint());
+            // var items=[];
+            // if(record.isLeaf()){
+            	// items.push({text:'删除当前节点',iconCls: 'report-add',handler:Ext.Function.pass(this.deleteEntity,[record.raw.id])});
+            	// items.push({text:'修改当前节点',iconCls:'report-edit',handler:Ext.Function.pass(this.editEntity,[record.raw])});
+            // }else{
+            	// items.push({text:'增加子节点',iconCls: 'report-add',handler:Ext.Function.pass(this.createEntity,[record.raw.id])});
+            // }
+            // Ext.create('Ext.menu.Menu',{
+    			// plain: true,
+    			// margin: '0 0 10 0',
+    			// items:items
+            // }).showAt(e.getPoint());
 
 	    	
 	    }   
@@ -167,7 +167,7 @@ function createGrid(entity){
 
     );
 
-    var gridsd=Ext.create('Ext.grid.Panel',{
+    var grid=Ext.create('Ext.grid.Panel',{
         store:store
         ,columns:columns
         ,viewConfig:{
@@ -205,7 +205,7 @@ function createGrid(entity){
                         handler:function(){
                             var grid=this.up('grid'),
                                 items=createGridFormItems(grid,'add'),
-                                buttons=fromButton(grid.gridType);
+                                buttons=gridFromButton(grid);
                             var form=Ext.create('Ext.form.Panel',{
                                 autoScroll: true,
                                 spilt:true,
@@ -238,7 +238,7 @@ function createGrid(entity){
                                 return;
                             }
                             var	items=createGridFormItems(grid,'update'),
-                                buttons=fromButton(grid.gridType);
+                                buttons=gridFromButton(grid);
 
 
 
@@ -277,25 +277,32 @@ function createGrid(entity){
                                 return;
                             }
                             var data=grid.getSelectionModel().getSelection()[0].getData();
-                            Ext.Ajax.request({
-                                method:'post',
-                                url:'./../entity/delete',
-                                params:{
-                                    id:grid.gridType=='1'?data.id:data.entityId,
-                                    type:grid.gridType
-                                },
-                                failure:function(r,data){
 
-                                },
-                                success:function(r,data){
-                                    var result = Ext.JSON.decode(r.responseText);
-                                    if(result.success=='true'){
-                                        Ext.Msg.alert('!','成功');
+                            Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
+                                if(btn=='no'){
+                                    return;
+                                }else{
+                                    Ext.Ajax.request({
+                                        method:'post',
+                                        url:'./../entityConf/delete',
+                                        params:{
+                                            id:data.entityId,
+                                            type:grid.gridType
+                                        },
+                                        failure:function(r,data){
 
-                                    }else{
-                                        Ext.Msg.alert('!','错误');
-                                    }
+                                        },
+                                        success:function(r,data){
+                                            var result = Ext.JSON.decode(r.responseText);
+                                            if(result.success=='true'){
+                                                Ext.Msg.alert('!','成功');
+                                                grid.getStore().reload();
+                                            }else{
+                                                Ext.Msg.alert('!','错误');
+                                            }
 
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -304,7 +311,7 @@ function createGrid(entity){
             }
         ]
     });
-    return gridsd;
+    return grid;
 }
 
 
@@ -318,15 +325,64 @@ function createGridFormItems(grid,action){
         },
         {columnWidth:.5,type:'form',padding:'10 0 0 5'
             ,items:[
-
+                {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
             ]
         }
 
         ];
-
-
+    formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
+    formItems.push({xtype:'hiddenfield',name:'type',value:grid.gridType});
+    if(action=='update'){
+        formItems.push({xtype:'hiddenfield',name:'entityId',value:null});
+    }
     return formItems;
 
+}
+
+
+function gridFromButton(grid){
+    var url='./../entityConf/saveOrupdate';
+    var buttons=[
+        {
+            text: '重置',
+            handler: function() {
+                this.up('form').getForm().reset();
+            }
+        },{
+            text:'提交',
+            handler:function(){
+                var form = this.up('form');
+                var baseForm=form.getForm();
+                var data = baseForm.getValues();
+                if(!form.isValid()){
+                    Ext.Msg.alert('!','填入合法内容');
+                    return;
+                }
+                Ext.Ajax.request({
+                    method:'post',
+                    url:url,
+                    params:data,
+                    failure:function(r,data){
+
+                    },
+                    success:function(r,data){
+                        var result = Ext.JSON.decode(r.responseText);
+                        if(result.success=='true'){
+                            Ext.Msg.alert('!','成功');
+                            this.up('window').close();
+                            grid.getStore().reload();
+                        }else{
+                            Ext.Msg.alert('!','错误');
+                        }
+
+                    },
+                    scope:form
+                });
+            }
+
+        }
+    ];
+    return buttons;
 }
 
 var mainPanle=Ext.create('Ext.tab.Panel',{

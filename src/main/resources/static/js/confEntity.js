@@ -1,3 +1,8 @@
+
+
+
+
+
 Ext.tree.Panel.addMembers({
     selectPathById: function(id){
         var me = this,
@@ -211,7 +216,7 @@ var tree=Ext.create('Ext.tree.Panel', {
             		}
             	});
 	          }
-		})			
+		});
 	}
 	,createEntity:function(id){
 		createEntityForm(id,'create');

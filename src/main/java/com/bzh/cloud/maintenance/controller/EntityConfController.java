@@ -43,4 +43,38 @@ public class EntityConfController {
 
 
     }
+
+
+    @RequestMapping(value="/saveOrupdate")
+    @ResponseBody
+    public Map<String, Object> saveOrupdate(EntityConf entity){
+        Map<String, Object> map=new HashMap<String, Object>();
+        entity.setHierarchy(1);
+        if(null==entity.getParentId()){
+            entity.setParentId(-1);
+        }
+        System.out.println(entity);
+        try {
+            entityDao.save(entity);
+            map.put("success", "true");
+        } catch (Exception e) {
+            map.put("success", e.getStackTrace());
+        }
+        return map;
+    }
+
+
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public Map<String, Object> delete(Integer id){
+        Map<String, Object> map=new HashMap<String, Object>();
+
+        try {
+            entityDao.delete(id);
+            map.put("success", "true");
+        } catch (Exception e) {
+            map.put("success", e.getStackTrace());
+        }
+        return map;
+    }
 }
