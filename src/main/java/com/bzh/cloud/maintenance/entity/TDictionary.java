@@ -71,9 +71,16 @@ public class TDictionary implements Serializable{
 	public void setDicValue(String dicValue) {
 		this.dicValue = dicValue;
 	}
-	
-    
-	
-	
 
+
+	@Override
+	public String toString() {
+		return "TDictionary{" +
+				"id=" + id +
+				", entityId=" + entityId +
+				", name='" + name + '\'' +
+				", dicText='" + dicText + '\'' +
+				", dicValue='" + dicValue + '\'' +
+				'}';
+	}
 }

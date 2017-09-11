@@ -14,4 +14,6 @@ public interface EntityConfDao  extends PagingAndSortingRepository<EntityConf,In
 	
 	public List<EntityConf> findByParentId(Integer parentId);
 
+
+
 }
