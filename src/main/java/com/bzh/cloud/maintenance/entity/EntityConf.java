@@ -31,7 +31,7 @@ public class EntityConf {
 
     @Column(name = "type")
     private String type;
-
+//sdsdsds
 
 	public Integer getEntityId() {
 		return entityId;
