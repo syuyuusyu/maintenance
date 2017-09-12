@@ -21,12 +21,6 @@ public class Record implements Serializable {
     @Column(name = "record_id")
     private Integer statusId;
 
-    @Column(name = "create_time")
-    @CreationTimestamp
-    private Timestamp createTime;
-
-    @Column(name = "up_id")
-    private Integer upId;
 
     @Column(name = "state")
     private String state;
@@ -63,27 +57,6 @@ public class Record implements Serializable {
 	}
 
 
-	public Timestamp getCreateTime() {
-		return createTime;
-	}
-
-
-
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
-	}
-
-
-
-	public Integer getUpId() {
-		return upId;
-	}
-
-
-
-	public void setUpId(Integer upId) {
-		this.upId = upId;
-	}
 
 
 
