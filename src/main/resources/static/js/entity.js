@@ -45,6 +45,9 @@ var tree=Ext.create('Ext.tree.Panel', {
             console.log(item);
 	    },
         'select': function(node, record,item) {
+	        if(record.raw.type=='7'){
+	            return;
+            }
         	if(record.isLeaf() || record.raw.type=='5'){
         		if(Ext.getCmp('tab_'+record.raw.entityName)){
 	    			var tab=Ext.getCmp('tab_'+record.raw.entityName);
@@ -116,6 +119,28 @@ var tree=Ext.create('Ext.tree.Panel', {
 
 });
 
+//1:主机类型 2:云平台应用程序 3:大数据平台应用程序 4:安全平台应用程序 5:记录组类型 6:记录类型关联字典 7:记录类型不关联字典
+function typeRender(v){
+    switch(v){
+        case '1':
+            return '主机类型';
+        case '2':
+            return '云平台应用程序';
+        case '3':
+            return '大数据平台应用程序';
+        case '4':
+            return '安全平台应用程序';
+        case '5':
+            return '记录组类型';
+        case '6':
+            return '记录类型关联字典';
+        case '7':
+            return '记录类型不关联字典';
+        default :
+            return v;
+    }
+}
+
 function createGrid(entity){
 	var entityCode,entityName;
 	switch (entity.type){
@@ -156,7 +181,7 @@ function createGrid(entity){
             {dataIndex:'entityCode',text:entityCode,width:100},
             {dataIndex:'entityName',text:entityName,width:200},
             {dataIndex:'hierarchy',text:'层级',hidden:true,width:200},
-            {dataIndex:'type',text:'类型',hidden:true}
+            {dataIndex:'type',text:'类型',renderer:typeRender,width:100}
 
         ];
     var fields=['entityId','parentId','entityCode','entityName','hierarchy','type'];
@@ -362,6 +387,43 @@ function createGridFormItems(grid,action){
             formItems.push({xtype:'hiddenfield',name:'id',value:null});
         }
         return formItems;
+    }else if(grid.gridType==5 && grid.gridHierarchy==2){
+        var formItems=[
+            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+                ,items:[
+                {xtype:'textfield',fieldLabel: grid.entityCodeText,name:'entityCode',allowBlank:false},
+                {
+                    xtype:'combo',
+                    store:Ext.create('Ext.data.Store',{
+                        fields:['value','text'],
+                        data : [
+                            {text: '是', value: '6'},
+                            {text: '否', value: '7'}
+                        ]
+
+                    }),
+                    fieldLabel: '是否应对字典值',
+                    name:'type',
+                    displayField: 'text',
+                    valueField: 'value',
+                    allowBlank:false,
+                    triggerAction:'all'
+                }
+            ]
+            },
+            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+                ,items:[
+                {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
+            ]
+            }
+
+        ];
+        formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
+        formItems.push({xtype:'hiddenfield',name:'hierarchy',value:grid.gridHierarchy+1});
+        if(action=='update'){
+            formItems.push({xtype:'hiddenfield',name:'entityId',value:null});
+        }
+        return formItems;
     }else{
         var formItems=[
             {columnWidth:.5,type:'form',padding:'10 0 0 5'
@@ -377,7 +439,8 @@ function createGridFormItems(grid,action){
 
         ];
         formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
-        formItems.push({xtype:'hiddenfield',name:'type',value:(grid.gridType==5 && grid.gridHierarchy==2)?6:grid.gridType});
+        formItems.push({xtype:'hiddenfield',name:'type',value:grid.gridType
+        });
         formItems.push({xtype:'hiddenfield',name:'hierarchy',value:grid.gridHierarchy+1});
         if(action=='update'){
             formItems.push({xtype:'hiddenfield',name:'entityId',value:null});
@@ -422,6 +485,7 @@ function gridFromButton(grid){
                             Ext.Msg.alert('!','成功');
                             this.up('window').close();
                             grid.getStore().reload();
+                            treeStore.reload();
                         }else{
                             Ext.Msg.alert('!','错误');
                         }

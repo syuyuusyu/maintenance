@@ -117,6 +117,8 @@ public class EntityConf implements TreeEntity{
 				return "icon-recordgroup";
 			case "6":
 				return "icon-record";
+			case "7":
+				return "icon-field";
 			default:
 				return null;
 		}

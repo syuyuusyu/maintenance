@@ -28,7 +28,7 @@ public class RecordGroup implements Serializable{
     @Id
     @Column(name = "group_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer group_id;
+    private Integer groupId;
     
     @Column(name = "up_entity_id")
     private Integer upEntityId;
@@ -43,12 +43,15 @@ public class RecordGroup implements Serializable{
     @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="group")
     private List<Record> records;
 
-    public Integer getGroup_id() {
-        return group_id;
+    @Column(name = "entity_id")
+    private Integer entityId;
+
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(Integer group_id) {
-        this.group_id = group_id;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
  
@@ -84,5 +87,11 @@ public class RecordGroup implements Serializable{
 		this.records = records;
 	}
 
-    
+    public Integer getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Integer entityId) {
+        this.entityId = entityId;
+    }
 }

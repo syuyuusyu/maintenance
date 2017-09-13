@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/monstrous/emblem.jpg}"/>
+	<title>云南省不动产统一登记综合服务平台</title>
+    <!-- Bootstrap Core CSS <link rel="stylesheet" type="text/css" th:href="@{/css/treeIcon.css}" />-->
+    <link th:href="@{/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!-- chartist CSS -->
+    <link th:href="@{/assets/plugins/chartist-js/dist/chartist.min.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/plugins/chartist-js/dist/chartist-init.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css}" rel="stylesheet"/>
+    <link th:href="@{/assets/plugins/css-chart/css-chart.css}" rel="stylesheet"/>
+    <!-- toast CSS -->
+    <link th:href="@{/assets/plugins/toast-master/css/jquery.toast.css}" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link th:href="@{/monstrous/css/style.css}" rel="stylesheet"/>
+    <!-- You can change the theme colors from here -->
+    <link th:href="@{/monstrous/css/colors/blue.css}" id="theme" rel="stylesheet"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-85622565-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">
+                        <!-- Logo icon -->
+                        <b>
+                            <img alt="云南省不动产统一登记" th:src="@{/monstrous/emblem.jpg}" class="dark-logo" style="height: 50px;width: 50px" />
+						 	<img alt="云南省不动产统一登记" th:src="@{/monstrous/emblem.jpg}" class="light-logo" style="height: 50px;width: 50px" />
+                        </b>
+                        <!--End Logo icon -->
+                        </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="icon-arrow-left-circle"></i></a> </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Comment -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+						<li class="nav-item dropdown">
+							<a class="nav-link " href="/" >
+								<span class="icon-home"><span class="hidden-sm-down">&nbsp;主页</span></span>
+							</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span aria-hidden="true" class="icon-user">
+									<span class="hidden-sm-down">张三</span>
+								</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right animated flipInY">
+                                <ul class="dropdown-user">
+                                    <li>
+                                    	<a href="javascript:void(0)"><i class="icon-bell"></i>&nbsp;&nbsp;待办</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                    	<a href="">
+                                    		<i class="icon-key"></i>&nbsp;&nbsp;修改密码
+                                    	</a>
+                                    </li>
+                                </ul>
+                            </div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="right-side-toggle icon-settings"><span class="hidden-sm-down">&nbsp;设置</span></span>
+							</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link" href="javascript:quit()">
+								<span class="fa fa-power-off"><span class="hidden-sm-down">&nbsp;退出</span></span>
+							</a>
+						</li>
+					</ul>
+                    <!-- ============================================================== -->
+                    <!-- End Comment -->
+                    <!-- ============================================================== -->
+                </div>
+            </nav>
+        </header>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- title -->
+                <div class="user-profile">
+                    <!-- <div class="profile-img"> <img src="${domain!}/yn_view/monstrous/emblem.jpg" alt="云南省不动产统一登记" style="height: 50px;width: 50px"/> </div> -->
+                    <div class="profile-text">
+                        <span>
+                        <a><p class="dark-logo" style="font-family:cursive;font-size: 120%;font-weight: bold;">云南省不动产统一登记综合业务门户</p></a>
+                        </span>
+                    </div>
+                </div>
+                <!-- End title text-->
+                <!-- Sidebar navigation  菜单栏-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap">PERSONAL</li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard <span class="label label-rounded label-success">5</span></span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="index.html">Modern Dashboard</a></li>
+                                <li><a href="index2.html">Awesome Dashboard</a></li>
+                                <li><a href="index3.html">Classy Dashboard</a></li>
+                                <li><a href="index4.html">Analytical Dashboard</a></li>
+                                <li><a href="index5.html">Minimal Dashboard</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Ui Elements</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="ui-cards.html">Cards</a></li>
+                                <li><a href="ui-user-card.html">User Cards</a></li>
+                                <li><a href="ui-buttons.html">Buttons</a></li>
+                                <li><a href="ui-date-paginator.html">Date-paginator</a></li>
+                                <li><a href="ui-dragable-portlet.html">Dragable Portlet</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Forms</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="form-basic.html">Basic Forms</a></li>
+                                <li><a href="form-layout.html">Form Layouts</a></li>
+                                <li><a href="form-addons.html">Form Addons</a></li>
+                                <li><a href="form-material.html">Form Material</a></li>
+                                <li><a href="form-float-input.html">Floating Lable</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-table"></i><span class="hide-menu">Tables</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="table-basic.html">Basic Tables</a></li>
+                                <li><a href="table-layout.html">Table Layouts</a></li>
+                                <li><a href="table-editable-table.html">Editable Table</a></li>
+                            </ul>
+                        </li>
+                       
+                        <li>
+                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-file-chart"></i><span class="hide-menu">Charts</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="chart-morris.html">Morris Chart</a></li>
+                                <li><a href="chart-chartist.html">Chartis Chart</a></li>
+                                <li><a href="chart-echart.html">Echarts</a></li>
+                                <li><a href="chart-flot.html">Flot Chart</a></li>
+                                <li><a href="chart-knob.html">Knob Chart</a></li>
+                                <li><a href="chart-chart-js.html">Chartjs</a></li>
+                                <li><a href="chart-sparkline.html">Sparkline Chart</a></li>
+                                <li><a href="chart-extra-chart.html">Extra chart</a></li>
+                                <li><a href="chart-peity.html">Peity Charts</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-brush"></i><span class="hide-menu">Icons</span></a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="icon-material.html">Material Icons</a></li>
+                                <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
+                                <li><a href="icon-themify.html">Themify Icons</a></li>
+                                <li><a href="icon-linea.html">Linea Icons</a></li>
+                                <li><a href="icon-weather.html">Weather Icons</a></li>
+                                <li><a href="icon-simple-lineicon.html">Simple Lineicons</a></li>
+                                <li><a href="icon-flag.html">Flag Icons</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid 主要内容 -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <!-- Row -->
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Daily Sales</h4>
+                                <div class="text-right">
+                                    <h2 class="font-light m-b-0"><i class="ti-arrow-up text-success"></i> $120</h2>
+                                    <span class="text-muted">Todays Income</span>
+                                </div>
+                                <span class="text-success">80%</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <!-- Column -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Weekly Sales</h4>
+                                <div class="text-right">
+                                    <h2 class="font-light m-b-0"><i class="ti-arrow-up text-info"></i> $5,000</h2>
+                                    <span class="text-muted">Todays Income</span>
+                                </div>
+                                <span class="text-info">30%</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: 30%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <!-- Column -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Monthly Sales</h4>
+                                <div class="text-right">
+                                    <h2 class="font-light m-b-0"><i class="ti-arrow-up text-purple"></i> $8,000</h2>
+                                    <span class="text-muted">Todays Income</span>
+                                </div>
+                                <span class="text-purple">60%</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-purple" role="progressbar" style="width: 60%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                    <!-- Column -->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Yearly Sales</h4>
+                                <div class="text-right">
+                                    <h2 class="font-light m-b-0"><i class="ti-arrow-down text-danger"></i> $12,000</h2>
+                                    <span class="text-muted">Todays Income</span>
+                                </div>
+                                <span class="text-danger">80%</span>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 80%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+                <!-- Row -->
+                <!-- Row -->
+
+
+
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex flex-wrap">
+                                            <div>
+                                                <h3>Revenue Statistics</h3>
+                                                <h6 class="card-subtitle">January 2017</h6> </div>
+                                            <div class="ml-auto ">
+                                                <ul class="list-inline">
+                                                    <li>
+                                                        <h6 class="text-muted"><i class="fa fa-circle m-r-5 text-success"></i>Product A</h6> </li>
+                                                    <li>
+                                                        <h6 class="text-muted"><i class="fa fa-circle m-r-5 text-info"></i>Product B</h6> </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="total-revenue4" style="height: 350px;"></div>
+                                    </div>
+                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
+                                        <h1 class="m-b-0 font-light">$54578</h1>
+                                        <h6 class="text-muted">Total Revenue</h6></div>
+                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
+                                        <h1 class="m-b-0 font-light">$43451</h1>
+                                        <h6 class="text-muted">Online Revenue</h6></div>
+                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
+                                        <h1 class="m-b-0 font-light">$44578</h1>
+                                        <h6 class="text-muted">Product A</h6></div>
+                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
+                                        <h1 class="m-b-0 font-light">$12578</h1>
+                                        <h6 class="text-muted">Product B</h6></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Row -->
+                <!-- Row -->
+                <div class="row">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <h4 class="card-title">Sales of the Month</h4>
+                                <div id="sales-donute" style="width:100%; height:300px;"></div>
+                                <div class="round-overlap m-t-20"><i class="mdi mdi-cart"></i></div>
+                                <ul class="list-inline m-t-30 text-center">
+                                    <li><i class="fa fa-circle text-purple"></i> Item A</li>
+                                    <li><i class="fa fa-circle text-success"></i> Item B</li>
+                                    <li><i class="fa fa-circle text-info"></i> Item C</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <h4 class="card-title">Sales Prediction</h4>
+                                        <div class="d-flex flex-row">
+                                            <div class="align-self-center">
+                                                <span class="display-6">$3528</span>
+                                                <h6 class="text-muted">(150-165 Sales)</h6>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <div id="gauge-chart" style=" width:150px; height:150px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-block">
+                                        <h4 class="card-title">Sales Difference</h4>
+                                        <div class="d-flex flex-row">
+                                            <div class="align-self-center">
+                                                <span class="display-6">$4316</span>
+                                                <h6 class="text-muted">(150-165 Sales)</h6>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <div class="ct-chart" style="width:120px; height: 120px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card">
+                            <div class="card-block">
+                                <div class="d-flex flex-row">
+                                    <div class=""><img th:src="@{/assets/images/users/1.jpg}" alt="user" class="img-circle" width="100" /></div>
+                                    <div class="p-l-20">
+                                        <h3 class="font-medium">Daniel Kristeen</h3>
+                                        <h6>UIUX Designer</h6>
+                                        <button class="btn btn-success"><i class="ti-plus"></i> Follow</button>
+                                    </div>
+                                </div>
+                                <div class="row m-t-40">
+                                    <div class="col b-r">
+                                        <h2 class="font-light">14</h2>
+                                        <h6>Photos</h6></div>
+                                    <div class="col b-r">
+                                        <h2 class="font-light">54</h2>
+                                        <h6>Videos</h6></div>
+                                    <div class="col">
+                                        <h2 class="font-light">145</h2>
+                                        <h6>Tasks</h6></div>
+                                </div>
+                            </div>
+                            <div>
+                                <hr></hr>
+                            </div>
+                            <div class="card-block">
+                                <p class="text-center aboutscroll">
+                                    Lorem ipsum dolor sit ametetur adipisicing elit, sed do eiusmod tempor incididunt adipisicing elit, sed do eiusmod tempor incididunLorem ipsum dolor sit ametetur adipisicing elit, sed do eiusmod tempor incididuntt
+                                </p>
+                                <ul class="list-icons d-flex flex-item text-center p-t-10">
+                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Website"><i class="fa fa-globe font-20"></i></a></li>
+                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="twitter"><i class="fa fa-twitter font-20"></i></a></li>
+                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook-square font-20"></i></a></li>
+                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Youtube"><i class="fa fa-youtube-play font-20"></i></a></li>
+                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Linkd-in"><i class="fa fa-linkedin-square font-20"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Row -->
+                <!-- Row -->
+               
+                <!-- Row -->
+                <!-- Row -->
+                
+                <!-- Row -->
+                <!-- Row -->
+            
+                <!-- Row -->
+                <!-- Row -->
+              
+                <!-- Row -->
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <!-- .right-sidebar 右边框 -->
+                <div class="right-sidebar">
+					<div class="slimscrollright">
+						<div class="rpanel-title">
+							服务面板<span><i class="ti-close right-side-toggle"></i></span>
+						</div>
+					<div class="r-panel-body">
+						<ul id="themecolors" class="m-t-20">
+							<li><b>白色侧边栏</b></li>
+							<li><a href="javascript:void(0)" data-theme="default"
+								class="default-theme">1</a></li>
+							<li><a href="javascript:void(0)" data-theme="green"
+								class="green-theme">2</a></li>
+							<li><a href="javascript:void(0)" data-theme="red"
+								class="red-theme">3</a></li>
+							<li><a href="javascript:void(0)" data-theme="blue"
+								class="blue-theme working">4</a></li>
+							<li><a href="javascript:void(0)" data-theme="purple"
+								class="purple-theme">5</a></li>
+							<li><a href="javascript:void(0)" data-theme="megna"
+								class="megna-theme">6</a></li>
+							<li class="d-block m-t-30"><b>黑色侧边栏</b></li>
+							<li><a href="javascript:void(0)" data-theme="default-dark"
+								class="default-dark-theme">7</a></li>
+							<li><a href="javascript:void(0)" data-theme="green-dark"
+								class="green-dark-theme">8</a></li>
+							<li><a href="javascript:void(0)" data-theme="red-dark"
+								class="red-dark-theme">9</a></li>
+							<li><a href="javascript:void(0)" data-theme="blue-dark"
+								class="blue-dark-theme">10</a></li>
+							<li><a href="javascript:void(0)" data-theme="purple-dark"
+								class="purple-dark-theme">11</a></li>
+							<li><a href="javascript:void(0)" data-theme="megna-dark"
+								class="megna-dark-theme ">12</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+            <!-- ============================================================== -->
+            <!-- End Right sidebar -->
+            <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer" style="position:inherit;">
+            	 © 2017 云南省国土资源厅版权所有
+            </footer>
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script th:src="@{/assets/plugins/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script th:src="@{/assets/plugins/bootstrap/js/tether.min.js}"></script>
+    <script th:src="@{/assets/plugins/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script th:src="@{/monstrous/js/jquery.slimscroll.js}"></script>
+    <!--Wave Effects -->
+    <script th:src="@{/monstrous/js/waves.js}"></script>
+    <!--Menu sidebar -->
+    <script th:src="@{/monstrous/js/sidebarmenu.js}"></script>
+    <!--stickey kit -->
+    <script th:src="@{/assets/plugins/sticky-kit-master/dist/sticky-kit.min.js}"></script>
+    <!--Custom JavaScript -->
+    <script th:src="@{/monstrous/js/custom.min.js}"></script>
+    <!-- ============================================================== -->
+    <!-- This page plugins -->
+    <!-- ============================================================== -->
+    <!-- chartist chart -->
+    <script th:src="@{/assets/plugins/chartist-js/dist/chartist.min.js}"></script>
+    <script th:src="@{/assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js}"></script>
+    <!-- Chart JS -->
+    <script th:src="@{/assets/plugins/echarts/echarts-all.js}"></script>
+    <script th:src="@{/assets/plugins/toast-master/js/jquery.toast.js}"></script>
+    <!-- Chart JS -->
+    <script th:src="@{monstrous/js/dashboard1.js}"></script>
+    <script th:src="@{monstrous/js/toastr.js}"></script>
+    <!-- ============================================================== -->
+    <!-- Style switcher -->
+    <!-- ============================================================== -->
+    <script th:src="@{/assets/plugins/styleswitcher/jQuery.style.switcher.js}"></script>
+</body>
+
+</html>
