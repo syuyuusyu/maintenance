@@ -33,7 +33,6 @@ public class EntityConf implements TreeEntity{
 
     @Column(name = "type")
     private String type;
-//sdsdsds
 
 
 	public Integer getEntityId() {
