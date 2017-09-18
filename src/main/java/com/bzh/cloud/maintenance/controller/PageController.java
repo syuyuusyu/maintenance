@@ -1,5 +1,6 @@
 package com.bzh.cloud.maintenance.controller;
 
+import com.sun.tools.javac.parser.JavacParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,11 @@ public class PageController {
 	@RequestMapping(value="/index")
 	public String index(Model model){
 		return "index";
+	}
+
+	@RequestMapping(value="/loginIndex")
+	public String login(Model model){
+		return "login";
 	}
 
 

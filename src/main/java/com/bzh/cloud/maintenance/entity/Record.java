@@ -2,12 +2,11 @@ package com.bzh.cloud.maintenance.entity;
 
 import com.bzh.cloud.maintenance.dao.TEntityDao;
 import com.bzh.cloud.maintenance.util.SpringUtil;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
+
 
 @Entity
 @Table(name = "record", schema = "maintenance")

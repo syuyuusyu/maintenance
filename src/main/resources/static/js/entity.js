@@ -31,18 +31,18 @@ var tree=Ext.create('Ext.tree.Panel', {
     containerScroll: true,
     split: true,
     listeners: {
-	   beforeitemexpand: function (node, index, item, eOpts){
+	   beforeitemexpand: function (node, opt){
 	      //node.data.iconCls='icon-home';
 	      console.log("beforeitemexpand");
 	      console.log(node);
-	      console.log(item);
+	      console.log(opt);
 
 	    },
-	    beforeitemcollapse: function (node, index, item, eOpts){
+	    beforeitemcollapse: function (node, opt){
             //node.data.iconCls='icon-home';
             console.log("beforeitemcollapse");
             console.log(node);
-            console.log(item);
+            console.log(opt);
 	    },
         'select': function(node, record,item) {
 	        if(record.raw.type=='7'){
@@ -108,7 +108,8 @@ var tree=Ext.create('Ext.tree.Panel', {
             		}
             	});
 	          }
-		})			
+		})
+        
 	}
 	,createEntity:function(id){
 		createEntityForm(id,'create');

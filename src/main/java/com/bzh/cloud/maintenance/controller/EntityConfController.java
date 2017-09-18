@@ -8,11 +8,13 @@ import com.bzh.cloud.maintenance.dao.TDictionaryDao;
 import com.bzh.cloud.maintenance.entity.TDictionary;
 import com.bzh.cloud.maintenance.entity.TEntity;
 import com.bzh.cloud.maintenance.service.TreeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +34,7 @@ public class EntityConfController {
 	@Autowired
     TDictionaryDao tDictionaryDao;
 	
-    @RequestMapping(value="/tree")
+    @RequestMapping(value="/tree",method=RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> tree(Integer parentId){
         return treeService.treeNode(parentId);

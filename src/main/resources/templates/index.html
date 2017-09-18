@@ -45,6 +45,20 @@
     ga('create', 'UA-85622565-1', 'auto');
     ga('send', 'pageview');
     </script>
+
+    <style>
+        .container-fluid{
+            padding: 0 0;
+            min-height: 695px;
+        }
+        .page-wrapper{
+            min-height: 695px;
+        }
+        iframe{
+            min-height: 695px;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body class="fix-header fix-sidebar card-no-border">
@@ -149,7 +163,7 @@
                     <!-- <div class="profile-img"> <img src="${domain!}/yn_view/monstrous/emblem.jpg" alt="云南省不动产统一登记" style="height: 50px;width: 50px"/> </div> -->
                     <div class="profile-text">
                         <span>
-                        <a><p class="dark-logo" style="font-family:cursive;font-size: 120%;font-weight: bold;">云南省不动产统一登记综合业务门户</p></a>
+                        <a><p class="dark-logo" style="font-family:cursive;font-size: 120%;font-weight: bold;">运维平台业务门户</p></a>
                         </span>
                     </div>
                 </div>
@@ -161,7 +175,7 @@
                         <li>
                             <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard <span class="label label-rounded label-success">5</span></span></a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="index.html">Modern Dashboard</a></li>
+                                <li><a href="javascript:;" onclick="jumpPage('.././entityPage')">实体类型配置</a></li>
                                 <li><a href="index2.html">Awesome Dashboard</a></li>
                                 <li><a href="index3.html">Classy Dashboard</a></li>
                                 <li><a href="index4.html">Analytical Dashboard</a></li>
@@ -244,273 +258,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <!-- Row -->
-                <div class="row">
-                    <!-- Column -->
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-block">
-                                <h4 class="card-title">Daily Sales</h4>
-                                <div class="text-right">
-                                    <h2 class="font-light m-b-0"><i class="ti-arrow-up text-success"></i> $120</h2>
-                                    <span class="text-muted">Todays Income</span>
-                                </div>
-                                <span class="text-success">80%</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                    <!-- Column -->
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-block">
-                                <h4 class="card-title">Weekly Sales</h4>
-                                <div class="text-right">
-                                    <h2 class="font-light m-b-0"><i class="ti-arrow-up text-info"></i> $5,000</h2>
-                                    <span class="text-muted">Todays Income</span>
-                                </div>
-                                <span class="text-info">30%</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 30%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                    <!-- Column -->
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-block">
-                                <h4 class="card-title">Monthly Sales</h4>
-                                <div class="text-right">
-                                    <h2 class="font-light m-b-0"><i class="ti-arrow-up text-purple"></i> $8,000</h2>
-                                    <span class="text-muted">Todays Income</span>
-                                </div>
-                                <span class="text-purple">60%</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-purple" role="progressbar" style="width: 60%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                    <!-- Column -->
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-block">
-                                <h4 class="card-title">Yearly Sales</h4>
-                                <div class="text-right">
-                                    <h2 class="font-light m-b-0"><i class="ti-arrow-down text-danger"></i> $12,000</h2>
-                                    <span class="text-muted">Todays Income</span>
-                                </div>
-                                <span class="text-danger">80%</span>
-                                <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 80%; height: 6px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                </div>
-                <!-- Row -->
-                <!-- Row -->
 
-
-
-                <div class="row">
-                    <!-- Column -->
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-block">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="d-flex flex-wrap">
-                                            <div>
-                                                <h3>Revenue Statistics</h3>
-                                                <h6 class="card-subtitle">January 2017</h6> </div>
-                                            <div class="ml-auto ">
-                                                <ul class="list-inline">
-                                                    <li>
-                                                        <h6 class="text-muted"><i class="fa fa-circle m-r-5 text-success"></i>Product A</h6> </li>
-                                                    <li>
-                                                        <h6 class="text-muted"><i class="fa fa-circle m-r-5 text-info"></i>Product B</h6> </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="total-revenue4" style="height: 350px;"></div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
-                                        <h1 class="m-b-0 font-light">$54578</h1>
-                                        <h6 class="text-muted">Total Revenue</h6></div>
-                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
-                                        <h1 class="m-b-0 font-light">$43451</h1>
-                                        <h6 class="text-muted">Online Revenue</h6></div>
-                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
-                                        <h1 class="m-b-0 font-light">$44578</h1>
-                                        <h6 class="text-muted">Product A</h6></div>
-                                    <div class="col-lg-3 col-md-6 m-b-30 m-t-20 text-center">
-                                        <h1 class="m-b-0 font-light">$12578</h1>
-                                        <h6 class="text-muted">Product B</h6></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Row -->
-                <!-- Row -->
-                <div class="row">
-                    <div class="col-lg-4 col-md-12">
-                        <div class="card">
-                            <div class="card-block">
-                                <h4 class="card-title">Sales of the Month</h4>
-                                <div id="sales-donute" style="width:100%; height:300px;"></div>
-                                <div class="round-overlap m-t-20"><i class="mdi mdi-cart"></i></div>
-                                <ul class="list-inline m-t-30 text-center">
-                                    <li><i class="fa fa-circle text-purple"></i> Item A</li>
-                                    <li><i class="fa fa-circle text-success"></i> Item B</li>
-                                    <li><i class="fa fa-circle text-info"></i> Item C</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-block">
-                                        <h4 class="card-title">Sales Prediction</h4>
-                                        <div class="d-flex flex-row">
-                                            <div class="align-self-center">
-                                                <span class="display-6">$3528</span>
-                                                <h6 class="text-muted">(150-165 Sales)</h6>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <div id="gauge-chart" style=" width:150px; height:150px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-block">
-                                        <h4 class="card-title">Sales Difference</h4>
-                                        <div class="d-flex flex-row">
-                                            <div class="align-self-center">
-                                                <span class="display-6">$4316</span>
-                                                <h6 class="text-muted">(150-165 Sales)</h6>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <div class="ct-chart" style="width:120px; height: 120px;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12">
-                        <div class="card">
-                            <div class="card-block">
-                                <div class="d-flex flex-row">
-                                    <div class=""><img th:src="@{/assets/images/users/1.jpg}" alt="user" class="img-circle" width="100" /></div>
-                                    <div class="p-l-20">
-                                        <h3 class="font-medium">Daniel Kristeen</h3>
-                                        <h6>UIUX Designer</h6>
-                                        <button class="btn btn-success"><i class="ti-plus"></i> Follow</button>
-                                    </div>
-                                </div>
-                                <div class="row m-t-40">
-                                    <div class="col b-r">
-                                        <h2 class="font-light">14</h2>
-                                        <h6>Photos</h6></div>
-                                    <div class="col b-r">
-                                        <h2 class="font-light">54</h2>
-                                        <h6>Videos</h6></div>
-                                    <div class="col">
-                                        <h2 class="font-light">145</h2>
-                                        <h6>Tasks</h6></div>
-                                </div>
-                            </div>
-                            <div>
-                                <hr></hr>
-                            </div>
-                            <div class="card-block">
-                                <p class="text-center aboutscroll">
-                                    Lorem ipsum dolor sit ametetur adipisicing elit, sed do eiusmod tempor incididunt adipisicing elit, sed do eiusmod tempor incididunLorem ipsum dolor sit ametetur adipisicing elit, sed do eiusmod tempor incididuntt
-                                </p>
-                                <ul class="list-icons d-flex flex-item text-center p-t-10">
-                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Website"><i class="fa fa-globe font-20"></i></a></li>
-                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="twitter"><i class="fa fa-twitter font-20"></i></a></li>
-                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook-square font-20"></i></a></li>
-                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Youtube"><i class="fa fa-youtube-play font-20"></i></a></li>
-                                    <li class="col"><a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="Linkd-in"><i class="fa fa-linkedin-square font-20"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Row -->
-                <!-- Row -->
-               
-                <!-- Row -->
-                <!-- Row -->
-                
-                <!-- Row -->
-                <!-- Row -->
-            
-                <!-- Row -->
-                <!-- Row -->
-              
-                <!-- Row -->
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar 右边框 -->
-                <div class="right-sidebar">
-					<div class="slimscrollright">
-						<div class="rpanel-title">
-							服务面板<span><i class="ti-close right-side-toggle"></i></span>
-						</div>
-					<div class="r-panel-body">
-						<ul id="themecolors" class="m-t-20">
-							<li><b>白色侧边栏</b></li>
-							<li><a href="javascript:void(0)" data-theme="default"
-								class="default-theme">1</a></li>
-							<li><a href="javascript:void(0)" data-theme="green"
-								class="green-theme">2</a></li>
-							<li><a href="javascript:void(0)" data-theme="red"
-								class="red-theme">3</a></li>
-							<li><a href="javascript:void(0)" data-theme="blue"
-								class="blue-theme working">4</a></li>
-							<li><a href="javascript:void(0)" data-theme="purple"
-								class="purple-theme">5</a></li>
-							<li><a href="javascript:void(0)" data-theme="megna"
-								class="megna-theme">6</a></li>
-							<li class="d-block m-t-30"><b>黑色侧边栏</b></li>
-							<li><a href="javascript:void(0)" data-theme="default-dark"
-								class="default-dark-theme">7</a></li>
-							<li><a href="javascript:void(0)" data-theme="green-dark"
-								class="green-dark-theme">8</a></li>
-							<li><a href="javascript:void(0)" data-theme="red-dark"
-								class="red-dark-theme">9</a></li>
-							<li><a href="javascript:void(0)" data-theme="blue-dark"
-								class="blue-dark-theme">10</a></li>
-							<li><a href="javascript:void(0)" data-theme="purple-dark"
-								class="purple-dark-theme">11</a></li>
-							<li><a href="javascript:void(0)" data-theme="megna-dark"
-								class="megna-dark-theme ">12</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
             <!-- ============================================================== -->
             <!-- End Right sidebar -->
             <!-- ============================================================== -->
@@ -568,6 +316,14 @@
     <!-- Style switcher -->
     <!-- ============================================================== -->
     <script th:src="@{/assets/plugins/styleswitcher/jQuery.style.switcher.js}"></script>
+
+    <script >
+        function jumpPage(url){
+            console.log(url);
+            $('.container-fluid').empty();
+            $('.container-fluid').empty().append('<iframe src="'+url+'"></iframe>');
+        }
+    </script>
 </body>
 
 </html>

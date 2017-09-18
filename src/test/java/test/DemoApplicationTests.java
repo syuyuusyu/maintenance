@@ -1,6 +1,7 @@
 package test;
 
 import com.bzh.cloud.maintenance.MaintenApplication;
+import com.bzh.cloud.maintenance.client.RestfulClient;
 import com.bzh.cloud.maintenance.dao.*;
 import com.bzh.cloud.maintenance.entity.*;
 import com.bzh.cloud.maintenance.util.SpringUtil;
@@ -24,7 +25,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,10 +68,8 @@ public class DemoApplicationTests {
 	@Test
 	public void test()  {
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("entityName","sysRoledataright");
-	    map.put("page","1");
-	    map.put("start","1");
-	    map.put("limit","5");
+		map.put("parentId",1);
+
 	    String url="http://192.168.1.193:8765/auth/conf/data?"
 	    		+ "entityName={entityName}&page={page}&start={start}&limit={limit}";
 	   
@@ -79,11 +80,12 @@ public class DemoApplicationTests {
 //	    JsonObject j1=ja.getJsonObject(0);
 //	    SysRoledataright sysR=j1.mapTo(SysRoledataright.class);
 	    
-	    String url2="http://192.168.1.193:8080/conf/data";
-	    String json =restTemplate.postForObject(url, null,String.class,map);
+	    String url2="http://127.0.0.1:4400/entityConf/tree?parentId={parentId}";
+	    String json =restTemplate.postForObject(url2, null,String.class,map);
 	    JsonObject j=new JsonObject(json);
-	    JsonArray ja= j.getJsonArray("data");
+	    JsonArray ja= j.getJsonArray("children");
 	    JsonObject j1=ja.getJsonObject(0);
+	    System.out.println(ja);
 
 
 //		
@@ -188,6 +190,54 @@ public class DemoApplicationTests {
 				});
 			}
 		});
+	}
+	
+	
+	@Test
+	public void test8(){
+		long a=System.currentTimeMillis();
+		System.out.println(a);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmssSSS");
+		String time=sdf.format(new Date());
+		System.out.println(time);
+		
+		//restTemplate.
+	    String url="http://9.77.254.13:8080/dc2us2/rest/interface?"
+	    		+ "system={system}&version={version}&reqtime={reqtime}&method={method}&type={type}";
+	    Map<String, Object> map=new HashMap<String, Object>();
+	    map.put("system", "S01");
+	    map.put("version", "v1");
+	    map.put("reqtime", time);
+	    map.put("method", "credits");
+	    map.put("type", "query");
+	    String json =restTemplate.postForObject(url, null,String.class,map);
+	    System.out.println(json);
+	   // restTemplate.pos
+	    
+		
+	}
+	
+	
+	@Test
+	public void test9(){
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmssSSS");
+		String time=sdf.format(new Date());
+		String url="http://9.77.248.14:8080/isp/interfaces";
+		JsonObject request=new JsonObject();
+		JsonObject head=new JsonObject();
+		JsonArray reqdata=new JsonArray();
+		request.put("system", "S18");
+		request.put("version","v1");
+		request.put("method", "roles");
+		request.put("type", "query");
+		request.put("reqtime", time);
+		head.put("Accept", "application/json");
+		head.put("Content-Type", "application/json");
+		head.put("keyid", "FzPLkvSm8E");
+		head.put("domain", "9.77.254.117");
+		String result=RestfulClient.invokRestFul(url, request.toString(), reqdata.toString(), head.toString());
+		System.out.println(result);
+		
 	}
 
 }
