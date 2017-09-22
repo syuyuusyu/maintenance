@@ -10,9 +10,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.util.Arrays;
 
 
-public class Roles {
+public class RolesInvko {
 	public static void main(String arg[]) throws Exception {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			//HttpPost httpPost = new HttpPost("http://127.0.0.1:8080/isp/interfaces"); 
@@ -22,21 +23,26 @@ public class Roles {
 			JsonArray  jsaryentity=new JsonArray();
 			reqdata.put("modifytime","20170220");
 			jsaryentity.add(reqdata);
-			jsentity.put("system", "S18");
+
 			jsentity.put("version", "v1");
+			jsentity.put("system", "S18");
 			//jsentity.put("ticket", "0UTcmwmsOn");
 			jsentity.put("method", "roles");
-			jsentity.put("reqtime", "20170918024726096");
+
 			jsentity.put("type", "query");
+			jsentity.put("reqtime", "20170918024726096");
 			jsentity.put("reqdata", jsaryentity);
 			System.out.println(jsentity.toString());
 			StringEntity entity=new StringEntity(jsentity.toString(),"utf-8");
 	        httpPost.setEntity(entity);  
 	        httpPost.setHeader("Accept", "application/json");
-	        httpPost.setHeader("Content-Type", "application/json");
+	        httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
 	        httpPost.setHeader("keyid", "FzPLkvSm8E");
 	        httpPost.setHeader("domain", "9.77.254.117");
-	        CloseableHttpResponse httppHttpResponse2 = httpClient.execute(httpPost);    
+		Arrays.stream(httpPost.getAllHeaders()).forEach(H->{
+			System.out.println(H.getName()+" "+H.getValue());
+		});
+		CloseableHttpResponse httppHttpResponse2 = httpClient.execute(httpPost);
 	        try{  
 	        String code=httppHttpResponse2.getStatusLine().getReasonPhrase();
 	        System.out.println("==================="+code);

@@ -1,0 +1,88 @@
+package com.bzh.cloud.maintenance.restFul;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bzh.cloud.maintenance.dao.EntityConfDao;
+import com.bzh.cloud.maintenance.dao.RecordGroupDao;
+import com.bzh.cloud.maintenance.entity.EntityConf;
+import com.bzh.cloud.maintenance.entity.Record;
+import com.bzh.cloud.maintenance.entity.RecordGroup;
+import com.bzh.cloud.maintenance.util.SpringUtil;
+
+public class SaveEvent implements InvokeCompleteEvent{
+	
+	private static Logger log = Logger.getLogger(SaveEvent.class);
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	@Transactional
+	public void exec(ResponseData<?> data, Class<?> resultClass) {
+		log.info("储蓄接口信息到数据库");
+		if(resultClass!=null){
+			PagingAndSortingRepository r=getRepository(resultClass);
+			r.save(data.getRespdata());
+		}else{
+			EntityConfDao entityConfDao=(EntityConfDao) SpringUtil.getBean("entityConfDao");
+			RecordGroupDao recordGroupDao=(RecordGroupDao) SpringUtil.getBean("recordGroupDao");
+			JSONArray jarr=JSON.parseArray(data.getArrayJson());
+	        EntityConf en=entityConfDao.findOne(data.getEntityId());
+	        List<RecordGroup> groups=new ArrayList<>();
+
+	        List<EntityConf> recordEntitys=en.getChild(EntityConf.class);
+	        for (int i=0;i<jarr.size();i++){
+	            RecordGroup group=new RecordGroup();
+	            group.setEntityId(en.getEntityId());
+
+	            JSONObject j=jarr.getJSONObject(i);
+	            List<Record> records=new ArrayList<>();
+	            recordEntitys.forEach(E->{
+	                String str=j.getString(E.getEntityCode());
+	                if(!StringUtils.isEmpty(str)){
+	                    Record r=new Record();
+	                    r.setGroup(group);
+	                    r.setEntityId(E.getEntityId());
+	                    r.setState(str);
+	                    records.add(r);
+	                }
+
+	            });
+
+	            group.setRecords(records);
+	            groups.add(group);
+	        }
+
+	        recordGroupDao.save(groups);
+		}
+		
+		
+	}
+
+	private  PagingAndSortingRepository getRepository(Class resultClass){
+		String className=resultClass.getName();
+		className=className.replaceAll("com.bzh.cloud.maintenance.entity.", "");
+		String[] arr=className.split("");
+		String str="";
+		for (int i = 0; i < arr.length; i++) {
+			if(i==0){
+				str+=arr[i].toLowerCase();
+			}else{
+				str+=arr[i];
+			}
+		}
+		str+="Dao";
+		log.info("get dao for beamName:"+str);
+		return (PagingAndSortingRepository) SpringUtil.getBean(str);
+		
+	}
+
+}

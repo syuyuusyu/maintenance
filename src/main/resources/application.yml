@@ -98,11 +98,23 @@ logging:
   level:
     com.bzkj.sunsrise.dao: DEBUG
 
-selfProperties:
-  token-expiration-time: 30
 management:
   security:
     enabled: false
 
 server:
   port: 4400
+
+
+selfProperties:
+  restFul:
+    requestMap:
+      version: v1
+      system: S18
+    headMap:
+      Accept: application/json
+      Content-Type: application/json;charset=UTF-8
+      keyid: FzPLkvSm8E
+      domain: 9.77.254.117
+    entityIdMap:
+      http://localhost:4400/serviceStatus: 47

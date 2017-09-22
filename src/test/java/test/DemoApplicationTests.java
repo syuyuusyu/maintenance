@@ -1,9 +1,13 @@
 package test;
 
 import com.bzh.cloud.maintenance.MaintenApplication;
-import com.bzh.cloud.maintenance.client.RestfulClient;
+import com.bzh.cloud.maintenance.config.PropertiesConf;
 import com.bzh.cloud.maintenance.dao.*;
 import com.bzh.cloud.maintenance.entity.*;
+import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
+import com.bzh.cloud.maintenance.restFul.RequestEntity;
+import com.bzh.cloud.maintenance.restFul.ResponseData;
+import com.bzh.cloud.maintenance.restFul.RestfulClient;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
 import io.vertx.core.Vertx;
@@ -17,9 +21,12 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +52,12 @@ public class DemoApplicationTests {
 
     @Autowired  
     private RestTemplate restTemplate;
+    
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+    
+    @Autowired
+    private Environment env;
 	
 
 
@@ -63,6 +76,9 @@ public class DemoApplicationTests {
 
 	@Autowired
 	EntityConfDao ecd;
+
+	@Autowired
+	PropertiesConf pConf;
 	
 	
 	@Test
@@ -220,23 +236,74 @@ public class DemoApplicationTests {
 	
 	@Test
 	public void test9(){
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmssSSS");
-		String time=sdf.format(new Date());
-		String url="http://9.77.248.14:8080/isp/interfaces";
-		JsonObject request=new JsonObject();
-		JsonObject head=new JsonObject();
-		JsonArray reqdata=new JsonArray();
-		request.put("system", "S18");
-		request.put("version","v1");
-		request.put("method", "roles");
-		request.put("type", "query");
-		request.put("reqtime", time);
-		head.put("Accept", "application/json");
-		head.put("Content-Type", "application/json");
-		head.put("keyid", "FzPLkvSm8E");
-		head.put("domain", "9.77.254.117");
-		String result=RestfulClient.invokRestFul(url, request.toString(), reqdata.toString(), head.toString());
-		System.out.println(result);
+
+		String url="http://9.77.248.14:8080/isp/";
+
+
+		//同步用户信息
+		System.out.println("同步用户信息");
+		Map<String,String> requestMap3=new HashMap<>();
+		requestMap3.put("method","users");
+		requestMap3.put("type","query");
+		Map<String,String> reqdataMap3=new HashMap<>();
+		reqdataMap3.put("modifytime","20170220");
+		String result3=RestfulClient.invokRestFul(url+"interfaces", requestMap3, reqdataMap3);
+		System.out.println(result3);
+
+		//角色信息同步
+		//{"method":"roles","reqdata":[{"modifytime":"20170220"}],
+		// "reqtime":"20170220101010003","system":"S18","ticket":"0UTcmwmsOn","type":"query","version":"v1"}
+		System.out.println("角色信息同步");
+		Map<String,String> requestMap4=new HashMap<>();
+		requestMap4.put("method","roles");
+		requestMap4.put("type","query");
+		Map<String,String> reqdataMap4=new HashMap<>();
+		reqdataMap4.put("modifytime","20170220");
+		String result4=RestfulClient.invokRestFul(url+"interfaces", requestMap4, reqdataMap4);
+		System.out.println(result4);
+		
+		//同步机构
+		System.out.println("同步机构");
+		Map<String,String> requestMap5=new HashMap<>();
+		requestMap5.put("method","org");
+		requestMap5.put("type","query");
+		Map<String,String> reqdataMap5=new HashMap<>();
+		//reqdataMap5.put("modifytime","20170220");
+		String result5=RestfulClient.invokRestFul(url+"interfaces", requestMap5, reqdataMap5);
+		System.out.println(result5);
+	}
+
+	@Test
+	public void test10(){
+		String url="http://9.77.248.14:8080/isp/";
+		//安全认证
+		Map<String,String> requestMap1=new HashMap<>();
+		requestMap1.put("method","credits");
+		requestMap1.put("type","query");
+		Map<String,String> reqdataMap1=new HashMap<>();
+		String result1=RestfulClient.invokRestFul(url+"interfaces", requestMap1, reqdataMap1);
+
+		System.out.println("安全认证");
+		System.out.println(result1);
+		//ticket":"OfWdlF35se
+	}
+	
+	@Test
+	public void test11(){
+		String url="http://9.77.248.14:8080/isp/";
+		System.out.println("角色信息同步");
+		RequestEntity en=new RequestEntity();
+		en.setUrl(url+"interfaces");
+		en.setMethod("roles");
+		en.setType("query");
+		en.addReqDdata("modifytime", "20170220");
+		String result1=RestfulClient.invokRestFul(en);
+		System.out.println(result1);
+		
+		ResponseData<Roles> rd=RestfulClient.invokRestFul(en,Roles.class);
+		rd.getRespdata().forEach(U->{
+			System.out.println(U);
+		});
 		
 	}
 

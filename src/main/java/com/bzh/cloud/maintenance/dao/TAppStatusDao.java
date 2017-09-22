@@ -1,13 +1,15 @@
 package com.bzh.cloud.maintenance.dao;
 
 import com.bzh.cloud.maintenance.entity.Record;
-import org.springframework.data.jpa.repository.JpaRepository;
+
+
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.List;
 
 
-public interface TAppStatusDao extends JpaRepository<Record, Integer> {
+
+public interface TAppStatusDao extends PagingAndSortingRepository<Record, Integer> {
 
     @Query(value="SELECT A.* FROM t_status A,\n" +
             "(SELECT app_id, max(create_time) max_time FROM t_status where app_id=?1 GROUP BY app_id) B\n" +

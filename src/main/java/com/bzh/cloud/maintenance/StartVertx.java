@@ -1,7 +1,8 @@
 package com.bzh.cloud.maintenance;
 
-import com.bzh.cloud.maintenance.client.RestfulClient;
+import com.bzh.cloud.maintenance.restFul.RestfulClient;
 import com.bzh.cloud.maintenance.util.SpringUtil;
+
 import io.vertx.core.Vertx;
 
 public class StartVertx {

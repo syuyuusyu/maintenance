@@ -34,7 +34,7 @@ public class EntityConfController {
 	@Autowired
     TDictionaryDao tDictionaryDao;
 	
-    @RequestMapping(value="/tree",method=RequestMethod.POST)
+    @RequestMapping(value="/tree",method=RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> tree(Integer parentId){
         return treeService.treeNode(parentId);

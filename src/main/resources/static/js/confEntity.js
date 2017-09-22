@@ -1,8 +1,3 @@
-
-
-
-
-
 Ext.tree.Panel.addMembers({
     selectPathById: function(id){
         var me = this,
@@ -563,6 +558,7 @@ function createGridFormItems(grid,action){
 	return formItems;
 	
 }
+
 
 function fromButton(type){
 	var url='';
