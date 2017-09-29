@@ -34,7 +34,7 @@ public class RecordGroup implements Serializable{
     private Integer upEntityId;
     
     @Column(name = "up_id")
-    private Integer upId;
+    private String upId;
     
     @Column(name = "create_time")
     @CreationTimestamp
@@ -45,6 +45,9 @@ public class RecordGroup implements Serializable{
 
     @Column(name = "entity_id")
     private Integer entityId;
+    
+    @Column(name = "is_new")
+    private String isNew="0";
 
     public Integer getGroupId() {
         return groupId;
@@ -63,11 +66,11 @@ public class RecordGroup implements Serializable{
 		this.upEntityId = upEntityId;
 	}
 
-	public Integer getUpId() {
+	public String getUpId() {
         return upId;
     }
 
-    public void setUpId(Integer upId) {
+    public void setUpId(String upId) {
         this.upId = upId;
     }
 
@@ -94,4 +97,13 @@ public class RecordGroup implements Serializable{
     public void setEntityId(Integer entityId) {
         this.entityId = entityId;
     }
+
+	public String getIsNew() {
+		return isNew;
+	}
+
+	public void setIsNew(String isNew) {
+		this.isNew = isNew;
+	}
+    
 }

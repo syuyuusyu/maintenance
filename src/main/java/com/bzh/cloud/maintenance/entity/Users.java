@@ -1,6 +1,7 @@
 package com.bzh.cloud.maintenance.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class Users implements Serializable{
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "userid", referencedColumnName = "userid") },
 		inverseJoinColumns = { @JoinColumn(name = "roleid", referencedColumnName = "roleid") })
-	private List<Roles> roles;
+	private List<Roles> roles=new ArrayList<Roles>();
 	
 	@Transient
 	private List<Map<String, String>> userroles;

@@ -7,11 +7,17 @@ import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 
 @Configuration
 @ConfigurationProperties(prefix="selfProperties.restFul")
+@Order(value=1)
 public class PropertiesConf {
+	
+	static{
+		System.out.println("jjkjkjkjkjk");
+	}
 	
 	private Map<String, String> requestMap=new HashMap<String, String>();
 	private Map<String, String> headMap=new HashMap<String, String>();

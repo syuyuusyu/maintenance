@@ -137,6 +137,8 @@ function typeRender(v){
             return '记录类型关联字典';
         case '7':
             return '记录类型不关联字典';
+        case '8':
+        	return '记录类型ID标识';
         default :
             return v;
     }
@@ -415,6 +417,11 @@ function createGridFormItems(grid,action){
             {columnWidth:.5,type:'form',padding:'10 0 0 5'
                 ,items:[
                 {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
+                ,{
+                	xtype:'checkboxfield',
+                	boxLabel:'是否ID标识',
+                	name:'isID'
+                }
             ]
             }
 
@@ -468,6 +475,10 @@ function gridFromButton(grid){
                 var form = this.up('form');
                 var baseForm=form.getForm();
                 var data = baseForm.getValues();
+                console.log(data)
+                if(data.isID || data.isID=='on'){
+                	data.type=8;
+                }
                 data.objType=grid.gridType;
                 if(!form.isValid()){
                     Ext.Msg.alert('!','填入合法内容');

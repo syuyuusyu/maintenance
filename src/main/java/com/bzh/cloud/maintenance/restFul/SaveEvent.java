@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -26,23 +27,28 @@ public class SaveEvent implements InvokeCompleteEvent{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Transactional
-	public void exec(ResponseData<?> data, Class<?> resultClass) {
+	public void exec(JsonResponseEntity data) {
 		log.info("储蓄接口信息到数据库");
-		if(resultClass!=null){
-			PagingAndSortingRepository r=getRepository(resultClass);
-			r.save(data.getRespdata());
+		if(data.getResponseClass()!=null){
+			PagingAndSortingRepository r=getRepository(data.getResponseClass());
+			r.save(JSON.parseArray(data.getArrayJson(), data.getResponseClass()));
+			
 		}else{
+			Integer entityId=null;
+			if(data instanceof ResponseEntity)
+				entityId=((ResponseEntity)data).getEntityId();
+			Assert.notNull(entityId);
 			EntityConfDao entityConfDao=(EntityConfDao) SpringUtil.getBean("entityConfDao");
 			RecordGroupDao recordGroupDao=(RecordGroupDao) SpringUtil.getBean("recordGroupDao");
 			JSONArray jarr=JSON.parseArray(data.getArrayJson());
-	        EntityConf en=entityConfDao.findOne(data.getEntityId());
+	        EntityConf en=entityConfDao.findOne(entityId);
 	        List<RecordGroup> groups=new ArrayList<>();
 
 	        List<EntityConf> recordEntitys=en.getChild(EntityConf.class);
 	        for (int i=0;i<jarr.size();i++){
 	            RecordGroup group=new RecordGroup();
 	            group.setEntityId(en.getEntityId());
-
+	            final StringBuilder upId=new StringBuilder();
 	            JSONObject j=jarr.getJSONObject(i);
 	            List<Record> records=new ArrayList<>();
 	            recordEntitys.forEach(E->{
@@ -53,9 +59,14 @@ public class SaveEvent implements InvokeCompleteEvent{
 	                    r.setEntityId(E.getEntityId());
 	                    r.setState(str);
 	                    records.add(r);
+	                    if("8".equals(E.getType())){
+	                    	upId.append(str+",");
+	                    }
 	                }
 
 	            });
+	           if(upId.length()>1)
+	        	   group.setUpId(upId.subSequence(0, upId.length()-1).toString());
 
 	            group.setRecords(records);
 	            groups.add(group);
@@ -67,6 +78,7 @@ public class SaveEvent implements InvokeCompleteEvent{
 		
 	}
 
+	@SuppressWarnings("rawtypes")
 	private  PagingAndSortingRepository getRepository(Class resultClass){
 		String className=resultClass.getName();
 		className=className.replaceAll("com.bzh.cloud.maintenance.entity.", "");

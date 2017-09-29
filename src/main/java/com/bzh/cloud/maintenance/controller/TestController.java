@@ -1,6 +1,7 @@
 package com.bzh.cloud.maintenance.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.bzh.cloud.maintenance.dao.EntityConfDao;
 import com.bzh.cloud.maintenance.dao.RecordGroupDao;
 import com.bzh.cloud.maintenance.entity.EntityConf;
@@ -8,10 +9,13 @@ import com.bzh.cloud.maintenance.entity.Record;
 import com.bzh.cloud.maintenance.entity.RecordGroup;
 import com.bzh.cloud.maintenance.entity.Users;
 import com.bzh.cloud.maintenance.restFul.InvokeBase;
+import com.bzh.cloud.maintenance.restFul.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
-import com.bzh.cloud.maintenance.restFul.ResponseData;
-import com.bzh.cloud.maintenance.restFul.RestfulClient;
+import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
+import com.bzh.cloud.maintenance.restFul.RequestEntity;
+import com.bzh.cloud.maintenance.restFul.ResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
+import com.bzh.cloud.maintenance.util.SpringUtil;
 
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -130,17 +134,21 @@ public class TestController {
 
         ThreadResultData threadData=new ThreadResultData();
         InvokeBase invokUsers=new InvokeBase("users", true);
-        invokUsers.setMethod("users");
-        invokUsers.setType("query");
-        invokUsers.setUrl(url+"interfaces");
-        invokUsers.addReqDdata("modifytime", "20170220");
-        invokUsers.setResultClass(Users.class);
+        RequestEntity entity=new RequestEntity();
+        entity.setMethod("users");
+        entity.setType("query");
+        entity.setUrl(url+"interfaces");
+        entity.addReqDdata("modifytime", "20170220");
+        ResponseEntity response=new ResponseEntity();
+        response.setClaszz(Users.class);
+        invokUsers.setResponseEntity(response);
         threadData.addInvoker(invokUsers);
 
 
         InvokeBase invokeserviceStatus=new InvokeBase("serviceStatus",true);
-        invokeserviceStatus.setUrl("http://9.77.254.117:4400/serviceStatus");
-        invokeserviceStatus.setEntityId(37);
+        RequestEntity entity2=new RequestEntity();
+        entity2.setUrl("http://9.77.254.117:4400/serviceStatus");
+        entity2.setEntityId(37);
         threadData.addInvoker(invokeserviceStatus);
 
         try {
@@ -158,17 +166,12 @@ public class TestController {
     public String test2(){
         final ThreadResultData threadData=new ThreadResultData();
         InvokeBase invokeTicket=new InvokeBase("ticket",false);
-        invokeTicket.setUrl("http://9.77.254.13:8080/dc2us2/rest/interface");
-        invokeTicket.setType("query");
-        invokeTicket.setSystem("S01");
-        invokeTicket.setMethod("credits");
-        invokeTicket.addEvent((ResponseData<?> data, Class<?> resultClass)->{
-            String ticket=data.getArrayJson();
-            ticket=ticket.replace("[\"","");
-            ticket=ticket.replace("\"]","");
-            System.out.println(ticket);
-
-        });
+        RequestEntity entity=new RequestEntity();
+        entity.setUrl("http://9.77.254.13:8080/dc2us2/rest/interface");
+        entity.setType("query");
+        entity.setSystem("S01");
+        entity.setMethod("credits");
+        
 
         threadData.addInvoker(invokeTicket);
         try {
@@ -177,7 +180,7 @@ public class TestController {
             e.printStackTrace();
         }
 
-        ResponseData<?> ticketResukt= threadData.getResult("ticket");
+        JsonResponseEntity ticketResukt= threadData.getResult("ticket");
         String ticket=ticketResukt.getArrayJson();
         ticket=ticket.replace("[\"","");
         ticket=ticket.replace("\"]","");
@@ -193,12 +196,14 @@ public class TestController {
       // String ticket=RestfulClient.getColudTicket();
     	String ticket="0700f61e-dead-440a-b89d-782641e8b665";
        final ThreadResultData threadData=new ThreadResultData();
+       
        InvokeBase invokeRegions=new InvokeBase("describe_regions", false);
-       invokeRegions.setMethod("describe-regions");
-       invokeRegions.setTicket(ticket);
-       invokeRegions.setSystem("S01");
-       invokeRegions.setType("query");
-       invokeRegions.setUrl("http://9.77.254.13:8080/dc2us2/rest/openstack/exmanage");
+       RequestEntity entity=new RequestEntity();
+       entity.setMethod("describe-regions");
+       entity.setTicket(ticket);
+       entity.setSystem("S01");
+       entity.setType("query");
+       entity.setUrl("http://9.77.254.13:8080/dc2us2/rest/openstack/exmanage");
        threadData.addInvoker(invokeRegions);
        try {
            threadData.waitForResult();
@@ -218,11 +223,13 @@ public class TestController {
     	String ticket="0700f61e-dead-440a-b89d-782641e8b665";
        final ThreadResultData threadData=new ThreadResultData();
        InvokeBase invokeRegions=new InvokeBase("describe-statistics", false);
-       invokeRegions.setMethod("describe-statistics");
-       invokeRegions.setTicket(ticket);
-       invokeRegions.setSystem("S01");
-       invokeRegions.setType("query");
-       invokeRegions.setUrl("http://9.77.254.13:8080/dc2us2/rest/openstack/exmanage");
+       RequestEntity entity=new RequestEntity();
+       
+       entity.setMethod("describe-statistics");
+       entity.setTicket(ticket);
+       entity.setSystem("S01");
+       entity.setType("query");
+       entity.setUrl("http://9.77.254.13:8080/dc2us2/rest/openstack/exmanage");
        threadData.addInvoker(invokeRegions);
        try {
            threadData.waitForResult();
@@ -232,6 +239,79 @@ public class TestController {
        
        return "sdsdsd";
     }
+    @RequestMapping(value = "/test5")
+    @ResponseBody
+    public String test5(){
+    		String ticket="0700f61e-dead-440a-b89d-782641e8b665";
+    	   final ThreadResultData threadData=new ThreadResultData();
+           InvokeBase invokeRegions=new InvokeBase("describe-statistics", false);
+           RequestEntity entity=new RequestEntity();
+           ResponseEntity response=new ResponseEntity();
+           response.setClaszz(Users.class);
+           entity.setMethod("describe-statistics");
+           entity.setTicket(ticket);
+           entity.setSystem("S01");
+           entity.setType("query");
+           entity.setUrl("http://127.0.0.1:8080/users");
+           invokeRegions.setRequestEntity(entity);
+           invokeRegions.setResponseEntity(response);
+           
+           invokeRegions.addEvent(j->{
+        	   System.out.println(j.getResponseClass().getName());
+        	   List<Users> users=(List<Users>) JSON.parseArray(j.getArrayJson(), j.getResponseClass());
+        	   users.forEach(System.out::println);
+           });
+           threadData.addInvoker(invokeRegions);
+           try {
+               threadData.waitForResult();
+           } catch (InvokeTimeOutException e) {
+               e.printStackTrace();
+           }  
+           JsonResponseEntity data=threadData.getResult("describe-statistics");
+           System.out.println(data.getArrayJson());
+    	return "fgfgfg";
+    }
+    
+    @RequestMapping(value = "/test6")
+    @ResponseBody
+    public String test6(){
+    	InvokeBase invokeUsers= SpringUtil.getInvokes("invokeUsers");
+    	InvokeBase invokRoles=SpringUtil.getInvokes("invokeRoles");
+    	
+    	final ThreadResultData threadData=new ThreadResultData();
+    	threadData.addInvoker(invokeUsers);
+    	threadData.addInvoker(invokRoles);
+    	try {
+            threadData.waitForResult();
+        } catch (InvokeTimeOutException e) {
+            e.printStackTrace();
+        }  
+    	return "ededed";
+    }
+    
+    @RequestMapping(value = "/test7")
+    @ResponseBody
+    public String test7(){
+    	InvokeCommon invokeRegiontatistics=SpringUtil.getComInvoke("invokeRegiontatistics");
+    	InvokeCommon get_quoto_sets=SpringUtil.getComInvoke("get_quoto_sets");
+    	InvokeCommon networks=SpringUtil.getComInvoke("networks");
+    	invokeRegiontatistics.save();
+    	networks.save();
+    	final ThreadResultData threadData=new ThreadResultData();
+    	threadData.addInvoker(invokeRegiontatistics);
+    	threadData.addInvoker(get_quoto_sets);
+    	threadData.addInvoker(networks);
+    	try {
+            threadData.waitForResult();
+        } catch (InvokeTimeOutException e) {
+            e.printStackTrace();
+        }
+    	ResponseEntity ss= (ResponseEntity) threadData.getResult("invokeRegiontatistics");
+    	System.out.println("----"+ss.getArrayJson());
+    	return "ededed";
+    }
+    
+    
 
 
 }

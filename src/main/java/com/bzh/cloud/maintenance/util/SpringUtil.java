@@ -6,6 +6,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import com.bzh.cloud.maintenance.restFul.InvokeBase;
+import com.bzh.cloud.maintenance.restFul.InvokeCommon;
+
 import java.util.Arrays;
 
 
@@ -39,6 +42,14 @@ import java.util.Arrays;
          Object object = null;
          object = applicationContext.getBean(id);
         return object;
+     }
+     
+     public static InvokeBase getInvokes(String id){
+    	 return (InvokeBase) getBean(id);
+     }
+     
+     public static InvokeCommon getComInvoke(String id){
+    	 return (InvokeCommon) getBean(id);
      }
 
 

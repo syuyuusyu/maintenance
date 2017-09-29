@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 //import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages={"com.bzh.cloud"})
 //@EnableEurekaClient
 //@EnableFeignClients
+@EnableScheduling
 public class MaintenApplication {
 		
 	public static void main(String[] args) {				

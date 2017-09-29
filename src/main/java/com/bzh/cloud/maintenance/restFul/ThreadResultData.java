@@ -15,9 +15,9 @@ import org.springframework.util.StringUtils;
 public class ThreadResultData {
 
     private static Logger log = Logger.getLogger(ThreadResultData.class);
-    private Map<String, ResponseData<?>> resultMap=new HashMap<>();
+    private Map<String, JsonResponseEntity> resultMap=new HashMap<>();
     private Map<String, Object> someThingMap=new HashMap<String, Object>();
-    private List<InvokeBase> invoker=new ArrayList<InvokeBase>();
+    private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
     private int count=0;
     private int current=0;
     private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
@@ -53,16 +53,16 @@ public class ThreadResultData {
         this.threadPoolCapacity = threadPoolCapacity;
     }
     
-    public void addResult(String invokeName,ResponseData<?> data){
+    public void addResult(String invokeName,JsonResponseEntity data){
     	increaseCurrent();
     	resultMap.put(invokeName, data);
     }
 
-    public ResponseData<?> getResult(String invokeName){
+    public JsonResponseEntity getResult(String invokeName){
     	return resultMap.get(invokeName);
 	}
     
-	public void addInvoker(InvokeBase invoker){
+	public void addInvoker(InvokeBase<?,?> invoker){
 		this.invoker.add(invoker);
 		invoker.setResultData(this);
 		this.increaseCount();

@@ -6,7 +6,6 @@ import com.bzh.cloud.maintenance.dao.*;
 import com.bzh.cloud.maintenance.entity.*;
 import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
 import com.bzh.cloud.maintenance.restFul.RequestEntity;
-import com.bzh.cloud.maintenance.restFul.ResponseData;
 import com.bzh.cloud.maintenance.restFul.RestfulClient;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -79,6 +78,9 @@ public class DemoApplicationTests {
 
 	@Autowired
 	PropertiesConf pConf;
+	
+	@Autowired
+	RecordGroupDao recordGroupDao;
 	
 	
 	@Test
@@ -300,10 +302,13 @@ public class DemoApplicationTests {
 		String result1=RestfulClient.invokRestFul(en);
 		System.out.println(result1);
 		
-		ResponseData<Roles> rd=RestfulClient.invokRestFul(en,Roles.class);
-		rd.getRespdata().forEach(U->{
-			System.out.println(U);
-		});
+		
+	}
+	
+	@Test
+	public void test12(){
+		RecordGroup g=recordGroupDao.findNewByEntity(54);
+		System.out.println(g.getCreateTime());
 		
 	}
 

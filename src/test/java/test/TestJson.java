@@ -1,24 +1,42 @@
 package test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bzh.cloud.maintenance.dao.RolesDao;
 import com.bzh.cloud.maintenance.restFul.*;
+import com.bzh.cloud.maintenance.util.JSONUtil;
+import com.bzh.cloud.maintenance.util.SpringUtil;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.MaintenApplication;
+import com.bzh.cloud.maintenance.dao.UsersDao;
 import com.bzh.cloud.maintenance.entity.Roles;
 import com.bzh.cloud.maintenance.entity.Users;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = MaintenApplication.class)
 public class TestJson {
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	UsersDao uDao;
+
+	@Autowired
+	RolesDao rDao;
 	
 	@Test
 	public void test1(){
@@ -44,48 +62,52 @@ public class TestJson {
 		
 	}
 	
+
+	
 	@Test
-	public void test2(){
-		String url="http://9.77.248.14:8080/isp/";
-		RequestEntity en=new RequestEntity();
-		en.setUrl(url+"interfaces");
-		en.setMethod("users");
-		en.setType("query");
-		en.addReqDdata("modifytime", "20170220");
-		ResponseData<Users>  userData=RestfulClient.invokRestFul(en, Users.class);
+	@Transactional
+	public void test3(){
+		final ThreadResultData trd=new ThreadResultData();
+		InvokeCommon invokeUsers=SpringUtil.getComInvoke("invokeUsers");
+		invokeUsers.setTicket("sd");
+		invokeUsers.addReqDdata("modifytime", "20170220");
+		InvokeCommon invokeRoles=SpringUtil.getComInvoke("invokeRoles");
+		invokeRoles.setTicket("SD");
+		invokeRoles.addReqDdata("modifytime", "20170220");
+		trd.addInvoker(invokeUsers);
+		trd.addInvoker(invokeRoles);
+		try {
+			trd.waitForResult();
+		} catch (InvokeTimeOutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JsonResponseEntity ue=trd.getResult("invokeUsers");
+		JsonResponseEntity re=trd.getResult("invokeRoles");
+		List<Users> users=JSON.parseArray(ue.getArrayJson(), Users.class);
+		List<Roles> roles=JSON.parseArray(re.getArrayJson(), Roles.class);
 		
-		
-		RequestEntity en2=new RequestEntity();
-		en2.setUrl(url+"interfaces");
-		en2.setMethod("roles");
-		en2.setType("query");
-		en2.addReqDdata("modifytime", "20170220");
-		ResponseData<Roles>  roleData=RestfulClient.invokRestFul(en2, Roles.class);
-		
-		List<Users> userList=userData.getRespdata();
-		
-		List<Roles> roleList=roleData.getRespdata();
-		
-		userList.forEach(U->{
+		users.forEach(U->{
 			System.out.println(U);
+			U.getUserroles().forEach(M->{
+				M.forEach((K,V)->{
+					if("roleid".equals(K)){
+						Roles r=roles.stream().filter(R->V.equals(R.getRoleid())).findFirst().get();
+						U.getRoles().add(r);
+					}
+				});
+			});;
 		});
-		
+		rDao.save(roles);
+		uDao.save(users);
 	}
 	
 	@Test
-	public void test3(){
-		String url="http://9.77.254.13:8080/dc2us2/rest/openstack/exmanager";
-		RequestEntity en=new RequestEntity();
-		en.setUrl(url);
-		en.setMethod("describe-statistics");
-		en.setType("query");
-		en.setTicket("0700f61e-dead-440a-b89d-782641e8b665");
-		en.setSystem("S01");
-		
-		String resulut=RestfulClient.invokRestFul(en);
-		System.out.println(resulut);
-
-		
+	public void test4(){
+		String ispTicket=RestfulClient.getIspTicket();
+		System.out.println(ispTicket);
 	}
+	
+	
 
 }

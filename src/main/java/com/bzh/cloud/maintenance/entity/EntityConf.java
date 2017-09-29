@@ -12,7 +12,12 @@ import java.util.List;
 @Table(name = "entity", schema = "maintenance")
 public class EntityConf implements TreeEntity{
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @Column(name = "entity_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer entityId;
