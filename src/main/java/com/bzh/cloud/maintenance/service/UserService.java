@@ -49,7 +49,6 @@ public class UserService {
 		List<Roles> roles=JSON.parseArray(re.getArrayJson(), Roles.class);
 
 		users.forEach(U->{
-			System.out.println(U);
 			U.getUserroles().forEach(M->{
 				M.forEach((K,V)->{
 					if("roleid".equals(K)){

@@ -1,22 +1,21 @@
 package com.bzh.cloud.maintenance.task;
 
 
-import java.util.Comparator;
 import java.util.List;
 
+import com.bzh.cloud.maintenance.dao.AlarmDao;
+import com.bzh.cloud.maintenance.service.AlarmService;
 import com.bzh.cloud.maintenance.service.UserService;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
-import com.bzh.cloud.maintenance.dao.AlarmRolesDao;
+
+import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
 import com.bzh.cloud.maintenance.dao.RecordGroupDao;
-import com.bzh.cloud.maintenance.entity.AlarmRoles;
-import com.bzh.cloud.maintenance.entity.Record;
-import com.bzh.cloud.maintenance.entity.RecordGroup;
+import com.bzh.cloud.maintenance.entity.AlarmRule;
 
 @Component
 public class AlarmTask {
@@ -24,24 +23,28 @@ public class AlarmTask {
 	public static Logger log = Logger.getLogger(AlarmTask.class);
 	
 	@Autowired
-	AlarmRolesDao alarmRolesDao;
+	AlarmRuleDao alarmRuleDao;
 	
 	@Autowired
 	RecordGroupDao recordGroupDao;
 
 	@Autowired
 	UserService uService;
+
+	@Autowired
+	AlarmDao alarmDao;
 	
+	@Autowired
+	AlarmService alarmService;
 	public final static long ONE_Minute =  60 * 1000;
 	
 	public final static long ONE_Hour =  ONE_Minute*60;
 	
-	
-	//@Scheduled(fixedDelay=ONE_Hour)
-	@Transactional
+	//生成告警
+	@Scheduled(fixedDelay=ONE_Hour)
     public void searchAlarm(){
-		List<AlarmRoles> roles=(List<AlarmRoles>) alarmRolesDao.findAll();
-		roles.forEach(this::doSearchAlarm);
+		List<AlarmRule> roles=(List<AlarmRule>) alarmRuleDao.findAll();
+		roles.forEach(alarmService::doSearchAlarm);
 		
     }
 
@@ -54,21 +57,7 @@ public class AlarmTask {
 
 	}
 
-	private void doSearchAlarm(final AlarmRoles alarm){
-		List<RecordGroup> groups=recordGroupDao.findNewByEntitys(alarm.getRelevantGroup());
-		RecordGroup group=groups.stream().max(Comparator.comparing(RecordGroup::getCreateTime)).get();
-		List<Record> records=group.getRecords();
-		Record record=records.stream().filter(R->R.getEntityId()==alarm.getRelevantRecord()).findFirst().get();
-		System.out.println(record.getState());
-		Assert.notNull(record);
-
-		if("1".equals(alarm.getType())){
-			//f阀值告警
-		}else if("2".equals(alarm.getType())){
-			//状态告警
-		}
-		
-	}
+	
 
 
 }

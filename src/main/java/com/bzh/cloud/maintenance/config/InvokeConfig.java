@@ -20,6 +20,20 @@ public class InvokeConfig {
 	@Value("${selfProperties.restFul.url.coludUrl}")
 	String coludUrl;
 	
+	//获取云平台ticket
+	@Bean
+	@Scope("prototype")
+	public InvokeCommon cloudTicket(){
+		InvokeCommon invoke=new InvokeCommon("cloudTicket");
+		invoke
+			.setUrl(coludUrl)
+			.setSystem("S01")
+			.setMethod("credits")
+			.setType("query");
+
+		return invoke;		
+	}	
+	
 	
 	//获取用户信息
 	@Bean
@@ -31,9 +45,7 @@ public class InvokeConfig {
 			.setMethod("users")
 			.setType("query")
 			.setClass(Users.class);
-
-		return invoke;
-		
+		return invoke;		
 	}
 	
 	//登陆验证token

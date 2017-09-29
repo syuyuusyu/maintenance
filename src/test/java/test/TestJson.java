@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
 import com.bzh.cloud.maintenance.dao.RolesDao;
 import com.bzh.cloud.maintenance.restFul.*;
+import com.bzh.cloud.maintenance.service.AlarmService;
 import com.bzh.cloud.maintenance.util.JSONUtil;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -22,6 +24,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.MaintenApplication;
 import com.bzh.cloud.maintenance.dao.UsersDao;
+import com.bzh.cloud.maintenance.entity.AlarmRule;
 import com.bzh.cloud.maintenance.entity.Roles;
 import com.bzh.cloud.maintenance.entity.Users;
 
@@ -37,6 +40,12 @@ public class TestJson {
 
 	@Autowired
 	RolesDao rDao;
+	
+	@Autowired
+	AlarmService alarmService;
+	
+	@Autowired
+	AlarmRuleDao alarmRuleDao;
 	
 	@Test
 	public void test1(){
@@ -104,8 +113,8 @@ public class TestJson {
 	
 	@Test
 	public void test4(){
-		String ispTicket=RestfulClient.getIspTicket();
-		System.out.println(ispTicket);
+		List<AlarmRule> ruls=(List<AlarmRule>) alarmRuleDao.findAll();
+		ruls.forEach(alarmService::doSearchAlarm);
 	}
 	
 	

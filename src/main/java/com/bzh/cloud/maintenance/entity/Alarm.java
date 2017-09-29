@@ -31,10 +31,16 @@ public class Alarm implements Serializable{
 	@Id   
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column(name = "rule_id")
+	private Integer ruleId;
 	@Column(name = "role_id")
-	private Integer roleId;
+	private String roleId;
 	@Column
 	private String step;
+	@Column(name = "group_id")
+	private Integer groupId;
+	@Column(name = "record_id")
+	private Integer recordId;
 	
 	@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="alarm")
 	private List<AlarmProcess> process;
@@ -45,10 +51,10 @@ public class Alarm implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getRoleId() {
+	public String getRoleId() {
 		return roleId;
 	}
-	public void setRoleId(Integer roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 	public String getStep() {
@@ -63,7 +69,27 @@ public class Alarm implements Serializable{
 	public void setProcess(List<AlarmProcess> process) {
 		this.process = process;
 	}
-	
-	
+
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+	public Integer getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(Integer recordId) {
+		this.recordId = recordId;
+	}
+	public Integer getRuleId() {
+		return ruleId;
+	}
+	public void setRuleId(Integer ruleId) {
+		this.ruleId = ruleId;
+	}
 	
 }

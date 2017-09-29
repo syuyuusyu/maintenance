@@ -1,9 +1,8 @@
 package com.bzh.cloud.maintenance.restFul;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -118,23 +117,15 @@ public class RestfulClient {
 
 	public static String getColudTicket() {
 		final ThreadResultData threadData = new ThreadResultData();
-		InvokeBase invokeTicket = new InvokeBase("ticket", false);
-		RequestEntity entity=new RequestEntity();
-		entity.setUrl("http://9.77.254.13:8080/dc2us2/rest/interface");
-		entity.setType("query");
-		entity.setSystem("S01");
-		entity.setMethod("credits");
-		invokeTicket.setRequestEntity(entity);
-		invokeTicket.setResponseEntity(new ResponseEntity());
-
-		threadData.addInvoker(invokeTicket);
+		InvokeCommon invoke=SpringUtil.getComInvoke("cloudTicket");
+		threadData.addInvoker(invoke);
 		try {
 			threadData.waitForResult();
 		} catch (InvokeTimeOutException e) {
 			e.printStackTrace();
 		}
 
-		JsonResponseEntity ticketResukt = threadData.getResult("ticket");
+		JsonResponseEntity ticketResukt = threadData.getResult("cloudTicket");
 		String ticket = ticketResukt.getArrayJson();
 		ticket = ticket.replace("[\"", "");
 		ticket = ticket.replace("\"]", "");

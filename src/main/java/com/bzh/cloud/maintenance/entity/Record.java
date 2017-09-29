@@ -18,7 +18,7 @@ public class Record implements Serializable {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "record_id")
-    private Integer statusId;
+    private Integer recordId;
 
 
     @Column(name = "state")
@@ -37,27 +37,20 @@ public class Record implements Serializable {
 
 
     public TEntity getEntity() {
-        Assert.notNull(this.statusId,"");
+        Assert.notNull(this.recordId,"");
         Assert.notNull(this.entityId,"");
         TEntityDao dao= (TEntityDao)SpringUtil.getBean("TEntityDao");
         return dao.findOne(this.entityId);
     }
 
 
-
-	public Integer getStatusId() {
-		return statusId;
+	public Integer getRecordId() {
+		return recordId;
 	}
 
-
-
-	public void setStatusId(Integer statusId) {
-		this.statusId = statusId;
+	public void setRecordId(Integer recordId) {
+		this.recordId = recordId;
 	}
-
-
-
-
 
 	public String getState() {
 		return state;
