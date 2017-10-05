@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 public class RolesInvko {
 	public static void main(String arg[]) throws Exception {
+		;
+		System.out.println(Runtime.getRuntime().availableProcessors());
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			//HttpPost httpPost = new HttpPost("http://127.0.0.1:8080/isp/interfaces"); 
 			HttpPost httpPost = new HttpPost("http://9.77.248.14:8080/isp/interfaces"); 

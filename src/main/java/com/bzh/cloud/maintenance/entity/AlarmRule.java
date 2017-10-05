@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Formula;
+
 /**
  * 告警规则定义
  * @author syu
@@ -50,6 +52,13 @@ public class AlarmRule implements Serializable {
 
 	@Column
 	private String action;
+	
+	@Formula(value="(select t.entity_name from entity t where t.entity_id=relevant_group )")
+	private String groupName;
+	@Formula(value="(select t.entity_name from entity t where t.entity_id=relevant_record )")
+	private String recordName;
+	@Formula(value="(select t.rolename from roles t where t.roleid=role_id )")
+	private String roleName;
 
 
 	public Integer getId() {
@@ -109,4 +118,33 @@ public class AlarmRule implements Serializable {
 	public void setAction(String action) {
 		this.action = action;
 	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getRecordName() {
+		return recordName;
+	}
+	public void setRecordName(String recordName) {
+		this.recordName = recordName;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	@Override
+	public String toString() {
+		return "AlarmRule [id=" + id + ", roleId=" + roleId
+				+ ", relevantGroup=" + relevantGroup + ", relevantRecord="
+				+ relevantRecord + ", type=" + type + ", valveValue="
+				+ valveValue + ", alarmLevel=" + alarmLevel + ", action="
+				+ action + ", groupName=" + groupName + ", recordName="
+				+ recordName + ", roleName=" + roleName + "]";
+	}
+	
+	
 }

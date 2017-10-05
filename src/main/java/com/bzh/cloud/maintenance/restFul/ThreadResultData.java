@@ -30,20 +30,16 @@ public class ThreadResultData {
 
     public ThreadResultData(){
         this.timeOut=10000L;
-        threadPoolCapacity=100;
+        threadPoolCapacity=50;
     }
 
     public Long getTimeOut() {
         return timeOut;
     }
 
-
-
     public void setTimeOut(Long timeOut) {
         this.timeOut = timeOut;
     }
-
-
 
     public int getThreadPoolCapacity() {
         return threadPoolCapacity;

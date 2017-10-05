@@ -6,8 +6,10 @@ import java.util.Map;
 
 import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
 import com.bzh.cloud.maintenance.dao.RolesDao;
+import com.bzh.cloud.maintenance.dao.TDictionaryDao;
 import com.bzh.cloud.maintenance.restFul.*;
 import com.bzh.cloud.maintenance.service.AlarmService;
+import com.bzh.cloud.maintenance.service.UserService;
 import com.bzh.cloud.maintenance.util.JSONUtil;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -47,6 +49,11 @@ public class TestJson {
 	@Autowired
 	AlarmRuleDao alarmRuleDao;
 	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	TDictionaryDao tDictionaryDao;
 	@Test
 	public void test1(){
 		String url="http://9.77.248.14:8080/isp/";
@@ -114,7 +121,14 @@ public class TestJson {
 	@Test
 	public void test4(){
 		List<AlarmRule> ruls=(List<AlarmRule>) alarmRuleDao.findAll();
-		ruls.forEach(alarmService::doSearchAlarm);
+		ruls.forEach(System.out::println);
+	}
+	
+	@Test
+	@Transactional
+	public void test5(){
+		int a=tDictionaryDao.deleteByEntityId(15);
+		System.out.println(a);
 	}
 	
 	

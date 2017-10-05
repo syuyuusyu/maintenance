@@ -1,8 +1,5 @@
 package com.bzh.cloud.maintenance.entity;
 
-import com.bzh.cloud.maintenance.dao.TEntityDao;
-import com.bzh.cloud.maintenance.util.SpringUtil;
-import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,17 +28,7 @@ public class Record implements Serializable {
     @Column(name = "entity_id")
     private Integer entityId;
 
-    @Transient
-    private TEntity entity;
 
-
-
-    public TEntity getEntity() {
-        Assert.notNull(this.recordId,"");
-        Assert.notNull(this.entityId,"");
-        TEntityDao dao= (TEntityDao)SpringUtil.getBean("TEntityDao");
-        return dao.findOne(this.entityId);
-    }
 
 
 	public Integer getRecordId() {
@@ -88,8 +75,5 @@ public class Record implements Serializable {
 
 
 
-	public void setEntity(TEntity entity) {
-		this.entity = entity;
-	}
     
 }

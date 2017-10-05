@@ -9,28 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEntity> implements Runnable{
-	 private static Logger log = Logger.getLogger(InvokeBase.class);
+	private static Logger log = Logger.getLogger(InvokeBase.class);
 	
-	private String invokeName;
+	protected String invokeName;
 
     protected Q requestEntity;
     
-    protected P responseEntity;
-    
+    protected P responseEntity;    
 
-    private String result;
-
-    
+    protected String result;
 
     protected ThreadResultData resultData;
 
     protected final List<InvokeCompleteEvent> events=new ArrayList<InvokeCompleteEvent>();
 
-
-
     protected void afterCall(){}
     protected void beforeCall(){}
-
 
     public InvokeBase(String invokeName,boolean isSave){
     	this.invokeName=invokeName;
@@ -93,12 +87,11 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     	Assert.notNull(requestEntity);
         beforeCall();
         this.result=RestfulClient.invokRestFul(requestEntity);
+        responseEntity.init(this.result);
         log.info(invokeName+"接口返回:"+result);
         afterCall();
         return this.result;
     }
-
-
     
     public void addEvent(InvokeCompleteEvent e){
     	events.add(e);
@@ -107,7 +100,6 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     public void setResultData(ThreadResultData threadResultData){
         this.resultData=threadResultData;
     }
-
   
 	public String getResult() {
 		return result;
@@ -121,10 +113,8 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 		this.invokeName = invokeName;
 	}
 	
-	public JsonResponseEntity getResponseData(){
-		responseEntity.init(this.result);
+	public JsonResponseEntity getResponseData(){		
 		return responseEntity;
 	}
-
 
 }

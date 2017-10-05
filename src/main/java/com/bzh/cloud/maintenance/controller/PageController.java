@@ -45,6 +45,11 @@ public class PageController {
 		return "entityConf";
 	}
 
+	
+	@RequestMapping(value="/recordEntity")
+	public String recordConf(Model model,HttpServletRequest request){
+		return "recordEntity";
+	}
 
 
 	@RequestMapping(value="/index")

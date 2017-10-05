@@ -1,28 +1,27 @@
 package com.bzh.cloud.maintenance.entity;
 
-import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
-import com.bzh.cloud.maintenance.dao.EntityConfDao;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.bzh.cloud.maintenance.dao.RecordEntityDao;
 import com.bzh.cloud.maintenance.dao.TDictionaryDao;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
-import javax.persistence.*;
-
-import java.util.List;
-
-
 @Entity
-@Table(name = "entity", schema = "maintenance")
-public class EntityConf implements TreeEntity{
+@Table(name = "record_entity", schema = "maintenance")
+public class RecordEntity  implements TreeEntity{
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "entity_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer entityId;
+    private Integer id;
 
     @Column(name = "parent_id")
     private Integer parentId;
@@ -37,17 +36,15 @@ public class EntityConf implements TreeEntity{
 
     @Column(name = "hierarchy")
     private Integer hierarchy;
-
+  //1:root 2:云平台应 3:大数据平台 4:安全平台 5:记录组类型 6:记录类型关联字典 7:记录类型不关联字典 8:记录类型ID标识
     @Column(name = "type")
     private String type;
 
 
-	public Integer getEntityId() {
-		return entityId;
-	}
 
-	public void setEntityId(Integer entityId) {
-		this.entityId = entityId;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getParentId() {
@@ -95,19 +92,14 @@ public class EntityConf implements TreeEntity{
 	}
 
 	public Integer getId() {
-		return entityId;
+		return id;
 	}
 
-	public String getLeaf() {
-		if(this.hierarchy>0){
-			if("5".equals(this.type)){
-				return "false";
-			}
-			return "true";
-		} else{
+	public String getLeaf() {		
+		if(this.hierarchy<3 ){
 			return "false";
 		}
-
+		return "true";			
 	}
 
 	public String getIconCls() {
@@ -134,17 +126,15 @@ public class EntityConf implements TreeEntity{
 				return null;
 		}
 	}
+
 	@Override
 	public  List<?> getChild( ) {
 		if("6".equals(this.type)){
 			TDictionaryDao td= (TDictionaryDao) SpringUtil.getBean("TDictionaryDao");
-			return td.findByEntityId(this.entityId);
-		}else if("9".equals(this.type)){
-			AlarmRuleDao rd=(AlarmRuleDao) SpringUtil.getBean("alarmRuleDao");
-			return  (List<?>) rd.findAll();
+			return td.findByEntityId(this.id);
 		}else{
-			EntityConfDao ed= (EntityConfDao) SpringUtil.getBean("entityConfDao");
-			return ed.findByParentId(this.entityId);
+			RecordEntityDao ed= (RecordEntityDao) SpringUtil.getBean("recordEntityDao");
+			return ed.findByParentId(this.id);
 		}
 	}
 
@@ -152,7 +142,7 @@ public class EntityConf implements TreeEntity{
 	@Override
 	public String toString() {
 		return "EntityConf{" +
-				"entityId=" + entityId +
+				"id=" + id +
 				", parentId=" + parentId +
 				", entityCode='" + entityCode + '\'' +
 				", entityName='" + entityName + '\'' +

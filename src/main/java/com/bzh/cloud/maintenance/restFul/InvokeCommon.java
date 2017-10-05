@@ -1,9 +1,7 @@
 package com.bzh.cloud.maintenance.restFul;
 
 public class InvokeCommon extends InvokeBase<RequestEntity,ResponseEntity>{
-	
-
-    
+ 
     public InvokeCommon(String invokeName) {
 		super(invokeName);
 		this.requestEntity=new RequestEntity();

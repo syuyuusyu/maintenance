@@ -27,12 +27,11 @@ public class AlarmService {
 	@Transactional
 	public void doSearchAlarm(final AlarmRule alarmRule){
 		List<RecordGroup> groups=recordGroupDao.findNewByEntitys(alarmRule.getRelevantGroup());
+		if(groups.size()<1) return;
 		RecordGroup group=groups.stream().max(Comparator.comparing(RecordGroup::getCreateTime)).get();
 		List<Record> records=group.getRecords();
 		Record record=records.stream().filter(R->R.getEntityId()==alarmRule.getRelevantRecord()).findFirst().get();
-		System.out.println(record.getState());
-		Assert.notNull(record);
-		Alarm alarm=new Alarm();
+		Assert.notNull(record);		
 		boolean alert=false;
 		if("1".equals(alarmRule.getType())){
 			//f阀值告警
@@ -40,7 +39,6 @@ public class AlarmService {
 			Double valveValue=Double.valueOf(alarmRule.getValveValue());
 			if(value>=valveValue){
 				alert=true;
-
 			}
 		}else if("2".equals(alarmRule.getType())){
 			//状态告警
@@ -49,6 +47,7 @@ public class AlarmService {
 			}
 		}
 		if(alert){
+			Alarm alarm=new Alarm();
 			alarm.setGroupId(group.getGroupId());
 			alarm.setRecordId(record.getRecordId());
 			alarm.setRoleId(alarmRule.getRoleId());

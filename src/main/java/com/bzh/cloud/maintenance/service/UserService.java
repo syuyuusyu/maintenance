@@ -12,7 +12,6 @@ import com.bzh.cloud.maintenance.entity.Roles;
 import com.bzh.cloud.maintenance.entity.Users;
 import com.bzh.cloud.maintenance.restFul.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
-import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -40,13 +39,16 @@ public class UserService {
 		try {
 			trd.waitForResult();
 		} catch (InvokeTimeOutException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JsonResponseEntity ue=trd.getResult("invokeUsers");
-		JsonResponseEntity re=trd.getResult("invokeRoles");
-		List<Users> users=JSON.parseArray(ue.getArrayJson(), Users.class);
-		List<Roles> roles=JSON.parseArray(re.getArrayJson(), Roles.class);
+
+		List<Users> users=JSON.parseArray(trd.getResult("invokeUsers").getArrayJson(), Users.class);
+		List<Roles> roles=JSON.parseArray(trd.getResult("invokeRoles").getArrayJson(), Roles.class);
+		if(users.size()>0 && roles.size()>0 ){
+			rDao.deleteAll();
+			uDao.deleteAll();
+		}
+
 
 		users.forEach(U->{
 			U.getUserroles().forEach(M->{
@@ -56,7 +58,7 @@ public class UserService {
 						U.getRoles().add(r);
 					}
 				});
-			});;
+			});
 		});
 		rDao.save(roles);
 		uDao.save(users);

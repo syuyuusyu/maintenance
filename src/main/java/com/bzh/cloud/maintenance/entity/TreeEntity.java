@@ -13,7 +13,7 @@ public interface TreeEntity extends Serializable {
 
     public String getLeaf();
 
-    public <T> List<T> getChild( Class<T> clzz);
+    public  List<?> getChild( );
 
 
 }

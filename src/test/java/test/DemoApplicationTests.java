@@ -67,8 +67,6 @@ public class DemoApplicationTests {
 	TApplicationDao appDao;
 
 
-	@Autowired
-	TEntityDao tEntityDao;
 
 	@Autowired
 	TAppStatusDao tAppStatusDao;
@@ -202,7 +200,7 @@ public class DemoApplicationTests {
 			System.out.println(E.getEntityName());
 			System.out.println(E.getType());
 			if("5".equals(E.getType())){
-				List<EntityConf> list2=E.getChild(EntityConf.class);
+				List<EntityConf> list2=(List<EntityConf>) E.getChild();
 				list.forEach(E2->{
 					System.out.println("----"+E2.getEntityName());
 				});

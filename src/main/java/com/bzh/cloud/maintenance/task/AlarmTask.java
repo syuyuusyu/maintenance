@@ -41,7 +41,7 @@ public class AlarmTask {
 	public final static long ONE_Hour =  ONE_Minute*60;
 	
 	//生成告警
-	@Scheduled(fixedDelay=ONE_Hour)
+	//@Scheduled(fixedDelay=ONE_Hour)
     public void searchAlarm(){
 		List<AlarmRule> roles=(List<AlarmRule>) alarmRuleDao.findAll();
 		roles.forEach(alarmService::doSearchAlarm);
@@ -50,7 +50,7 @@ public class AlarmTask {
 
 
     //定时同步用户角色
-	@Scheduled(fixedDelay=ONE_Hour)
+	//@Scheduled(fixedDelay=ONE_Hour)
 	public void synUserRole(){
     	log.info("同步用户角色");
 		uService.synUserRole();

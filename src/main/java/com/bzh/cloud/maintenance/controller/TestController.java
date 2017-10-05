@@ -96,9 +96,7 @@ public class TestController {
         EntityConf en=entityConfDao.findOne(48);
         List<RecordGroup> groups=new ArrayList<>();
 
-
-
-        List<EntityConf> recordEntitys=en.getChild(EntityConf.class);
+        List<EntityConf> recordEntitys=(List<EntityConf>) en.getChild();
         for (int i=0;i<ja.size();i++){
 
             RecordGroup group=new RecordGroup();

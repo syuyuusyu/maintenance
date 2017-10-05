@@ -44,7 +44,7 @@ public class SaveEvent implements InvokeCompleteEvent{
 	        EntityConf en=entityConfDao.findOne(entityId);
 	        List<RecordGroup> groups=new ArrayList<>();
 
-	        List<EntityConf> recordEntitys=en.getChild(EntityConf.class);
+	        List<EntityConf> recordEntitys=(List<EntityConf>) en.getChild();
 	        for (int i=0;i<jarr.size();i++){
 	            RecordGroup group=new RecordGroup();
 	            group.setEntityId(en.getEntityId());

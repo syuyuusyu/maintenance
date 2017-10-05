@@ -1,12 +1,11 @@
 package com.bzh.cloud.maintenance.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
 import com.bzh.cloud.maintenance.dao.TDictionaryDao;
 import com.bzh.cloud.maintenance.entity.TDictionary;
-import com.bzh.cloud.maintenance.entity.TEntity;
 import com.bzh.cloud.maintenance.service.TreeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,9 @@ public class EntityConfController {
 	@Autowired
     TDictionaryDao tDictionaryDao;
 	
+	@Autowired
+	AlarmRuleDao alarmRuleDao;
+	
     @RequestMapping(value="/tree",method=RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> tree(Integer parentId){
@@ -47,8 +49,10 @@ public class EntityConfController {
         Pageable pa=new PageRequest(page-1, limit);
         if("6".equals(entity.getType())){
             return tDictionaryDao.findByEntityId(entity.getEntityId(),pa);
-        }else {
-            return entityDao.findByParentId(entity.getEntityId(), pa);
+        }else if("9".equals(entity.getType())) {
+        	return alarmRuleDao.findAll(pa);
+        }else{
+        	return entityDao.findByParentId(entity.getEntityId(), pa);
         }
 
 
