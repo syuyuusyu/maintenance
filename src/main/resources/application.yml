@@ -11,7 +11,7 @@ spring:
     # schema: classpath:schema/inital.sql
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://192.168.0.101:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     #url: jdbc:mysql://192.168.1.10:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
     password: 1234
@@ -62,7 +62,7 @@ spring:
   redis:
     database: 1
 # Redis服务器地址
-    host: 127.0.0.1
+    host: 192.168.0.100
 # Redis服务器连接端口
     port: 6379
 # Redis服务器连接密码（默认为空）

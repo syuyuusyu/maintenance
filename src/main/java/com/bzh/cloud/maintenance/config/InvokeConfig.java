@@ -84,10 +84,12 @@ public class InvokeConfig {
 	public InvokeCommon invokeRegions(){
 		InvokeCommon invoke=new InvokeCommon("regions");
 		invoke.setUrl(coludUrl)
-			.setMethod("describe-regions")
-			.setType("query")
-			//TODO
-			.setEntityId(0);
+				.setUrl("http://192.168.0.101:8080/statistics")
+				.setEntityId(5)
+				.setMethod("describe-regions")
+				//TODO
+				.setEntityId(0)
+				.setType("query");
 
 		return invoke;
 		
@@ -99,12 +101,12 @@ public class InvokeConfig {
 	public InvokeCommon invokeRegiontatistics(){
 		InvokeCommon invoke=new InvokeCommon("invokeRegiontatistics");
 		invoke.setUrl(coludUrl)
-			.setUrl("http://localhost:8080/invokeRegiontatistics")
+			.setUrl("http://192.168.0.101:8080/invokeRegiontatistics")
 			.setMethod("describe-statistics")
 			.setType("query")
 			//TODO
 			.addReqDdata("regionName", "")			
-			.setEntityId(54);
+			.setEntityId(5);
 
 		return invoke;
 		

@@ -111,6 +111,12 @@ public class PageController {
 	public String baseStatus(Model model){
 		return "baseStatus";
 	}
+
+
+	@RequestMapping(value="/alarmRuleConf")
+	public String alarmRuleConf(){
+		return "alarmRuleConf";
+	}
 	
 
 

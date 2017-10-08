@@ -1,17 +1,11 @@
 package com.bzh.cloud.maintenance.entity;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.bzh.cloud.maintenance.dao.RecordEntityDao;
 import com.bzh.cloud.maintenance.dao.TDictionaryDao;
 import com.bzh.cloud.maintenance.util.SpringUtil;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "record_entity", schema = "maintenance")
@@ -39,8 +33,6 @@ public class RecordEntity  implements TreeEntity{
   //1:root 2:云平台应 3:大数据平台 4:安全平台 5:记录组类型 6:记录类型关联字典 7:记录类型不关联字典 8:记录类型ID标识
     @Column(name = "type")
     private String type;
-
-
 
 
 	public void setId(Integer id) {

@@ -1,15 +1,9 @@
 package com.bzh.cloud.maintenance.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Formula;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 告警规则定义
@@ -52,10 +46,17 @@ public class AlarmRule implements Serializable {
 
 	@Column
 	private String action;
+
+
+	@Column(name="equal_type")
+	private String equalType;
+
+
+
 	
-	@Formula(value="(select t.entity_name from entity t where t.entity_id=relevant_group )")
+	@Formula(value="(select t.entity_name from record_entity t where t.id=relevant_group )")
 	private String groupName;
-	@Formula(value="(select t.entity_name from entity t where t.entity_id=relevant_record )")
+	@Formula(value="(select t.entity_name from record_entity t where t.id=relevant_record )")
 	private String recordName;
 	@Formula(value="(select t.rolename from roles t where t.roleid=role_id )")
 	private String roleName;
@@ -113,6 +114,14 @@ public class AlarmRule implements Serializable {
 
 	public void setAlarmLevel(Integer alarmLevel) {
 		this.alarmLevel = alarmLevel;
+	}
+
+	public String getEqualType() {
+		return equalType;
+	}
+
+	public void setEqualType(String equalType) {
+		this.equalType = equalType;
 	}
 
 	public void setAction(String action) {

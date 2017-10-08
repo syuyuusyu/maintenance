@@ -1,18 +1,17 @@
 package test;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSON;
+import com.bzh.cloud.maintenance.MaintenApplication;
 import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
 import com.bzh.cloud.maintenance.dao.RolesDao;
 import com.bzh.cloud.maintenance.dao.TDictionaryDao;
+import com.bzh.cloud.maintenance.dao.UsersDao;
+import com.bzh.cloud.maintenance.entity.Roles;
+import com.bzh.cloud.maintenance.entity.Users;
 import com.bzh.cloud.maintenance.restFul.*;
 import com.bzh.cloud.maintenance.service.AlarmService;
 import com.bzh.cloud.maintenance.service.UserService;
-import com.bzh.cloud.maintenance.util.JSONUtil;
 import com.bzh.cloud.maintenance.util.SpringUtil;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.bzh.cloud.maintenance.MaintenApplication;
-import com.bzh.cloud.maintenance.dao.UsersDao;
-import com.bzh.cloud.maintenance.entity.AlarmRule;
-import com.bzh.cloud.maintenance.entity.Roles;
-import com.bzh.cloud.maintenance.entity.Users;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = MaintenApplication.class)
@@ -120,15 +112,25 @@ public class TestJson {
 	
 	@Test
 	public void test4(){
-		List<AlarmRule> ruls=(List<AlarmRule>) alarmRuleDao.findAll();
-		ruls.forEach(System.out::println);
+		InvokeCommon invokeRegiontatistics=SpringUtil.getComInvoke("invokeRegiontatistics");
+		ThreadResultData td=new ThreadResultData();
+		invokeRegiontatistics.save();
+		td.addInvoker(invokeRegiontatistics);
+		try {
+			td.waitForResult();
+		} catch (InvokeTimeOutException e) {
+			e.printStackTrace();
+		}
+		try {
+			Thread.sleep(3*1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
-	@Transactional
 	public void test5(){
-		int a=tDictionaryDao.deleteByEntityId(15);
-		System.out.println(a);
+		alarmRuleDao.findAll().forEach(alarmService::doSearchAlarm);
 	}
 	
 	
