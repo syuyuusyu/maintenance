@@ -1,8 +1,7 @@
 package com.bzh.cloud.maintenance.controller;
 
-
-
-import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -26,6 +25,7 @@ import com.bzh.cloud.maintenance.restFul.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
+import com.bzh.cloud.maintenance.service.UserService;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 @Controller
 //@RequestMapping(value = "/api")
@@ -35,13 +35,14 @@ public class PageController {
 	RedisTemplate<String, String> redisTemplate;
 	@Resource(name = "redisTemplate")
     ValueOperations<String,String> strOps;
+	
+	@Autowired
+	UserService userService;
 
 	public static Logger log = Logger.getLogger(PageController.class);
 		
 	@RequestMapping(value="/entityPage")
 	public String entity(Model model,HttpServletRequest request){
-		String token=(String) request.getSession().getAttribute("token");
-		System.out.println(token);
 		return "entityConf";
 	}
 
@@ -50,15 +51,28 @@ public class PageController {
 	public String recordConf(Model model,HttpServletRequest request){
 		return "recordEntity";
 	}
+	
+	@RequestMapping(value="/cmdbEntity")
+	public String cmdbEntity(Model model,HttpServletRequest request){
+		return "cmdbEntity";
+	}
+	
+	@RequestMapping(value="/cmdbInput")
+	public String cmdbInput(Model model,HttpServletRequest request){
+		return "cmdbInput";
+	}
+	
+	@RequestMapping(value="/alarm")
+	public String alarm(Model model,HttpServletRequest request){
+		return "alarm";
+	}
 
 
 	@RequestMapping(value="/index")
 	public String index(Model model,String token,HttpServletRequest request){
-		Enumeration<String> names= request.getSession().getAttributeNames();
-		while(names.hasMoreElements()){
-			
-			System.out.println(names.nextElement()+" ioioi");
-		}
+//		if(true)
+//		return "index";
+		
 		if(AuthInterceptor.islogin(request, redisTemplate)){
 			return "index";
 		}
@@ -78,9 +92,12 @@ public class PageController {
 			//验证通过，获取当前用户
 			JSONArray jrr=JSON.parseArray(data.getArrayJson());
 			JSONObject json=jrr.getJSONObject(0);
+			json.remove("userroles");
 			Users user= JSON.parseObject(json.toJSONString(),Users.class);
 			request.getSession().setAttribute("currentUser", user);
 			strOps.set(user.getUserid(), "some", 30L, TimeUnit.MINUTES);
+			//TODO
+			
 			return "index";
 		}else{
 			return "redirect:http://183.62.240.234:9000/isp/";
@@ -90,7 +107,7 @@ public class PageController {
 	
 	@RequestMapping(value="/logOut")
 	@ResponseBody
-	public String logOut(HttpServletRequest request,String userid){
+	public String logOut(HttpServletRequest request,String user){
 		log.info("退出系统");
 		request.getParameterMap().forEach((S,ARR)->{
 			System.out.println(S);
@@ -98,7 +115,7 @@ public class PageController {
 				System.out.print(string+"   ");
 			}
 		});
-		strOps.getOperations().delete(userid);
+		strOps.getOperations().delete(user);
 		return "退出系统";
 	}
 
@@ -116,6 +133,19 @@ public class PageController {
 	@RequestMapping(value="/alarmRuleConf")
 	public String alarmRuleConf(){
 		return "alarmRuleConf";
+	}
+	
+	@RequestMapping(value="/synUserRole")
+	@ResponseBody
+	public Map<String, Object> synUserRole(){
+		Map<String, Object> map=new HashMap<String, Object>();
+		try {
+			userService.synUserRole();
+			map.put("success", true);
+		} catch (Exception e) {
+			map.put("success", e.getStackTrace());
+		}
+		return map;
 	}
 	
 

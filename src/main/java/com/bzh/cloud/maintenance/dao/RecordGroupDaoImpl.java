@@ -35,9 +35,7 @@ public class RecordGroupDaoImpl {
         }else{
         	return list.stream().max(Comparator.comparing(RecordGroup::getCreateTime)).get();
         }
-        	
-        
-        
+    
 	}
 
 }

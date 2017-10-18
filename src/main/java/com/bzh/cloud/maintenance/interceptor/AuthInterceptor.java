@@ -1,18 +1,16 @@
 package com.bzh.cloud.maintenance.interceptor;
 
-import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bzh.cloud.maintenance.config.PropertiesConf;
 import com.bzh.cloud.maintenance.entity.Users;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -24,6 +22,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 
 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -33,7 +32,9 @@ public class AuthInterceptor implements HandlerInterceptor{
 		log.info("拦截请求:"+request.getRequestURI());
 		
 		if(!islogin(request, redisTemplate)){
-			response.sendRedirect("http://183.62.240.234:9000/isp/");
+			PropertiesConf conf=(PropertiesConf) SpringUtil.getBean("propertiesConf");
+			response.sendRedirect(conf.getUrl().get("ispUrl").replace("interfaces", ""));
+			return false;
 		}
 		
 		return true;

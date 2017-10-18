@@ -45,6 +45,7 @@ var tree=Ext.create('Ext.tree.Panel', {
             console.log(opt);
 	    },
         'select': function(node, record,item) {
+        	console.log(record.raw);
 	        if(record.raw.type=='7'){
 	            return;
             }

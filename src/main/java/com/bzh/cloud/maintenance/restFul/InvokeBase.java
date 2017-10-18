@@ -7,11 +7,14 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEntity> implements Runnable{
 	private static Logger log = Logger.getLogger(InvokeBase.class);
 	
 	protected String invokeName;
+	
+	protected RestfulClient.Method httpMethod;
 
     protected Q requestEntity;
     
@@ -23,6 +26,8 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 
     protected final List<InvokeCompleteEvent> events=new ArrayList<InvokeCompleteEvent>();
 
+    
+    protected Function<String, String> resultFun;
     protected void afterCall(){}
     protected void beforeCall(){}
 
@@ -86,10 +91,12 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     public final String invoke(){
     	Assert.notNull(requestEntity);
         beforeCall();
-        this.result=RestfulClient.invokRestFul(requestEntity);
-        responseEntity.init(this.result);
-        log.info(invokeName+"接口返回:"+result);
+        this.result=RestfulClient.invokRestFul(requestEntity,httpMethod);
         afterCall();
+        if(resultFun!=null)
+        	this.result=resultFun.apply(this.result);
+        responseEntity.init(this.result);
+        log.info(invokeName+"接口返回:"+result);       
         return this.result;
     }
     
@@ -102,6 +109,8 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
   
 	public String getResult() {
+		if(resultFun!=null)
+			return resultFun.apply(this.result);
 		return result;
 	}
 
@@ -115,6 +124,17 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 	
 	public JsonResponseEntity getResponseData(){		
 		return responseEntity;
+	}
+	public RestfulClient.Method getHttpMethod() {
+		return httpMethod;
+	}
+	public void setHttpMethod(RestfulClient.Method method) {
+		this.httpMethod = method;
+	}
+
+	public InvokeBase<Q, P> setResultFun(Function<String, String> resultFun) {
+		this.resultFun = resultFun;
+		return this;
 	}
 
 }

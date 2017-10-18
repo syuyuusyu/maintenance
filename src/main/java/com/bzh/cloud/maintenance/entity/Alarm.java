@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
+
 /**
  * 
  * @author syu
@@ -37,13 +39,46 @@ public class Alarm implements Serializable{
 	private String roleId;
 	@Column
 	private String step;
+	
 	@Column(name = "group_id")
 	private Integer groupId;
+	
 	@Column(name = "record_id")
 	private Integer recordId;
 	
+	@Column(name = "g_code")
+	private String gcode;
+	
+	@Column(name = "r_code")
+	private String rcode;
+	
+	@Column(name = "g_name")
+	private String gname;
+	
+	@Column(name = "r_name")
+	private String rname;
+	
 	@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="alarm")
 	private List<AlarmProcess> process;
+	
+	@Column(name = "alarm_type")
+	private String alarmType;
+	
+	@Column(name = "equal_type")
+	private String equalType;
+	
+	@Column(name = "valve_value")
+	private String valveValue;
+	
+	@Column(name = "alarm_value")
+	private String alarmValue;
+	
+	@Column(name = "rule_name")
+	private String ruleName;
+	
+	@Column(name = "info")
+	private String info;
+
 	
 	public Integer getId() {
 		return id;
@@ -91,5 +126,73 @@ public class Alarm implements Serializable{
 	public void setRuleId(Integer ruleId) {
 		this.ruleId = ruleId;
 	}
+	public String getGcode() {
+		return gcode;
+	}
+	public void setGcode(String gcode) {
+		this.gcode = gcode;
+	}
+	public String getRcode() {
+		return rcode;
+	}
+	public void setRcode(String rcode) {
+		this.rcode = rcode;
+	}
+	public String getGname() {
+		return gname;
+	}
+	public void setGname(String gname) {
+		this.gname = gname;
+	}
+	public String getRname() {
+		return rname;
+	}
+	public void setRname(String rname) {
+		this.rname = rname;
+	}
+	public String getRuleName() {
+		return ruleName;
+	}
+	public void setRuleName(String ruleName) {
+		this.ruleName = ruleName;
+	}
+	public String getAlarmType() {
+		return alarmType;
+	}
+	public void setAlarmType(String alarmType) {
+		this.alarmType = alarmType;
+	}
+	public String getEqualType() {
+		return equalType;
+	}
+	public void setEqualType(String equalType) {
+		this.equalType = equalType;
+	}
+	public String getValveValue() {
+		return valveValue;
+	}
+	public void setValveValue(String valveValue) {
+		this.valveValue = valveValue;
+	}
+	public String getAlarmValue() {
+		return alarmValue;
+	}
+	public void setAlarmValue(String alarmValue) {
+		this.alarmValue = alarmValue;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	
+	
+	
+
+	
+	
+	
+	
 	
 }

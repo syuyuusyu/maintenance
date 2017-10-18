@@ -30,6 +30,11 @@ public class AlarmRule implements Serializable {
     private Integer id;
 	@Column(name="role_id")
 	private String	roleId;
+	@Column
+	private String name;
+	
+	@Column(name="relevant_plate")
+	private Integer relevantPlate;
 	
 	@Column(name="relevant_group")
 	private Integer relevantGroup;
@@ -60,6 +65,8 @@ public class AlarmRule implements Serializable {
 	private String recordName;
 	@Formula(value="(select t.rolename from roles t where t.roleid=role_id )")
 	private String roleName;
+	@Formula(value="(select t.entity_name from record_entity t where t.id=relevant_plate )")
+	private String plateName;
 
 
 	public Integer getId() {
@@ -145,6 +152,30 @@ public class AlarmRule implements Serializable {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+	
+	
+	public Integer getRelevantPlate() {
+		return relevantPlate;
+	}
+	public void setRelevantPlate(Integer relevantPlate) {
+		this.relevantPlate = relevantPlate;
+	}
+	public String getPlateName() {
+		return plateName;
+	}
+	public void setPlateName(String plateName) {
+		this.plateName = plateName;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "AlarmRule [id=" + id + ", roleId=" + roleId

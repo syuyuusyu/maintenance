@@ -3,8 +3,10 @@ package com.bzh.cloud.maintenance.service;
 import java.util.List;
 
 import com.bzh.cloud.maintenance.dao.RolesDao;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.bzh.cloud.maintenance.dao.UsersDao;
@@ -24,8 +26,10 @@ public class UserService {
 	@Autowired
 	RolesDao rDao;
 	
-	
-	//同步用户角色
+	/**
+	 * 调用ISP接口同步用户角色
+	 */
+	@Transactional
 	public void synUserRole(){
 		final ThreadResultData trd=new ThreadResultData();
 		InvokeCommon invokeUsers=SpringUtil.getComInvoke("invokeUsers");
@@ -48,7 +52,6 @@ public class UserService {
 			rDao.deleteAll();
 			uDao.deleteAll();
 		}
-
 
 		users.forEach(U->{
 			U.getUserroles().forEach(M->{

@@ -404,7 +404,7 @@ function createGridFormItems(grid,action){
 
         ];
         formItems.push({xtype:'hiddenfield',name:'parentId',value:grid.parentEntityId});
-        formItems.push({xtype:'hiddenfield',name:'type',value:grid.gridType
+        formItems.push({xtype:'hiddenfield',name:'type',value:5
         });
         formItems.push({xtype:'hiddenfield',name:'hierarchy',value:grid.gridHierarchy+1});
         if(action=='update'){

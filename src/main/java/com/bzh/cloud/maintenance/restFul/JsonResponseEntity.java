@@ -8,6 +8,8 @@ public interface JsonResponseEntity {
 	
 	public boolean status();
 	
+	public String getStatus();
+	
 	public Class<?> getResponseClass();
 	
 	public String getArrayJson();

@@ -247,7 +247,7 @@ public class DemoApplicationTests {
 		requestMap3.put("type","query");
 		Map<String,String> reqdataMap3=new HashMap<>();
 		reqdataMap3.put("modifytime","20170220");
-		String result3=RestfulClient.invokRestFul(url+"interfaces", requestMap3, reqdataMap3);
+		String result3=RestfulClient.invokRestFul(url+"interfaces", requestMap3, reqdataMap3,RestfulClient.Method.POST);
 		System.out.println(result3);
 
 		//角色信息同步
@@ -259,7 +259,7 @@ public class DemoApplicationTests {
 		requestMap4.put("type","query");
 		Map<String,String> reqdataMap4=new HashMap<>();
 		reqdataMap4.put("modifytime","20170220");
-		String result4=RestfulClient.invokRestFul(url+"interfaces", requestMap4, reqdataMap4);
+		String result4=RestfulClient.invokRestFul(url+"interfaces", requestMap4, reqdataMap4,RestfulClient.Method.POST);
 		System.out.println(result4);
 		
 		//同步机构
@@ -269,7 +269,7 @@ public class DemoApplicationTests {
 		requestMap5.put("type","query");
 		Map<String,String> reqdataMap5=new HashMap<>();
 		//reqdataMap5.put("modifytime","20170220");
-		String result5=RestfulClient.invokRestFul(url+"interfaces", requestMap5, reqdataMap5);
+		String result5=RestfulClient.invokRestFul(url+"interfaces", requestMap5, reqdataMap5,RestfulClient.Method.POST);
 		System.out.println(result5);
 	}
 
@@ -281,7 +281,7 @@ public class DemoApplicationTests {
 		requestMap1.put("method","credits");
 		requestMap1.put("type","query");
 		Map<String,String> reqdataMap1=new HashMap<>();
-		String result1=RestfulClient.invokRestFul(url+"interfaces", requestMap1, reqdataMap1);
+		String result1=RestfulClient.invokRestFul(url+"interfaces", requestMap1, reqdataMap1,RestfulClient.Method.POST);
 
 		System.out.println("安全认证");
 		System.out.println(result1);
@@ -297,7 +297,7 @@ public class DemoApplicationTests {
 		en.setMethod("roles");
 		en.setType("query");
 		en.addReqDdata("modifytime", "20170220");
-		String result1=RestfulClient.invokRestFul(en);
+		String result1=RestfulClient.invokRestFul(en,RestfulClient.Method.POST);
 		System.out.println(result1);
 		
 		

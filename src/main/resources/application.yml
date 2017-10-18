@@ -11,7 +11,7 @@ spring:
     # schema: classpath:schema/inital.sql
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.0.101:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     #url: jdbc:mysql://192.168.1.10:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
     password: 1234
@@ -62,7 +62,7 @@ spring:
   redis:
     database: 1
 # Redis服务器地址
-    host: 192.168.0.100
+    host: 127.0.0.1
 # Redis服务器连接端口
     port: 6379
 # Redis服务器连接密码（默认为空）
@@ -108,16 +108,20 @@ server:
 
 selfProperties:
   restFul:
+    clouderaUsername: admin
+    clouderaPassword: admin
     requestMap:
       version: v1
-      #system: S18
-      system: S11
+      system: S18
+      #system: S11
     headMap:
       Accept: application/json
       Content-Type: application/json;charset=UTF-8
       keyid: FzPLkvSm8E
       domain: 9.77.254.117
     url:
-      #ispUrl: http://9.77.248.14:8080/isp/interfaces
-      ispUrl: http://183.62.240.234:9000/isp/interfaces
-      coludUrl: http://9.77.254.13:8080/dc2us2/rest/openstack/exmanage
+      ispUrl: http://172.16.100.131:8080/isp/interfaces
+      #ispUrl: http://183.62.240.234:9000/isp/interfaces
+      #coludUrl: http://172.16.100.111:8080/dc2us2/rest/openstack/exmanager
+      coludUrl: http://9.77.248.34:8080/dc2us2/rest/openstack/exmanager
+      coluderaUrl: http://172.16.100.116:7180/api/v15

@@ -6,6 +6,7 @@ public class InvokeCommon extends InvokeBase<RequestEntity,ResponseEntity>{
 		super(invokeName);
 		this.requestEntity=new RequestEntity();
 		this.responseEntity=new ResponseEntity();
+		this.httpMethod=RestfulClient.Method.POST;
 	}
 
 	public InvokeCommon setUrl(String url){

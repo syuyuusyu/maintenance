@@ -1,18 +1,24 @@
 package com.bzh.cloud.maintenance.restFul;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
-
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -24,25 +30,28 @@ import com.bzh.cloud.maintenance.util.SpringUtil;
 public class RestfulClient {
 
 	public static Logger log = Logger.getLogger(RestfulClient.class);
+	
+	public enum Method { GET, POST }
 
-	public static String invokRestFul(String url, String requestJson,String head) {
+	public static String invokRestFul(String url, String requestJson,String head,Method httpMethod) {
 		log.info("调用url:\n" + url);
 		log.info("调用报文:\n" + requestJson);
 		log.info("请求头:\n" + head);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
-		HttpPost httpPost = new HttpPost(url);
+		final HttpRequestBase httpRequest=getHttpMethod(httpMethod);
+		httpRequest.setURI(URI.create(url));
 		JSONObject request = JSON.parseObject(requestJson);
-
 		JSONObject headJson = JSON.parseObject(head);
-
-		StringEntity entity = new StringEntity(request.toString(), "utf-8");
-		httpPost.setEntity(entity);
+		StringEntity entity = new StringEntity(request.toString(), "utf-8");		
+		if(httpRequest instanceof HttpPost){
+			((HttpPost) httpRequest).setEntity(entity);
+		}		
 		headJson.forEach((K, V) -> {
-			httpPost.addHeader(K, (String) V);
+			httpRequest.addHeader(K, (String) V);
 		});
 		CloseableHttpResponse httppHttpResponse = null;		
 		try {
-			httppHttpResponse = httpClient.execute(httpPost);
+			httppHttpResponse = httpClient.execute(httpRequest);
 		} catch (IOException e) {
 			log.error("调用接口错误");
 			e.printStackTrace();
@@ -75,9 +84,20 @@ public class RestfulClient {
 		
 
 	}
+	
+	private static HttpRequestBase getHttpMethod(Method method){
+		switch(method){
+			case POST:
+				return new HttpPost();
+			case GET:
+				return new HttpGet();
+			default:
+				return null;
+		}
+	}
 
 	public static String invokRestFul(String url,
-			Map<String, String> requestMap, Map<String, String> reqdataMap) {
+			Map<String, String> requestMap, Map<String, String> reqdataMap,Method httpMethod) {
 		PropertiesConf pconf = (PropertiesConf) SpringUtil
 				.getBean("propertiesConf");
 		JSONObject request = new JSONObject();
@@ -97,10 +117,10 @@ public class RestfulClient {
 		System.out.println(request.toString());
 		System.out.println(head.toString());
 
-		return invokRestFul(url, request.toString(), head.toString());
+		return invokRestFul(url, request.toString(), head.toString(),httpMethod);
 	}
 
-	public static String invokRestFul(JsonResquestEntity en) {
+	public static String invokRestFul(JsonResquestEntity en,Method httpMethod) {
 		log.info("invokRestFul");
 		JSONObject request = new JSONObject(en.getRequest());
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -109,13 +129,23 @@ public class RestfulClient {
 		JSONObject head = new JSONObject(map);
 		String url = en.getUrl();
 
-		return invokRestFul(url, request.toString(), head.toString());
+		return invokRestFul(url, request.toString(), head.toString(),httpMethod);
 
 	}
 
 
 
 	public static String getColudTicket() {
+		String ticket="";
+		StringRedisTemplate redisTemplate
+			=(StringRedisTemplate) SpringUtil.getBean("stringRedisTemplate");
+		ValueOperations<String, String> oper=redisTemplate.opsForValue();
+		if(redisTemplate.hasKey("cloudTicket")){
+			ticket=oper.get("cloudTicket");
+			log.info("从redis获取云平台ticket:" + ticket);
+			return ticket;
+		}
+				
 		final ThreadResultData threadData = new ThreadResultData();
 		InvokeCommon invoke=SpringUtil.getComInvoke("cloudTicket");
 		threadData.addInvoker(invoke);
@@ -126,11 +156,15 @@ public class RestfulClient {
 		}
 
 		JsonResponseEntity ticketResukt = threadData.getResult("cloudTicket");
-		String ticket = ticketResukt.getArrayJson();
+		ticket = ticketResukt.getArrayJson();
+		if(!ticketResukt.status()){
+			log.info("获取云平台ticket获取失败");
+			return null;
+		}
 		ticket = ticket.replace("[\"", "");
 		ticket = ticket.replace("\"]", "");
 		log.info("获取云平台ticket:" + ticket);
-
+		oper.set("cloudTicket", ticket, 12, TimeUnit.HOURS);
 		return ticket;
 	}
 	
@@ -140,7 +174,7 @@ public class RestfulClient {
 
 		invokeTicket.setUrl("http://183.62.240.234:9000/isp/interfaces")
 			.setType("query")
-			.setSystem("S11")
+			//.setSystem("S11")
 			.setMethod("credits");
 
 		threadData.addInvoker(invokeTicket);

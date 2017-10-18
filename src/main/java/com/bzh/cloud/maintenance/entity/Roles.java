@@ -93,6 +93,15 @@ public class Roles implements Serializable{
 	public void setUsers(List<Users> users) {
 		this.users = users;
 	}
+
+	@Override
+	public String toString() {
+		return "Roles [roleid=" + roleid + ", rolename=" + rolename
+				+ ", roleinfo=" + roleinfo + ", roleuplevelid=" + roleuplevelid
+				+ ", roleupdatatime=" + roleupdatatime + ", roleflag="
+				+ roleflag + "]";
+	}
+	
 	
 	
 	

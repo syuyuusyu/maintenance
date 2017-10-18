@@ -36,6 +36,8 @@ public class SaveEvent implements InvokeCompleteEvent{
 			Integer entityId=null;
 			if(data instanceof ResponseEntity)
 				entityId=((ResponseEntity)data).getEntityId();
+			if(data instanceof ClouderaResponseEntity)
+				entityId=((ClouderaResponseEntity)data).getEntityId();
 			Assert.notNull(entityId);
 			RecordEntityDao recordEntityDao= (RecordEntityDao) SpringUtil.getBean("recordEntityDao");
 

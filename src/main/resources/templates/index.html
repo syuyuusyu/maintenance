@@ -31,8 +31,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
-<script>
-    (function(i, s, o, g, r, a, m) {
+<!-- <script>
+     (function(i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
         i[r] = i[r] || function() {
             (i[r].q = i[r].q || []).push(arguments)
@@ -43,8 +43,8 @@
         m.parentNode.insertBefore(a, m)
     })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
     ga('create', 'UA-85622565-1', 'auto');
-    ga('send', 'pageview');
-    </script>
+    ga('send', 'pageview'); 
+    </script> -->
 
     <style>
         .container-fluid{
@@ -173,71 +173,11 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <li class="nav-small-cap">PERSONAL</li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard <span class="label label-rounded label-success">5</span></span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="javascript:;" onclick="jumpPage('.././entityPage')">实体类型配置</a></li>
-                                <li><a href="index2.html">Awesome Dashboard</a></li>
-                                <li><a href="index3.html">Classy Dashboard</a></li>
-                                <li><a href="index4.html">Analytical Dashboard</a></li>
-                                <li><a href="index5.html">Minimal Dashboard</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">Ui Elements</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="ui-cards.html">Cards</a></li>
-                                <li><a href="ui-user-card.html">User Cards</a></li>
-                                <li><a href="ui-buttons.html">Buttons</a></li>
-                                <li><a href="ui-date-paginator.html">Date-paginator</a></li>
-                                <li><a href="ui-dragable-portlet.html">Dragable Portlet</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="#" aria-expanded="false"><i class="mdi mdi-file"></i><span class="hide-menu">Forms</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="form-basic.html">Basic Forms</a></li>
-                                <li><a href="form-layout.html">Form Layouts</a></li>
-                                <li><a href="form-addons.html">Form Addons</a></li>
-                                <li><a href="form-material.html">Form Material</a></li>
-                                <li><a href="form-float-input.html">Floating Lable</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-table"></i><span class="hide-menu">Tables</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="table-basic.html">Basic Tables</a></li>
-                                <li><a href="table-layout.html">Table Layouts</a></li>
-                                <li><a href="table-editable-table.html">Editable Table</a></li>
-                            </ul>
-                        </li>
-                       
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-file-chart"></i><span class="hide-menu">Charts</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="chart-morris.html">Morris Chart</a></li>
-                                <li><a href="chart-chartist.html">Chartis Chart</a></li>
-                                <li><a href="chart-echart.html">Echarts</a></li>
-                                <li><a href="chart-flot.html">Flot Chart</a></li>
-                                <li><a href="chart-knob.html">Knob Chart</a></li>
-                                <li><a href="chart-chart-js.html">Chartjs</a></li>
-                                <li><a href="chart-sparkline.html">Sparkline Chart</a></li>
-                                <li><a href="chart-extra-chart.html">Extra chart</a></li>
-                                <li><a href="chart-peity.html">Peity Charts</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-brush"></i><span class="hide-menu">Icons</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="icon-material.html">Material Icons</a></li>
-                                <li><a href="icon-fontawesome.html">Fontawesome Icons</a></li>
-                                <li><a href="icon-themify.html">Themify Icons</a></li>
-                                <li><a href="icon-linea.html">Linea Icons</a></li>
-                                <li><a href="icon-weather.html">Weather Icons</a></li>
-                                <li><a href="icon-simple-lineicon.html">Simple Lineicons</a></li>
-                                <li><a href="icon-flag.html">Flag Icons</a></li>
-                            </ul>
-                        </li>
+						<li><a href="javascript:;" onclick="jumpPage('.././alarmRuleConf')">告警规则配置</a></li>
+						<li><a href="javascript:;" onclick="jumpPage('.././recordEntity')">接口内容配置</a></li>
+						<li><a href="javascript:;" onclick="jumpPage('.././cmdbEntity')">CMDB关系配置</a></li>                       
+          				<li><a href="javascript:;" onclick="jumpPage('.././cmdbInput')">CMDB源数据录入</a></li>
+          				<li><a href="javascript:;" onclick="jumpPage('.././alarm')">告警管理</a></li>  
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->

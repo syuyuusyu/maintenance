@@ -67,10 +67,12 @@ public class ThreadResultData {
     
 	private synchronized void increaseCurrent(){
 		this.current++;
+		//System.out.println("increaseCurrent:"+current);
 	}
 	
-	private synchronized void increaseCount(){
+	private synchronized void increaseCount(){		
 		this.count++;
+		//System.out.println("increaseCount:"+count);
 	}
 	
 	private synchronized int getCurrent(){
@@ -84,6 +86,7 @@ public class ThreadResultData {
 	public void waitForResult() throws InvokeTimeOutException{
 		long currentTime=System.currentTimeMillis();
 		while (true) {
+			//System.out.println(this.getCurrent()+"   "+this.getCount());
 			if (this.getCurrent()==this.getCount()) {
 				break;
 			}
