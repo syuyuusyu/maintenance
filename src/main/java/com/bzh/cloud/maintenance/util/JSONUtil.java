@@ -9,6 +9,8 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 
+
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -62,6 +64,16 @@ public class JSONUtil {
 				new TypeToken<Map<String, Object>>() {
 				}.getType());
 		return map;
+	}
+	
+	public static List<Map<String, Object>> toListMap(String json){
+		List<Map<String, Object>> list=new ArrayList<Map<String,Object>>();
+		com.alibaba.fastjson.JSONArray arry=com.alibaba.fastjson.JSON.parseArray(json);
+		for (int i = 0; i < arry.size(); i++) {
+			com.alibaba.fastjson.JSONObject jo=arry.getJSONObject(i);
+			list.add(toMap(jo.toJSONString()));
+		}
+		return list;
 	}
 
 	public static <T> List<T> toList(String json, Class<T> clz) {

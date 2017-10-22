@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,7 +17,7 @@ public class ThreadResultData {
 
     private static Logger log = Logger.getLogger(ThreadResultData.class);
     private Map<String, JsonResponseEntity> resultMap=new HashMap<>();
-    private Map<String, Object> someThingMap=new HashMap<String, Object>();
+    private Map<String, Object> someThingMap=new ConcurrentHashMap<String, Object>();
     private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
     private int count=0;
     private int current=0;

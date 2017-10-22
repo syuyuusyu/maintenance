@@ -10,6 +10,7 @@ import com.bzh.cloud.maintenance.entity.Record;
 import com.bzh.cloud.maintenance.entity.RecordEntity;
 import com.bzh.cloud.maintenance.entity.RecordGroup;
 import com.bzh.cloud.maintenance.util.SpringUtil;
+
 import org.apache.log4j.Logger;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +27,12 @@ public class SaveEvent implements InvokeCompleteEvent{
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@Transactional
-	public void exec(JsonResponseEntity data) {
-		log.info("储蓄接口信息到数据库");
+	public void exec(JsonResponseEntity data,final ThreadResultData resultData) {
+		log.info("储存接口信息到数据库");
+		if(!data.status()){
+			log.info("接口相应错误! "+data.getStatus());
+			return;
+		}
 		if(data.getResponseClass()!=null){
 			PagingAndSortingRepository r=getRepository(data.getResponseClass());
 			r.save(JSON.parseArray(data.getArrayJson(), data.getResponseClass()));

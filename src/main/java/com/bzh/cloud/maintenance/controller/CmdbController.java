@@ -22,6 +22,7 @@ import com.bzh.cloud.maintenance.dao.CmdbEntityDao;
 import com.bzh.cloud.maintenance.dao.CmdbGroupDao;
 import com.bzh.cloud.maintenance.dao.CmdbRecordDao;
 import com.bzh.cloud.maintenance.entity.CmdbEntity;
+import com.bzh.cloud.maintenance.entity.CmdbGroup;
 import com.bzh.cloud.maintenance.service.CmdbService;
 
 @RestController
@@ -82,6 +83,21 @@ public class CmdbController {
 			if(chlids.size()>0){
 				cmdbEntityDao.delete(chlids);
 			}
+			map.put("success", "true");
+		} catch (Exception e) {
+			map.put("success", e.getStackTrace());
+		}
+		return map;
+	}
+	
+	@RequestMapping(value = "/deleteRecord")
+	@Transactional
+	public Map<String, Object> deleteRecord(Integer id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			CmdbGroup g= cmdbGroupDao.findOne(id);
+			g.getRecords();
+			cmdbGroupDao.delete(g);
 			map.put("success", "true");
 		} catch (Exception e) {
 			map.put("success", e.getStackTrace());

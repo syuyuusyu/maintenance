@@ -11,11 +11,11 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter{
 	
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor())
-        	.addPathPatterns("/*")
-        	.excludePathPatterns("/index","/logOut","/error");
-   
-        super.addInterceptors(registry);
+//        registry.addInterceptor(new AuthInterceptor())
+//        	.addPathPatterns("/*")
+//        	.excludePathPatterns("/index","/logOut","/error");
+//   
+//        super.addInterceptors(registry);
     }
 
 }

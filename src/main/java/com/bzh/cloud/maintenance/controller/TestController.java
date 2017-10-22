@@ -237,38 +237,7 @@ public class TestController {
        
        return "sdsdsd";
     }
-    @RequestMapping(value = "/test5")
-    @ResponseBody
-    public String test5(){
-    		String ticket="0700f61e-dead-440a-b89d-782641e8b665";
-    	   final ThreadResultData threadData=new ThreadResultData();
-           InvokeBase invokeRegions=new InvokeBase("describe-statistics", false);
-           RequestEntity entity=new RequestEntity();
-           ResponseEntity response=new ResponseEntity();
-           response.setClaszz(Users.class);
-           entity.setMethod("describe-statistics");
-           entity.setTicket(ticket);
-           entity.setSystem("S01");
-           entity.setType("query");
-           entity.setUrl("http://127.0.0.1:8080/users");
-           invokeRegions.setRequestEntity(entity);
-           invokeRegions.setResponseEntity(response);
-           
-           invokeRegions.addEvent(j->{
-        	   System.out.println(j.getResponseClass().getName());
-        	   List<Users> users=(List<Users>) JSON.parseArray(j.getArrayJson(), j.getResponseClass());
-        	   users.forEach(System.out::println);
-           });
-           threadData.addInvoker(invokeRegions);
-           try {
-               threadData.waitForResult();
-           } catch (InvokeTimeOutException e) {
-               e.printStackTrace();
-           }  
-           JsonResponseEntity data=threadData.getResult("describe-statistics");
-           System.out.println(data.getArrayJson());
-    	return "fgfgfg";
-    }
+
     
     @RequestMapping(value = "/test6")
     @ResponseBody

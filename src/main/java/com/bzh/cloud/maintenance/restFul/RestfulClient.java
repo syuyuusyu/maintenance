@@ -34,9 +34,7 @@ public class RestfulClient {
 	public enum Method { GET, POST }
 
 	public static String invokRestFul(String url, String requestJson,String head,Method httpMethod) {
-		log.info("调用url:\n" + url);
-		log.info("调用报文:\n" + requestJson);
-		log.info("请求头:\n" + head);
+		log.info("\n调用url:" + url+"\n调用报文:" + requestJson+"\n请求头:" + head);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		final HttpRequestBase httpRequest=getHttpMethod(httpMethod);
 		httpRequest.setURI(URI.create(url));
@@ -145,7 +143,7 @@ public class RestfulClient {
 			log.info("从redis获取云平台ticket:" + ticket);
 			return ticket;
 		}
-				
+						
 		final ThreadResultData threadData = new ThreadResultData();
 		InvokeCommon invoke=SpringUtil.getComInvoke("cloudTicket");
 		threadData.addInvoker(invoke);

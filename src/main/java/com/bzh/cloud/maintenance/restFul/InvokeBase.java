@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEntity> implements Runnable{
@@ -28,6 +29,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 
     
     protected Function<String, String> resultFun;
+    protected BiFunction<Q, String, String> biResultFun;
     protected void afterCall(){}
     protected void beforeCall(){}
 
@@ -75,7 +77,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     	log.info("调用接口:"+invokeName);
     	invoke();
     	resultData.addResult(invokeName, this.getResponseData());
-    	log.info(invokeName+"获得接口信息:"+this.getResponseData().getArrayJson());
+    	//log.info(invokeName+"获得接口信息:"+this.getResponseData().getArrayJson());
     	filrEvent();
     }
     
@@ -84,7 +86,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     	for (int i = 0; i < events.size(); i++) {
 			final JsonResponseEntity data=this.getResponseData();
 			final int index=i;
-			resultData.getFixedThreadPool().execute(()->events.get(index).exec(data));
+			resultData.getFixedThreadPool().execute(()->events.get(index).exec(data,resultData));
 		}
     }
 
@@ -95,8 +97,10 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
         afterCall();
         if(resultFun!=null)
         	this.result=resultFun.apply(this.result);
+        if(biResultFun!=null)
+        	this.result=biResultFun.apply(requestEntity, result);
         responseEntity.init(this.result);
-        log.info(invokeName+"接口返回:"+result);       
+        //log.info(invokeName+"接口返回:"+result);       
         return this.result;
     }
     
@@ -132,9 +136,14 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 		this.httpMethod = method;
 	}
 
-	public InvokeBase<Q, P> setResultFun(Function<String, String> resultFun) {
+	public void setResultFun(Function<String, String> resultFun) {
 		this.resultFun = resultFun;
-		return this;
 	}
+
+	public void setBiResultFun(BiFunction<Q, String, String> biResultFun) {
+		this.biResultFun = biResultFun;
+	}
+	
+	
 
 }

@@ -259,11 +259,9 @@ function createGrid(records){
                               }else{
                                   Ext.Ajax.request({
                                       method:'post',
-                                      url:'./../cmdbConf/delete',
+                                      url:'./../cmdbConf/deleteRecord',
                                       params:{
-                                          id:data.id,
-                                          type:grid.gridType,
-                                          hierarchy:grid.gridHierarchy
+                                          id:data.groupId
                                       },
                                       failure:function(r,data){
 

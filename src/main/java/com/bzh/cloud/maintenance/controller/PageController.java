@@ -70,8 +70,8 @@ public class PageController {
 
 	@RequestMapping(value="/index")
 	public String index(Model model,String token,HttpServletRequest request){
-//		if(true)
-//		return "index";
+		if(true)
+		return "index";
 		
 		if(AuthInterceptor.islogin(request, redisTemplate)){
 			return "index";

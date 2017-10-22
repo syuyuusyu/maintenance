@@ -11,6 +11,8 @@ import java.util.Vector;
 
 
 
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,9 +55,15 @@ public class CmdbService {
 		System.out.println(groupPage.getTotalElements());
 		
 		List<Map<String, String>> result=new Vector<Map<String,String>>();
-		groupPage.getContent().parallelStream().map(CmdbGroup::getRecords).forEach(records->{
+		List<Integer> groupIds=groupPage.getContent()
+				.stream().map(CmdbGroup::getGroupId).collect(Collectors.toList());		
+		List<CmdbRecord> recordList=cmdbRecordDao.findByGroupIds(groupIds);		
+		Map<CmdbGroup, List<CmdbRecord>> groupR=
+				recordList.parallelStream().collect(Collectors.groupingBy(CmdbRecord::getGroup));
+		
+		groupR.forEach((group,records)->{
 			Map<Integer, String> idMap=new HashMap<Integer, String>();
-			Integer groupId=records.get(0).getGroup().getGroupId();
+			Integer groupId=group.getGroupId();
 			records.forEach(R->{
 				idMap.put(R.getEntityId(), R.getState());
 				
@@ -66,9 +74,27 @@ public class CmdbService {
 			});
 			strMap.put("groupId", String.valueOf(groupId));
 			result.add(strMap);
-		});		
-
+		});
 		return result;
+		
+		
+//		return groupPage.getContent().parallelStream().map(CmdbGroup::getRecords).map(records->{
+//			Map<Integer, String> idMap=new HashMap<Integer, String>();
+//			Integer groupId=records.get(0).getGroup().getGroupId();
+//			records.forEach(R->{
+//				idMap.put(R.getEntityId(), R.getState());
+//				
+//			});
+//			Map<String, String> strMap=new HashMap<String, String>();
+//			fieldList.forEach(E->{
+//				strMap.put(E.getEntityCode(),idMap.get(E.getId()) );
+//			});
+//			strMap.put("groupId", String.valueOf(groupId));
+//			return strMap;
+//		}).collect(Collectors.toList());
+		
+
+		
 	}
 	
 	/**
