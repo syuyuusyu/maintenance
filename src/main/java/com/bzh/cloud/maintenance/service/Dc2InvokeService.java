@@ -51,6 +51,7 @@ public class Dc2InvokeService {
 		monitorArgs.addEvent((Jo,rdata)->{
 			List<Map<String,String>> argList=new ArrayList<>();
 			JSONArray jarr=JSON.parseArray(Jo.getArrayJson());	
+			System.out.println(jarr);
 			for (int i = 0; i < jarr.size(); i++) {				
 				JSONObject j1=jarr.getJSONObject(i);
 				j1.keySet().forEach(gangliaId->{
@@ -85,9 +86,11 @@ public class Dc2InvokeService {
 		
 		//虚拟机
 		InvokeDc2 virtualmachine=(InvokeDc2) SpringUtil.getBean("virtualmachine");
+		//virtualmachine.save();
 		
 		//虚拟网络运行情况
 		InvokeDc2 network=(InvokeDc2) SpringUtil.getBean("network");
+		//network.save();
 		
 		//nova状态
 		InvokeDc2 nova=(InvokeDc2) SpringUtil.getBean("nova");
@@ -97,18 +100,22 @@ public class Dc2InvokeService {
 		
 		//cinder
 		InvokeDc2 cinder=(InvokeDc2) SpringUtil.getBean("cinder");
+		//cinder.save();
 		
 		//keystone
 		InvokeDc2 keystone=(InvokeDc2) SpringUtil.getBean("keystone");
+		//keystone.save();
 		
 		//mongodb
 		InvokeDc2 mongodb=(InvokeDc2) SpringUtil.getBean("mongodb");
+		//mongodb.save();
 		
 		//mysql
 		InvokeDc2 mysql=(InvokeDc2) SpringUtil.getBean("mysql");
 		
+		
 		trd.addInvoker(invokeRegions);
-		trd.addInvoker(monitorArgs);
+		//trd.addInvoker(monitorArgs);
 		trd.addInvoker(ganglia);
 		trd.addInvoker(virtualmachine);
 		trd.addInvoker(network);
@@ -132,6 +139,7 @@ public class Dc2InvokeService {
 	 */
 	public InvokeDc2 dc2utility(String regionName){
 		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("dc2utility");
+		invoke.setInvokeName("dc2utility_"+regionName);
 		invoke.addReqDdata("regionName", regionName);
 		//TODO
 //		invoke.setEntityId(?);
@@ -146,10 +154,11 @@ public class Dc2InvokeService {
 	 */
 	public InvokeDc2 invokeRegiontatistics(String regionName){
 		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("invokeRegiontatistics");
+		invoke.setInvokeName("invokeRegiontatistics_"+regionName);
 		invoke.addReqDdata("regionName", regionName);
 		//TODO
 
-		invoke.save();
+		//invoke.save();
 		return invoke;
 	}	
 	
@@ -160,6 +169,7 @@ public class Dc2InvokeService {
 	 */
 	public InvokeDc2 p_disk(Map<String, String> map){
 		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("p_disk");
+		invoke.setInvokeName("p_disk_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
 //		invoke.setEntityId(?);
@@ -174,6 +184,7 @@ public class Dc2InvokeService {
 	 */
 	public InvokeDc2 network_report(Map<String, String> map){
 		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("network_report");
+		invoke.setInvokeName("network_report_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
 		//invoke.save();
@@ -187,6 +198,7 @@ public class Dc2InvokeService {
 	 */
 	public InvokeDc2 cpu_report(Map<String, String> map){
 		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("cpu_report");
+		invoke.setInvokeName("cpu_report_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
 		//invoke.save();
@@ -200,6 +212,7 @@ public class Dc2InvokeService {
 	 */
 	public InvokeDc2 mem_report(Map<String, String> map){
 		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("mem_report");
+		invoke.setInvokeName("mem_report_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
 		//invoke.save();

@@ -15,11 +15,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 
+
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.MaintenApplication;
 import com.bzh.cloud.maintenance.restFul.InvokeCommon;
+import com.bzh.cloud.maintenance.restFul.InvokeDc2;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.service.Dc2InvokeService;
@@ -78,13 +81,32 @@ public class TestDc2 {
 	
 	@Test
 	public void test2(){
+		long t=System.currentTimeMillis();
 		dc2InvokeService.getDc2Resource();
+		System.out.println(System.currentTimeMillis()-t);
 		
 		try {
 			Thread.sleep(1000*20);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}				
+	}
+	
+	@Test
+	public void test3(){
+		final ThreadResultData trd=new ThreadResultData();
+		InvokeDc2 invoke=(InvokeDc2) SpringUtil.getBean("network_report");
+		invoke.save();
+		invoke.addReqDdata("host", "yngtc003.yndlr.gov.cn");
+		invoke.addReqDdata("id", "1");
+		invoke.addReqDdata("st", "1508722677396");
+		invoke.addReqDdata("timeRange", "hr");
+		invoke.addReqDdata("metric", "mem_report");
+		trd.addInvoker(invoke);
+		try {
+			trd.waitForResult();
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 

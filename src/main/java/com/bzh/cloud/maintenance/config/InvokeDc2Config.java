@@ -80,9 +80,6 @@ public class InvokeDc2Config {
 					JSONArray newArr=new JSONArray();
 					newArr.add(eachJson);
 					json.replace("respdata", newArr);
-					request.getRequest().forEach((K,V)->{
-						System.out.println(K+" "+V);
-					});
 
 					return json.toJSONString();
 				};
@@ -267,6 +264,7 @@ public class InvokeDc2Config {
 		invoke.setUrl(coludUrl)
 			.setMethod("describe-openstack-virtualmachine")
 			.setType("query")
+			.setEntityId(127)
 			//TODO
 			.setSystem("S01")
 			;
@@ -274,7 +272,7 @@ public class InvokeDc2Config {
 			JSONObject json=JSON.parseObject(result);
 			JSONArray jarr=json.getJSONArray("dc2Result");
 			JSONObject resultJson=new JSONObject();
-			if(jarr.size()>0){
+			if(jarr!=null && jarr.size()>0){
 				resultJson.put("status", "801");
 				resultJson.put("respdata", jarr);
 			}else{
@@ -295,9 +293,30 @@ public class InvokeDc2Config {
 		invoke.setUrl(coludUrl)
 			.setMethod("describe-openstack-network")
 			.setType("query")
+			.setEntityId(123)
 			//TODO
 			.setSystem("S01")
 			;
+		invoke.setBiResultFun((request,result)->{
+			System.out.println(result);
+			JSONObject json=JSON.parseObject(result);
+			JSONArray respdata=json.getJSONArray("respdata");
+			JSONArray newarr=new JSONArray();
+			
+			for(int i=0;i<respdata.size();i++){
+				JSONObject jo1=respdata.getJSONObject(i);
+				jo1.keySet().forEach(key->{
+					JSONObject newjo=new JSONObject();
+					JSONObject jo2=jo1.getJSONObject(key);
+					newjo.put("networkId", key);
+					newjo.put("name", jo2.getString("name"));
+					newjo.put("status", jo2.getString("status"));
+					newarr.add(newjo);
+				});
+			}			
+			json.put("respdata", newarr);
+			return json.toJSONString();
+		});
 		return invoke;		
 	}
 	
@@ -370,6 +389,7 @@ public class InvokeDc2Config {
 			.setMethod("describe-monitor-services")
 			.addReqDdata("serviceComponentName", "cinder")
 			.setType("query")
+			.setEntityId(142)
 			//TODO
 			.setSystem("S01")
 			;
@@ -387,9 +407,25 @@ public class InvokeDc2Config {
 			.setMethod("describe-monitor-services")
 			.addReqDdata("serviceComponentName", "keystone")
 			.setType("query")
+			.setEntityId(112)
 			//TODO
 			.setSystem("S01")
 			;
+		invoke.setBiResultFun((request,result)->{
+			JSONObject json=JSON.parseObject(result);
+			JSONArray respdata=json.getJSONArray("respdata");
+			JSONArray newarr=new JSONArray();
+			JSONObject newjo=new JSONObject();
+			for(int i=0;i<respdata.size();i++){
+				JSONObject jo1=respdata.getJSONObject(i);
+				String type=jo1.getString("type");
+				String enabled=jo1.getString("enabled");
+				newjo.put(type, enabled);
+			}
+			newarr.add(newjo);
+			json.put("respdata", newarr);
+			return json.toJSONString();
+		});
 		return invoke;		
 	}
 	
@@ -404,6 +440,7 @@ public class InvokeDc2Config {
 			.setMethod("describe-monitor-services")
 			.addReqDdata("serviceComponentName", "mongodb")
 			.setType("query")
+			.setEntityId(137)
 			//TODO
 			.setSystem("S01")
 			;

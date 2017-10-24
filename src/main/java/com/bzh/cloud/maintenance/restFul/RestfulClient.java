@@ -59,8 +59,10 @@ public class RestfulClient {
 		HttpEntity result = null;
 		try {
 			if(200==statusCode){
-				result = httppHttpResponse.getEntity();
-				return EntityUtils.toString(result);
+				result = httppHttpResponse.getEntity();				
+				String s=EntityUtils.toString(result);
+				log.info(s);
+				return s;
 			}else{
 				Map<String, Object> errMap=new HashMap<String, Object>();
 				errMap.put("status", "999");

@@ -131,7 +131,7 @@ public class TestController {
 
 
         ThreadResultData threadData=new ThreadResultData();
-        InvokeBase invokUsers=new InvokeBase("users", true);
+        InvokeBase invokUsers=new InvokeBase("users");
         RequestEntity entity=new RequestEntity();
         entity.setMethod("users");
         entity.setType("query");
@@ -143,7 +143,7 @@ public class TestController {
         threadData.addInvoker(invokUsers);
 
 
-        InvokeBase invokeserviceStatus=new InvokeBase("serviceStatus",true);
+        InvokeBase invokeserviceStatus=new InvokeBase("serviceStatus");
         RequestEntity entity2=new RequestEntity();
         entity2.setUrl("http://9.77.254.117:4400/serviceStatus");
         entity2.setEntityId(37);
@@ -163,7 +163,7 @@ public class TestController {
     @ResponseBody
     public String test2(){
         final ThreadResultData threadData=new ThreadResultData();
-        InvokeBase invokeTicket=new InvokeBase("ticket",false);
+        InvokeBase invokeTicket=new InvokeBase("ticket");
         RequestEntity entity=new RequestEntity();
         entity.setUrl("http://9.77.254.13:8080/dc2us2/rest/interface");
         entity.setType("query");
@@ -195,7 +195,7 @@ public class TestController {
     	String ticket="0700f61e-dead-440a-b89d-782641e8b665";
        final ThreadResultData threadData=new ThreadResultData();
        
-       InvokeBase invokeRegions=new InvokeBase("describe_regions", false);
+       InvokeBase invokeRegions=new InvokeBase("describe_regions");
        RequestEntity entity=new RequestEntity();
        entity.setMethod("describe-regions");
        entity.setTicket(ticket);
@@ -220,7 +220,7 @@ public class TestController {
       // String ticket=RestfulClient.getColudTicket();
     	String ticket="0700f61e-dead-440a-b89d-782641e8b665";
        final ThreadResultData threadData=new ThreadResultData();
-       InvokeBase invokeRegions=new InvokeBase("describe-statistics", false);
+       InvokeBase invokeRegions=new InvokeBase("describe-statistics");
        RequestEntity entity=new RequestEntity();
        
        entity.setMethod("describe-statistics");

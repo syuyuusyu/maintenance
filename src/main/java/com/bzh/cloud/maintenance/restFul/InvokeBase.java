@@ -33,12 +33,6 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     protected void afterCall(){}
     protected void beforeCall(){}
 
-    public InvokeBase(String invokeName,boolean isSave){
-    	this.invokeName=invokeName;
-        if(isSave){
-        	events.add(new SaveEvent());
-        }
-    }
     
     public InvokeBase(String invokeName){
     	this.invokeName=invokeName;
@@ -74,7 +68,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
 
     public void run(){
-    	log.info("调用接口:"+invokeName);
+    	log.info("调用接口:"+invokeName+"-"+Thread.currentThread().getName());
     	invoke();
     	resultData.addResult(invokeName, this.getResponseData());
     	//log.info(invokeName+"获得接口信息:"+this.getResponseData().getArrayJson());
@@ -95,16 +89,27 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
         beforeCall();
         this.result=RestfulClient.invokRestFul(requestEntity,httpMethod);
         afterCall();
-        if(resultFun!=null)
-        	this.result=resultFun.apply(this.result);
-        if(biResultFun!=null)
-        	this.result=biResultFun.apply(requestEntity, result);
+        if(resultFun!=null){
+        	try {
+        		this.result=resultFun.apply(this.result);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        }       	
+        if(biResultFun!=null){
+        	try {
+        		this.result=biResultFun.apply(requestEntity, result);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}        	
+        }
         responseEntity.init(this.result);
-        //log.info(invokeName+"接口返回:"+result);       
+        
+        log.info(invokeName+"-"+Thread.currentThread().getName()+"接口返回:"+result);       
         return this.result;
     }
     
-    public void addEvent(InvokeCompleteEvent e){
+    public void addEvent(InvokeCompleteEvent e){    	
     	events.add(e);
     }
 

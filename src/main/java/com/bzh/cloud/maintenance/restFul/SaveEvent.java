@@ -50,8 +50,8 @@ public class SaveEvent implements InvokeCompleteEvent{
 			JSONArray jarr=JSON.parseArray(data.getArrayJson());
 			RecordEntity en=recordEntityDao.findOne(entityId);
 	        List<RecordGroup> groups=new ArrayList<>();
-
-	        List<RecordEntity> recordEntitys=(List<RecordEntity>) en.getChild();
+	        
+	        List<RecordEntity> recordEntitys=recordEntityDao.findByParentId(en.getParentId());
 	        for (int i=0;i<jarr.size();i++){
 	            RecordGroup group=new RecordGroup();
 	            group.setEntityId(en.getId());

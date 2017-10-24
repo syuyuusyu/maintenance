@@ -3,7 +3,6 @@ package com.bzh.cloud.maintenance.restFul;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,12 +15,12 @@ import org.springframework.util.StringUtils;
 public class ThreadResultData {
 
     private static Logger log = Logger.getLogger(ThreadResultData.class);
-    private Map<String, JsonResponseEntity> resultMap=new HashMap<>();
+    private Map<String, JsonResponseEntity> resultMap=new ConcurrentHashMap<>();
     private Map<String, Object> someThingMap=new ConcurrentHashMap<String, Object>();
     private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
     private int count=0;
     private int current=0;
-    private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
+    private  ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
     public ExecutorService getFixedThreadPool() {
         return fixedThreadPool;
     }
@@ -59,11 +58,14 @@ public class ThreadResultData {
     	return resultMap.get(invokeName);
 	}
     
-	public void addInvoker(InvokeBase<?,?> invoker){
+	public synchronized void addInvoker(InvokeBase<?,?> invoker){
+		
 		this.invoker.add(invoker);
 		invoker.setResultData(this);
 		this.increaseCount();
 		fixedThreadPool.execute(invoker);
+		//new Thread(invoker).start();
+				
 	}
     
 	private synchronized void increaseCurrent(){

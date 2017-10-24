@@ -22,6 +22,51 @@ public class ClouderaInvokeService {
 	/**
 	 * 查询cdh下所有服务的状态并保存
 	 */
+	public void clouderaInfo(){
+		final ThreadResultData trd=new ThreadResultData();
+		//查询集群名称
+		InvokeCloudera clustersName=(InvokeCloudera) SpringUtil.getInvokes("clustersName");
+		clustersName.addEvent((response,rdata)->{
+			JSONArray namesArr=JSON.parseArray(response.getArrayJson());
+			List<String> nameList=new ArrayList<>();
+			for (int i = 0; i < namesArr.size(); i++) {
+				JSONObject nameJ=namesArr.getJSONObject(i);
+				nameList.add(nameJ.getString("name"));
+			}
+			//查询服务
+			nameList.stream().map(this::clouderaServices).forEach(rdata::addInvoker);
+		});
+		//查询CM服务
+		InvokeCloudera invokeClouderaServices=(InvokeCloudera) SpringUtil.getInvokes("clouderaCmServer");
+		invokeClouderaServices.save();
+		//查询HOSTID
+		InvokeCloudera invokeClouderaHosts=(InvokeCloudera) SpringUtil.getInvokes("clouderaHosts");
+		invokeClouderaHosts.addEvent((response,resultData)->{
+			JSONArray hostArr=JSON.parseArray(response.getArrayJson());
+			List<String> hostList=new ArrayList<>();
+			for(int i=0;i<hostArr.size();i++){
+				JSONObject hj=hostArr.getJSONObject(i);
+				hostList.add(hj.getString("hostId"));
+			}
+			//根据hostId查询主机状态
+			hostList.stream().map(this::hostIdhealth).forEach(resultData::addInvoker);
+		});
+		
+		trd.addInvoker(clustersName);
+		trd.addInvoker(invokeClouderaServices);
+		trd.addInvoker(invokeClouderaHosts);
+		
+		try {
+			trd.waitForResult();
+		} catch (InvokeTimeOutException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	/**
+	 * 查询cdh下所有服务的状态并保存
+	 */
 	public void clouderaServices(){
 		ThreadResultData trd=new ThreadResultData();
 		InvokeCloudera clustersName=(InvokeCloudera) SpringUtil.getInvokes("clustersName");
@@ -92,5 +137,20 @@ public class ClouderaInvokeService {
 		return invoke;
 		
 	}
+	
+	/**
+	 * 根据集群名称查询服务
+	 * @param name
+	 * @return
+	 */
+	private InvokeCloudera clouderaServices(String name){
+		InvokeCloudera clouderaServices=(InvokeCloudera) SpringUtil.getBean("clouderaServices");
+		clouderaServices.setClusterName(name).setInvokeName(name);
+		clouderaServices.save();
+		return clouderaServices;
+		
+	}
+	
+	
 
 }
