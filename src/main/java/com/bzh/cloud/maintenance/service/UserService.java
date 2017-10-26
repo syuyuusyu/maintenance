@@ -12,7 +12,7 @@ import com.alibaba.fastjson.JSON;
 import com.bzh.cloud.maintenance.dao.UsersDao;
 import com.bzh.cloud.maintenance.entity.Roles;
 import com.bzh.cloud.maintenance.entity.Users;
-import com.bzh.cloud.maintenance.restFul.InvokeCommon;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;

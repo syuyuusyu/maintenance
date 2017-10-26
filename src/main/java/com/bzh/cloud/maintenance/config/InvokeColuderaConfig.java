@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bzh.cloud.maintenance.restFul.InvokeCloudera;
+import com.bzh.cloud.maintenance.invoke.InvokeCloudera;
 
 
 

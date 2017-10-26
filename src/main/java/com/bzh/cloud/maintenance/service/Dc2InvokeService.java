@@ -3,12 +3,10 @@ package com.bzh.cloud.maintenance.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 import java.util.Map;
 
-
 import org.springframework.stereotype.Service;
+
 
 
 
@@ -16,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bzh.cloud.maintenance.restFul.InvokeDc2;
+import com.bzh.cloud.maintenance.invoke.InvokeDc2;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -34,7 +32,7 @@ public class Dc2InvokeService {
 	 */
 	public void getDc2Resource(){
 		final ThreadResultData trd=new ThreadResultData();
-		
+		trd.sleep(500L);
 		//云区
 		InvokeDc2 invokeRegions=(InvokeDc2) SpringUtil.getBean("invokeRegions");
 		invokeRegions.addEvent((Jo,rdata)->{
@@ -71,6 +69,7 @@ public class Dc2InvokeService {
 			}
 			//物理磁盘
 			argList.stream().map(this::p_disk).forEach(rdata::addInvoker);
+			
 			//物理网络
 			argList.stream().map(this::network_report).forEach(rdata::addInvoker);
 			
@@ -86,36 +85,38 @@ public class Dc2InvokeService {
 		
 		//虚拟机
 		InvokeDc2 virtualmachine=(InvokeDc2) SpringUtil.getBean("virtualmachine");
-		//virtualmachine.save();
+		virtualmachine.save();
 		
 		//虚拟网络运行情况
 		InvokeDc2 network=(InvokeDc2) SpringUtil.getBean("network");
-		//network.save();
+		network.save();
 		
 		//nova状态
 		InvokeDc2 nova=(InvokeDc2) SpringUtil.getBean("nova");
+		nova.save();
 		
 		//neutron服务组件状态
 		InvokeDc2 neutron=(InvokeDc2) SpringUtil.getBean("neutron");
 		
 		//cinder
 		InvokeDc2 cinder=(InvokeDc2) SpringUtil.getBean("cinder");
-		//cinder.save();
+		cinder.save();
 		
 		//keystone
 		InvokeDc2 keystone=(InvokeDc2) SpringUtil.getBean("keystone");
-		//keystone.save();
+		keystone.save();
 		
 		//mongodb
 		InvokeDc2 mongodb=(InvokeDc2) SpringUtil.getBean("mongodb");
-		//mongodb.save();
+		mongodb.save();
 		
 		//mysql
 		InvokeDc2 mysql=(InvokeDc2) SpringUtil.getBean("mysql");
+		mysql.save();
 		
 		
 		trd.addInvoker(invokeRegions);
-		//trd.addInvoker(monitorArgs);
+		trd.addInvoker(monitorArgs);
 		trd.addInvoker(ganglia);
 		trd.addInvoker(virtualmachine);
 		trd.addInvoker(network);
@@ -125,11 +126,7 @@ public class Dc2InvokeService {
 		trd.addInvoker(keystone);
 		trd.addInvoker(mongodb);
 		trd.addInvoker(mysql);
-		try {
-			trd.waitForResult();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 	
 	/**
@@ -172,8 +169,7 @@ public class Dc2InvokeService {
 		invoke.setInvokeName("p_disk_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
-//		invoke.setEntityId(?);
-//		invoke.save();
+		invoke.save();
 		return invoke;
 	}
 	
@@ -187,7 +183,7 @@ public class Dc2InvokeService {
 		invoke.setInvokeName("network_report_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
-		//invoke.save();
+		invoke.save();
 		return invoke;
 	}
 	
@@ -201,7 +197,7 @@ public class Dc2InvokeService {
 		invoke.setInvokeName("cpu_report_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
-		//invoke.save();
+		invoke.save();
 		return invoke;
 	}
 	
@@ -215,7 +211,7 @@ public class Dc2InvokeService {
 		invoke.setInvokeName("mem_report_"+map.get("host"));
 		map.forEach(invoke::addReqDdata);
 		//TODO
-		//invoke.save();
+		invoke.save();
 		return invoke;
 	}
 	

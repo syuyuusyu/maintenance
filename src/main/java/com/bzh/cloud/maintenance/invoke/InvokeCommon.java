@@ -1,4 +1,7 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
+
+import com.bzh.cloud.maintenance.restFul.InvokeBase;
+import com.bzh.cloud.maintenance.restFul.RestfulClient;
 
 public class InvokeCommon extends InvokeBase<RequestEntity,ResponseEntity>{
  

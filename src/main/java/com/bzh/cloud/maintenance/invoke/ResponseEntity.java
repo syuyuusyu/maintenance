@@ -1,8 +1,9 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 
 
 public class ResponseEntity implements JsonResponseEntity{

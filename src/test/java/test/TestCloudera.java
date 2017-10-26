@@ -11,11 +11,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.MaintenApplication;
 import com.bzh.cloud.maintenance.entity.Users;
-import com.bzh.cloud.maintenance.restFul.InvokeCloudera;
+import com.bzh.cloud.maintenance.invoke.InvokeCloudera;
+import com.bzh.cloud.maintenance.invoke.InvokeSecurity;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.RestfulClient;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.service.ClouderaInvokeService;
+import com.bzh.cloud.maintenance.service.SecurityInvokeService;
+import com.bzh.cloud.maintenance.util.SpringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = MaintenApplication.class)
@@ -23,6 +26,9 @@ public class TestCloudera {
 	
 	@Autowired
 	ClouderaInvokeService clouderaService;
+	
+	@Autowired
+	SecurityInvokeService securityInvokeService;
 
 	
 	@Test
@@ -99,14 +105,6 @@ public class TestCloudera {
 	
 	@Test
 	public void test6(){
-		String s="{\"createdate\":1505715788000,"
-				+ "\"orgid\":\"1\","
-				+ "\"orgname\":\"\","
-				+ "\"userid\":\"admin\","
-				+ "\"username\":\"运维平台管理员\","
-				+ "\"userpwd\":\"89BDF69372C2EF53EA409CDF020B5694\","
-				+ "\"userroles\":[]"
-				+ "}";
-		Users user= JSON.parseObject(s,Users.class);
+		System.out.println(111111);
 	}
 }

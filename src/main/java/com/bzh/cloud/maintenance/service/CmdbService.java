@@ -52,7 +52,6 @@ public class CmdbService {
 
 		List<CmdbEntity> fieldList=cmdbEntityDao.findByParentId(parentId);
 		Page<CmdbGroup> groupPage=cmdbGroupDao.findByEntityId(parentId, pa);
-		System.out.println(groupPage.getTotalElements());
 		
 		List<Map<String, String>> result=new Vector<Map<String,String>>();
 		List<Integer> groupIds=groupPage.getContent()
@@ -103,9 +102,6 @@ public class CmdbService {
 	 */
 	@Transactional
 	public void saveRroup(Map<String, String> map){
-		map.forEach((K,V)->{
-			System.out.println(K+"   "+V);
-		});
 		Integer entityId= Integer.valueOf(map.get("entityId"));
 		List<CmdbEntity> fieldList=cmdbEntityDao.findByParentId(entityId);
 		

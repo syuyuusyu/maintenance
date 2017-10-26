@@ -383,7 +383,6 @@ function createForm(){
 					    triggerAction:'all',
 					    listeners:{
 					    	change:function(_this,record){
-					    		alert(record);
 	                            var combo=_this.up('form').down('combo[name="relevantRecord"]');
 	                            combo.clearValue();
 	                            combo.store.getProxy().setExtraParam('parentId',record);

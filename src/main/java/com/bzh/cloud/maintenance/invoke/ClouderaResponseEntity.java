@@ -1,8 +1,9 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 
 public class ClouderaResponseEntity implements JsonResponseEntity {
 	
@@ -16,7 +17,6 @@ public class ClouderaResponseEntity implements JsonResponseEntity {
 
 	@Override
 	public void init(String jsonStr) {
-		System.out.println(jsonStr);
 		try {
 			json=JSON.parseObject(jsonStr);
 			isOk=true;

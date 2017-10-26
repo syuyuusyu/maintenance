@@ -20,16 +20,22 @@ public class ThreadResultData {
     private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
     private int count=0;
     private int current=0;
-    private  ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
+    private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
     public ExecutorService getFixedThreadPool() {
         return fixedThreadPool;
     }
 
     private Long timeOut;
     private int threadPoolCapacity;
+    
+    private Long sleepTime=0L;
+    
+    public void sleep(Long sleepTime){
+    	this.sleepTime=sleepTime;
+    }
 
     public ThreadResultData(){
-        this.timeOut=10000L;
+        this.timeOut=10*1000L;
         threadPoolCapacity=50;
     }
 
@@ -59,7 +65,13 @@ public class ThreadResultData {
 	}
     
 	public synchronized void addInvoker(InvokeBase<?,?> invoker){
-		
+		if(sleepTime>0){
+			try {
+				Thread.sleep(sleepTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		this.invoker.add(invoker);
 		invoker.setResultData(this);
 		this.increaseCount();

@@ -58,6 +58,9 @@ public class Alarm implements Serializable{
 	@Column(name = "r_name")
 	private String rname;
 	
+	@Column(name = "up_id")
+	private String upId;
+	
 	@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="alarm")
 	private List<AlarmProcess> process;
 	
@@ -185,6 +188,12 @@ public class Alarm implements Serializable{
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	public String getUpId() {
+		return upId;
+	}
+	public void setUpId(String upId) {
+		this.upId = upId;
 	}
 	
 	

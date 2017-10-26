@@ -5,17 +5,22 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.bzh.cloud.maintenance.interceptor.AuthInterceptor;
+import com.bzh.cloud.maintenance.util.SpringUtil;
 
 @Configuration
 public class WebAppConfigurer extends WebMvcConfigurerAdapter{
 	
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthInterceptor())
-//        	.addPathPatterns("/*")
-//        	.excludePathPatterns("/index","/logOut","/error");
-//   
-//        super.addInterceptors(registry);
+		PropertiesConf conf=(PropertiesConf) SpringUtil.getBean("propertiesConf");
+		if(conf.isProduction()){
+	        registry.addInterceptor(new AuthInterceptor())
+        	.addPathPatterns("/*")
+        	.excludePathPatterns("/index","/logOut","/error","/alarm");
+   
+	        super.addInterceptors(registry);			
+		}
+
     }
 
 }

@@ -58,9 +58,11 @@ public class AuthInterceptor implements HandlerInterceptor{
 	
 	
 	public static boolean islogin(HttpServletRequest request,RedisTemplate<String, String> redisTemplate){
+		log.info("验证用户是否在登录状态");
 		if(request.getSession().getAttribute("currentUser")!=null){
 			Users u=(Users) request.getSession().getAttribute("currentUser");
 			log.info("当前用户:"+u.getUserid());
+			log.info("当前用户是否保存在redis:"+redisTemplate.hasKey(u.getUserid()));
 			if(redisTemplate.hasKey(u.getUserid())){
 				redisTemplate.expire(u.getUserid(), 30L, TimeUnit.MINUTES);
 				return true;
@@ -69,7 +71,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 				return false;
 			}
 		}
-		
+		log.info("session超时,退出");
 		return false;
 	}
 

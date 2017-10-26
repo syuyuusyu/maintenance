@@ -8,17 +8,15 @@ import com.bzh.cloud.maintenance.entity.EntityConf;
 import com.bzh.cloud.maintenance.entity.Record;
 import com.bzh.cloud.maintenance.entity.RecordGroup;
 import com.bzh.cloud.maintenance.entity.Users;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
+import com.bzh.cloud.maintenance.invoke.RequestEntity;
+import com.bzh.cloud.maintenance.invoke.ResponseEntity;
 import com.bzh.cloud.maintenance.restFul.InvokeBase;
-import com.bzh.cloud.maintenance.restFul.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
-import com.bzh.cloud.maintenance.restFul.RequestEntity;
-import com.bzh.cloud.maintenance.restFul.ResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,37 +88,7 @@ public class TestController {
     @RequestMapping(value = "/call")
     @Transactional
     public void call() {
-        String result = restTemplate.getForObject("http://192.168.1.143:4400/serviceStatus", String.class);
-        JsonObject json=new JsonObject(result);
-        JsonArray ja=json.getJsonArray("dc2Result");
-        EntityConf en=entityConfDao.findOne(48);
-        List<RecordGroup> groups=new ArrayList<>();
-
-        List<EntityConf> recordEntitys=(List<EntityConf>) en.getChild();
-        for (int i=0;i<ja.size();i++){
-
-            RecordGroup group=new RecordGroup();
-            group.setEntityId(en.getEntityId());
-
-            JsonObject j=ja.getJsonObject(i);
-            List<Record> records=new ArrayList<>();
-            recordEntitys.forEach(E->{
-                String str=j.getString(E.getEntityCode());
-                if(!StringUtils.isEmpty(str)){
-                    Record r=new Record();
-                    r.setGroup(group);
-                    r.setEntityId(E.getEntityId());
-                    r.setState(str);
-                    records.add(r);
-                }
-
-            });
-
-            group.setRecords(records);
-            groups.add(group);
-        }
-
-        recordGroupDao.save(groups);
+ 
 
     }
 

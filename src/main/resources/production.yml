@@ -14,12 +14,12 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     #url: jdbc:mysql://192.168.1.10:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
-    password: 1234
+    password: maintenance_123
     #password: 1q2w3e4r
     #初始化连接数量，最大最小连接数
-    initial-size: 5
-    maxActive: 10
-    minIdle: 3
+    initial-size: 10
+    maxActive: 20
+    minIdle: 5
     #获取连接等待超时的时间
     maxWait: 600000
     #超过时间限制是否回收
@@ -48,7 +48,7 @@ spring:
   jpa:
     database: MYSQL
     # Show or not log for each sql query
-    #show-sql: false
+    show-sql: false
     #generate-ddl: true
     # Hibernate ddl auto (create, create-drop, update)
     hibernate:
@@ -94,7 +94,7 @@ spring:
 # 日志配置
 logging:
   config: classpath:config/logback-spring.xml
-  path: /var/log/applications/maintenance
+  path: /var/log/maintenance
   level:
     com.bzkj.sunsrise.dao: INFO
 
@@ -111,7 +111,7 @@ selfProperties:
     clouderaUsername: admin
     clouderaPassword: admin
     isProduction: true
-    startTask: false
+    startTask: true
     requestMap:
       version: v1
       system: S18
@@ -120,7 +120,7 @@ selfProperties:
       Accept: application/json
       Content-Type: application/json;charset=UTF-8
       keyid: FzPLkvSm8E
-      domain: 9.77.254.117
+      domain: 9.77.248.31
     url:
       ispUrl: http://172.16.100.131:8080/isp/interfaces
       #ispUrl: http://183.62.240.234:9000/isp/interfaces

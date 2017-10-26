@@ -69,22 +69,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-core</artifactId>
-			<version>3.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-web</artifactId>
-			<version>3.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.vertx</groupId>
-			<artifactId>vertx-web-client</artifactId>
-			<version>3.4.0</version>
-		</dependency>
-
 		<!-- spring-data-jpa -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>

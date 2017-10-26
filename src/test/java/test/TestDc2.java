@@ -17,15 +17,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 
+
+
+
+
+
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.MaintenApplication;
-import com.bzh.cloud.maintenance.restFul.InvokeCommon;
-import com.bzh.cloud.maintenance.restFul.InvokeDc2;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
+import com.bzh.cloud.maintenance.invoke.InvokeDc2;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
+import com.bzh.cloud.maintenance.service.ClouderaInvokeService;
 import com.bzh.cloud.maintenance.service.Dc2InvokeService;
+import com.bzh.cloud.maintenance.service.SecurityInvokeService;
+import com.bzh.cloud.maintenance.service.UserService;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -34,6 +43,15 @@ public class TestDc2 {
 	
 	@Autowired
 	Dc2InvokeService dc2InvokeService;
+	
+	@Autowired
+	ClouderaInvokeService clouderaInvokeService;
+	
+	@Autowired
+	SecurityInvokeService securityInvokeService;
+	
+	@Autowired
+	UserService userService;
 	
 	@Test
 	public void test() {
@@ -86,7 +104,7 @@ public class TestDc2 {
 		System.out.println(System.currentTimeMillis()-t);
 		
 		try {
-			Thread.sleep(1000*20);
+			Thread.sleep(1000*100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}				
@@ -108,6 +126,32 @@ public class TestDc2 {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	@Test
+	public void test4(){
+		clouderaInvokeService.clouderaInfo();
+		try {
+			Thread.sleep(1000*100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	@Test
+	public void test5(){
+		securityInvokeService.securityInfo();
+		try {
+			Thread.sleep(1000*100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void test6(){
+		userService.synUserRole();
 	}
 
 }

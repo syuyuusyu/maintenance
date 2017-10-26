@@ -97,6 +97,7 @@ public class AlarmService {
 			alarm.setAlarmValue(record.getState());
 			alarm.setValveValue(alarmRule.getValveValue());
 			alarm.setRuleName(alarmRule.getName());
+			alarm.setUpId(group.getUpId());
 			alarmDao.save(alarm);
 		}
 		

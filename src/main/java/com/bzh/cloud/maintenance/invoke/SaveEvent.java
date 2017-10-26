@@ -1,4 +1,4 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
 
 
 import com.alibaba.fastjson.JSON;
@@ -9,6 +9,9 @@ import com.bzh.cloud.maintenance.dao.RecordGroupDao;
 import com.bzh.cloud.maintenance.entity.Record;
 import com.bzh.cloud.maintenance.entity.RecordEntity;
 import com.bzh.cloud.maintenance.entity.RecordGroup;
+import com.bzh.cloud.maintenance.restFul.InvokeCompleteEvent;
+import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
+import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
 import org.apache.log4j.Logger;
@@ -43,6 +46,8 @@ public class SaveEvent implements InvokeCompleteEvent{
 				entityId=((ResponseEntity)data).getEntityId();
 			if(data instanceof ClouderaResponseEntity)
 				entityId=((ClouderaResponseEntity)data).getEntityId();
+			if(data instanceof SecurityResponse)
+				entityId=((SecurityResponse)data).getEntityId();
 			Assert.notNull(entityId);
 			RecordEntityDao recordEntityDao= (RecordEntityDao) SpringUtil.getBean("recordEntityDao");
 
@@ -51,7 +56,7 @@ public class SaveEvent implements InvokeCompleteEvent{
 			RecordEntity en=recordEntityDao.findOne(entityId);
 	        List<RecordGroup> groups=new ArrayList<>();
 	        
-	        List<RecordEntity> recordEntitys=recordEntityDao.findByParentId(en.getParentId());
+	        List<RecordEntity> recordEntitys=recordEntityDao.findByParentId(en.getId());
 	        for (int i=0;i<jarr.size();i++){
 	            RecordGroup group=new RecordGroup();
 	            group.setEntityId(en.getId());

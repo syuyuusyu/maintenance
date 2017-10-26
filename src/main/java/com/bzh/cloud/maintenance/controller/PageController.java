@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bzh.cloud.maintenance.config.PropertiesConf;
 import com.bzh.cloud.maintenance.entity.Users;
 import com.bzh.cloud.maintenance.interceptor.AuthInterceptor;
-import com.bzh.cloud.maintenance.restFul.InvokeCommon;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
@@ -31,6 +33,9 @@ import com.bzh.cloud.maintenance.util.SpringUtil;
 //@RequestMapping(value = "/api")
 public class PageController {
 	
+	@Value("${selfProperties.restFul.url.ispUrl}")
+	String ispUrl;
+	
 	@Autowired
 	RedisTemplate<String, String> redisTemplate;
 	@Resource(name = "redisTemplate")
@@ -38,6 +43,9 @@ public class PageController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PropertiesConf conf;
 
 	public static Logger log = Logger.getLogger(PageController.class);
 		
@@ -63,45 +71,14 @@ public class PageController {
 	}
 	
 	@RequestMapping(value="/alarm")
-	public String alarm(Model model,HttpServletRequest request){
-		return "alarm";
+	public String alarm(Model model,HttpServletRequest request,String token){
+		return vailifyLogin(request, "alarm", token);
 	}
 
 
 	@RequestMapping(value="/index")
 	public String index(Model model,String token,HttpServletRequest request){
-		if(true)
-		return "index";
-		
-		if(AuthInterceptor.islogin(request, redisTemplate)){
-			return "index";
-		}
-		InvokeCommon verifications=SpringUtil.getComInvoke("verifications");
-		final ThreadResultData td=new ThreadResultData();
-		verifications.addReqDdata("token", token);
-		td.addInvoker(verifications);
-		
-		try {
-			td.waitForResult();
-		} catch (InvokeTimeOutException e) {
-			e.printStackTrace();
-		}
-		
-		JsonResponseEntity data=td.getResult("verifications");
-		if(data.status()){
-			//验证通过，获取当前用户
-			JSONArray jrr=JSON.parseArray(data.getArrayJson());
-			JSONObject json=jrr.getJSONObject(0);
-			json.remove("userroles");
-			Users user= JSON.parseObject(json.toJSONString(),Users.class);
-			request.getSession().setAttribute("currentUser", user);
-			strOps.set(user.getUserid(), "some", 30L, TimeUnit.MINUTES);
-			//TODO
-			
-			return "index";
-		}else{
-			return "redirect:http://183.62.240.234:9000/isp/";
-		}
+		return vailifyLogin(request, "index", token);
 		
 	}
 	
@@ -146,6 +123,42 @@ public class PageController {
 			map.put("success", e.getStackTrace());
 		}
 		return map;
+	}
+	
+	
+	private String vailifyLogin(HttpServletRequest request,String pageString,String token){
+		if(!conf.isProduction())
+			return pageString;
+		
+		if(AuthInterceptor.islogin(request, redisTemplate)){
+			return pageString;
+		}
+		InvokeCommon verifications=SpringUtil.getComInvoke("verifications");
+		final ThreadResultData td=new ThreadResultData();
+		verifications.addReqDdata("token", token);
+		td.addInvoker(verifications);
+		
+		try {
+			td.waitForResult();
+		} catch (InvokeTimeOutException e) {
+			e.printStackTrace();
+		}
+		
+		JsonResponseEntity data=td.getResult("verifications");
+		if(data.status()){
+			//验证通过，获取当前用户
+			JSONArray jrr=JSON.parseArray(data.getArrayJson());
+			JSONObject json=jrr.getJSONObject(0);
+			json.remove("userroles");
+			Users user= JSON.parseObject(json.toJSONString(),Users.class);
+			request.getSession().setAttribute("currentUser", user);
+			strOps.set(user.getUserid(), "some", 30L, TimeUnit.MINUTES);
+			//TODO
+			
+			return pageString;
+		}else{
+			return "redirect:"+ispUrl.replace("interfaces", "");
+		}
 	}
 	
 

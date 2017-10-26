@@ -19,6 +19,10 @@ public class PropertiesConf {
 	
 	private String clouderaPassword;
 	
+	private boolean isProduction;
+	
+	private boolean startTask;
+	
 	private Map<String, String> url=new HashMap<String, String>();
 	
 	private Map<String, String> requestMap=new HashMap<String, String>();
@@ -64,6 +68,19 @@ public class PropertiesConf {
 	public void setUrl(Map<String, String> url) {
 		this.url = url;
 	}
+	public boolean isProduction() {
+		return isProduction;
+	}
+	public void setIsProduction(boolean isProduction) {
+		this.isProduction = isProduction;
+	}
+	public boolean isStartTask() {
+		return startTask;
+	}
+	public void setStartTask(boolean startTask) {
+		this.startTask = startTask;
+	}
+	
 	
 	
 

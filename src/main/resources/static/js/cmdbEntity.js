@@ -61,11 +61,11 @@ var tree=Ext.create('Ext.tree.Panel', {
             console.log(opt);
 	    },
         'select': function(node, record,item) {
-        	
+        	console.log(record.raw);
 	        if(record.raw.type=='7' ||record.raw.type=='8'  ){
 	            return;
             }
-	        if(record.raw.hierarchy>=2){
+	        if(record.raw.hierarchy>=1){
 	        	//各平台告警类型组
 	        	if(Ext.getCmp('tab_'+record.raw.entityName)){
 	    			var tab=Ext.getCmp('tab_'+record.raw.entityName);
@@ -250,8 +250,6 @@ function createGrid(entity,grid){
                           }
                           var	items=createGridFormItems(grid,'update'),
                               buttons=gridFromButton(grid);
-
-
 
                           var form=Ext.create('Ext.form.Panel',{
                               autoScroll: true,

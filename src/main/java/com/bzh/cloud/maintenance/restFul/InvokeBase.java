@@ -5,6 +5,8 @@ package com.bzh.cloud.maintenance.restFul;
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
+import com.bzh.cloud.maintenance.invoke.SaveEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -68,6 +70,8 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
 
     public void run(){
+		System.out.println();
+		log.info("\n----------------------");
     	log.info("调用接口:"+invokeName+"-"+Thread.currentThread().getName());
     	invoke();
     	resultData.addResult(invokeName, this.getResponseData());
@@ -104,8 +108,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 			}        	
         }
         responseEntity.init(this.result);
-        
-        log.info(invokeName+"-"+Thread.currentThread().getName()+"接口返回:"+result);       
+        log.info(invokeName+"-接口返回:"+result);       
         return this.result;
     }
     

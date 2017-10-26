@@ -1,4 +1,4 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
 
 
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 
 import com.bzh.cloud.maintenance.config.PropertiesConf;
+import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
 public class ClouderaRequestEntity implements JsonResquestEntity{

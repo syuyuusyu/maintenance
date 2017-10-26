@@ -10,7 +10,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.config.PropertiesConf;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.util.JSONUtil;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
@@ -34,6 +34,7 @@ public class RestfulClient {
 	public enum Method { GET, POST }
 
 	public static String invokRestFul(String url, String requestJson,String head,Method httpMethod) {
+
 		log.info("\n调用url:" + url+"\n调用报文:" + requestJson+"\n请求头:" + head);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		final HttpRequestBase httpRequest=getHttpMethod(httpMethod);
@@ -61,7 +62,7 @@ public class RestfulClient {
 			if(200==statusCode){
 				result = httppHttpResponse.getEntity();				
 				String s=EntityUtils.toString(result);
-				log.info(s);
+				//log.info(s);
 				return s;
 			}else{
 				Map<String, Object> errMap=new HashMap<String, Object>();
@@ -77,7 +78,6 @@ public class RestfulClient {
 				httppHttpResponse.close();
 				httpClient.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -114,8 +114,6 @@ public class RestfulClient {
 		requestMap.forEach(request::put);
 
 		request.put("reqdata", reqdata);
-		System.out.println(request.toString());
-		System.out.println(head.toString());
 
 		return invokRestFul(url, request.toString(), head.toString(),httpMethod);
 	}

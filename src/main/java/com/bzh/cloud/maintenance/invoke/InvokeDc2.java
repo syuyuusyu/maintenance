@@ -1,9 +1,10 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
 
 import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
 
+import com.bzh.cloud.maintenance.restFul.RestfulClient;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
 public class InvokeDc2 extends InvokeCommon{

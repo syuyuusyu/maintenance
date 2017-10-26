@@ -1,4 +1,4 @@
-package com.bzh.cloud.maintenance.restFul;
+package com.bzh.cloud.maintenance.invoke;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bzh.cloud.maintenance.config.PropertiesConf;
+import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 
 public class RequestEntity implements JsonResquestEntity{

@@ -5,9 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
+
 import com.bzh.cloud.maintenance.entity.Roles;
 import com.bzh.cloud.maintenance.entity.Users;
-import com.bzh.cloud.maintenance.restFul.InvokeCommon;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 
 
 @Configuration
