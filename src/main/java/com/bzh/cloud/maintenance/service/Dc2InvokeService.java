@@ -1,22 +1,18 @@
 package com.bzh.cloud.maintenance.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Service;
-
-
-
-
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.invoke.InvokeDc2;
+import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -46,10 +42,9 @@ public class Dc2InvokeService {
 		});
 		//参数查询，用于节点资源参数
 		InvokeDc2 monitorArgs=(InvokeDc2) SpringUtil.getBean("monitorArgs");
-		monitorArgs.addEvent((Jo,rdata)->{
+		monitorArgs.addEvent((JsonResponseEntity Jo, ThreadResultData rdata) ->{
 			List<Map<String,String>> argList=new ArrayList<>();
-			JSONArray jarr=JSON.parseArray(Jo.getArrayJson());	
-			System.out.println(jarr);
+			JSONArray jarr=JSON.parseArray(Jo.getArrayJson());
 			for (int i = 0; i < jarr.size(); i++) {				
 				JSONObject j1=jarr.getJSONObject(i);
 				j1.keySet().forEach(gangliaId->{
@@ -104,7 +99,7 @@ public class Dc2InvokeService {
 		
 		//keystone
 		InvokeDc2 keystone=(InvokeDc2) SpringUtil.getBean("keystone");
-		keystone.save();
+		//keystone.save();
 		
 		//mongodb
 		InvokeDc2 mongodb=(InvokeDc2) SpringUtil.getBean("mongodb");
@@ -154,8 +149,7 @@ public class Dc2InvokeService {
 		invoke.setInvokeName("invokeRegiontatistics_"+regionName);
 		invoke.addReqDdata("regionName", regionName);
 		//TODO
-
-		//invoke.save();
+		invoke.save();
 		return invoke;
 	}	
 	

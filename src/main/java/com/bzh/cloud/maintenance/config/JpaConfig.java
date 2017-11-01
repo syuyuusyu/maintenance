@@ -32,7 +32,7 @@ public class JpaConfig {
     public EntityManagerFactory entityManagerFactory() {
     	log.info("inital entityManagerFactory");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(true);
+        vendorAdapter.setShowSql(false);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);

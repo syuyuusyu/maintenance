@@ -11,10 +11,11 @@ spring:
     # schema: classpath:schema/inital.sql
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
-    #url: jdbc:mysql://192.168.1.10:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    #url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://9.77.248.31:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    password: maintenance_123
     username: root
-    password: 1234
+    #password: 1234
     #password: 1q2w3e4r
     #初始化连接数量，最大最小连接数
     initial-size: 5
@@ -47,16 +48,12 @@ spring:
 
   jpa:
     database: MYSQL
-    # Show or not log for each sql query
-    #show-sql: false
-    #generate-ddl: true
-    # Hibernate ddl auto (create, create-drop, update)
     hibernate:
-      #ddl-auto: create
-    #spring.jpa.database-platform=org.hibernate.dialect.MySQL5Dialect
-      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
-    #spring.jpa.database=org.hibernate.dialect.MySQL5InnoDBDialect
       dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: false
+    properties:
+      hibernate:
+        show_sql: false
 # mybatis 配置
 # Redis数据库索引（默认为0
   redis:
@@ -96,7 +93,10 @@ logging:
   config: classpath:config/logback-spring.xml
   path: /var/log/applications/maintenance
   level:
-    com.bzkj.sunsrise.dao: INFO
+    org:
+      hibernate:
+        type: off
+        SQL: off
 
 management:
   security:
@@ -110,7 +110,7 @@ selfProperties:
   restFul:
     clouderaUsername: admin
     clouderaPassword: admin
-    isProduction: true
+    isProduction: false
     startTask: false
     requestMap:
       version: v1
@@ -127,5 +127,6 @@ selfProperties:
       #coludUrl: http://172.16.100.111:8080/dc2us2/rest/openstack/exmanager
       coludUrl: http://9.77.254.13:8080/dc2us2/rest/openstack/exmanager
       #coludUrl: http://9.77.254.236:8080/dc2us2/rest/openstack/exmanager
-      coluderaUrl: http://172.16.100.116:7180/api/v15
+      #coluderaUrl: http://172.16.100.116:7180/api/v15
+      coluderaUrl: http://9.77.254.19:7180/api/v15
       securityUrl: http://172.16.100.127:9200/v1

@@ -1,21 +1,11 @@
 package com.bzh.cloud.maintenance.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @DynamicUpdate
@@ -39,7 +29,7 @@ public class RecordGroup implements Serializable{
     private String upId;
     
     @Column(name = "create_time")
-    @CreationTimestamp
+    //@CreationTimestamp
     private Date createTime;
     
     @OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="group")

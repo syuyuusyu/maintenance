@@ -1,33 +1,37 @@
 package test;
 
-import com.alibaba.fastjson.JSON;
 import com.bzh.cloud.maintenance.MaintenApplication;
-import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
-import com.bzh.cloud.maintenance.dao.RolesDao;
-import com.bzh.cloud.maintenance.dao.TDictionaryDao;
-import com.bzh.cloud.maintenance.dao.UsersDao;
-import com.bzh.cloud.maintenance.entity.Roles;
-import com.bzh.cloud.maintenance.entity.Users;
+import com.bzh.cloud.maintenance.dao.*;
+import com.bzh.cloud.maintenance.entity.RecordEntity;
+import com.bzh.cloud.maintenance.entity.RecordGroup;
 import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.invoke.RequestEntity;
-import com.bzh.cloud.maintenance.restFul.*;
+import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
+import com.bzh.cloud.maintenance.restFul.RestfulClient;
+import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.service.AlarmService;
 import com.bzh.cloud.maintenance.service.CmdbService;
+import com.bzh.cloud.maintenance.service.MerageDataService;
 import com.bzh.cloud.maintenance.service.UserService;
 import com.bzh.cloud.maintenance.util.SpringUtil;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = MaintenApplication.class)
@@ -57,6 +61,21 @@ public class TestJson {
 	
 	@Autowired
 	CmdbService cmdbService;
+
+	@Autowired
+	RecordGroupDao recordGroupDao;
+
+	@Autowired
+	MerageDataService merageDataService;
+
+	@Autowired
+	RecordEntityDao recordEntityDao;
+
+	@Autowired
+	JdbcTemplate jdbc;
+
+	@Autowired
+	RecordDao recordDao;
 	@Test
 	public void test1(){
 		String url="http://9.77.248.14:8080/isp/";
@@ -217,6 +236,53 @@ public class TestJson {
 		cmdbService.records(23,null);
 	}
 	
-	
+	@Test
+	public void test11(){
+		List<RecordGroup> list=recordGroupDao.yestdayByHour(17,61);
+		RecordEntity entity=recordEntityDao.findOne(61);
+		List<Integer> ids=new ArrayList<>();
+		ids.add(310439);
+		ids.add(310440);
+		ids.add(310441);
+		//List<RecordGroup> list2=recordGroupDao.findByGroupIds(ids);
+		Long time=System.currentTimeMillis();
+		merageDataService.byEntityHour(list,entity);
+		System.out.println(System.currentTimeMillis()-time);
+	}
+
+	@Test
+	public void test12(){
+		List<Map<String,Object>> list=jdbc.queryForList("select * from record_group where  entity_id=41");
+		System.out.print(list.size());
+		list.forEach(m->{
+			m.forEach((K,V)->{
+				System.out.print(K+"  "+V+";");
+			});
+			System.out.println();
+		});
+	}
+
+
+	@Test
+	@Transactional
+	public void test13(){
+		IntStream.rangeClosed(0,23).forEach(this::merageData);
+		recordDao.deleteWithNoGroup();
+
+	}
+
+	private void merageData(int index){
+		List<RecordEntity> entitys=recordEntityDao.groupEntitys();
+		List<CompletableFuture<String>> futures=entitys.stream().filter(entity->112!=entity.getId()).map(entity->CompletableFuture.supplyAsync(
+				()->{
+					List<RecordGroup> list=recordGroupDao.yestdayByHour(index,entity.getId());
+					return merageDataService.byEntityHour(list,entity);
+				}
+		)).collect(Collectors.toList());
+
+		List<String> result=futures.stream().map(CompletableFuture::join).collect(Collectors.toList());
+		result.forEach(System.out::println);
+	}
+
 
 }

@@ -1,18 +1,12 @@
 package com.bzh.cloud.maintenance.service;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-//import java.util.stream.Collectors;
-
-
-
-
-import java.util.stream.Collectors;
-
+import com.bzh.cloud.maintenance.dao.CmdbEntityDao;
+import com.bzh.cloud.maintenance.dao.CmdbGroupDao;
+import com.bzh.cloud.maintenance.dao.CmdbRecordDao;
+import com.bzh.cloud.maintenance.entity.CmdbEntity;
+import com.bzh.cloud.maintenance.entity.CmdbGroup;
+import com.bzh.cloud.maintenance.entity.CmdbRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.bzh.cloud.maintenance.dao.CmdbEntityDao;
-import com.bzh.cloud.maintenance.dao.CmdbGroupDao;
-import com.bzh.cloud.maintenance.dao.CmdbRecordDao;
-import com.bzh.cloud.maintenance.entity.CmdbEntity;
-import com.bzh.cloud.maintenance.entity.CmdbGroup;
-import com.bzh.cloud.maintenance.entity.CmdbRecord;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Service
 public class CmdbService {
@@ -52,8 +43,8 @@ public class CmdbService {
 
 		List<CmdbEntity> fieldList=cmdbEntityDao.findByParentId(parentId);
 		Page<CmdbGroup> groupPage=cmdbGroupDao.findByEntityId(parentId, pa);
-		
-		List<Map<String, String>> result=new Vector<Map<String,String>>();
+
+		List<Map<String, String>> result=new Vector<>();
 		List<Integer> groupIds=groupPage.getContent()
 				.stream().map(CmdbGroup::getGroupId).collect(Collectors.toList());		
 		List<CmdbRecord> recordList=cmdbRecordDao.findByGroupIds(groupIds);		

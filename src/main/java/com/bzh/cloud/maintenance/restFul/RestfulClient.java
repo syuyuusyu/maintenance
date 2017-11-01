@@ -1,11 +1,12 @@
 package com.bzh.cloud.maintenance.restFul;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bzh.cloud.maintenance.config.PropertiesConf;
+import com.bzh.cloud.maintenance.invoke.InvokeCommon;
+import com.bzh.cloud.maintenance.util.JSONUtil;
+import com.bzh.cloud.maintenance.util.SpringUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -19,13 +20,11 @@ import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.bzh.cloud.maintenance.config.PropertiesConf;
-import com.bzh.cloud.maintenance.invoke.InvokeCommon;
-import com.bzh.cloud.maintenance.util.JSONUtil;
-import com.bzh.cloud.maintenance.util.SpringUtil;
+import java.io.IOException;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class RestfulClient {
 
@@ -53,6 +52,7 @@ public class RestfulClient {
 			httppHttpResponse = httpClient.execute(httpRequest);
 		} catch (IOException e) {
 			log.error("调用接口错误");
+			log.error("\n调用url:" + url+"\n调用报文:" + requestJson+"\n请求头:" + head);
 			e.printStackTrace();
 		}
 		int statusCode=httppHttpResponse.getStatusLine().getStatusCode();

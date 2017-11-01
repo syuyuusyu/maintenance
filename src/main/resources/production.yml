@@ -127,5 +127,6 @@ selfProperties:
       #coludUrl: http://172.16.100.111:8080/dc2us2/rest/openstack/exmanager
       coludUrl: http://9.77.254.13:8080/dc2us2/rest/openstack/exmanager
       #coludUrl: http://9.77.254.236:8080/dc2us2/rest/openstack/exmanager
-      coluderaUrl: http://172.16.100.116:7180/api/v15
+      #coluderaUrl: http://172.16.100.116:7180/api/v15
+      coluderaUrl: http://9.77.254.19:7180/api/v15
       securityUrl: http://172.16.100.127:9200/v1

@@ -13,7 +13,6 @@ import com.bzh.cloud.maintenance.restFul.InvokeCompleteEvent;
 import com.bzh.cloud.maintenance.restFul.JsonResponseEntity;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
-
 import org.apache.log4j.Logger;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SaveEvent implements InvokeCompleteEvent{
@@ -55,11 +55,12 @@ public class SaveEvent implements InvokeCompleteEvent{
 			JSONArray jarr=JSON.parseArray(data.getArrayJson());
 			RecordEntity en=recordEntityDao.findOne(entityId);
 	        List<RecordGroup> groups=new ArrayList<>();
-	        
+			Date time=new Date();
 	        List<RecordEntity> recordEntitys=recordEntityDao.findByParentId(en.getId());
 	        for (int i=0;i<jarr.size();i++){
 	            RecordGroup group=new RecordGroup();
 	            group.setEntityId(en.getId());
+				group.setCreateTime(time);
 	            final StringBuilder upId=new StringBuilder();
 	            JSONObject j=jarr.getJSONObject(i);
 	            List<Record> records=new ArrayList<>();

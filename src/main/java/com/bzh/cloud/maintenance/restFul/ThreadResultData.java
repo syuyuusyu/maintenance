@@ -1,6 +1,9 @@
 package com.bzh.cloud.maintenance.restFul;
 
 
+import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import org.apache.log4j.Logger;
-import org.springframework.util.StringUtils;
 
 public class ThreadResultData {
 
@@ -89,7 +89,7 @@ public class ThreadResultData {
 		this.count++;
 		//System.out.println("increaseCount:"+count);
 	}
-	
+
 	private synchronized int getCurrent(){
 		return this.current;
 	}

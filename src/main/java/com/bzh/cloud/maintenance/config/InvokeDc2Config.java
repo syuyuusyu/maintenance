@@ -1,16 +1,5 @@
 package com.bzh.cloud.maintenance.config;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.util.StringUtils;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -19,6 +8,16 @@ import com.bzh.cloud.maintenance.invoke.InvokeDc2;
 import com.bzh.cloud.maintenance.invoke.RequestEntity;
 import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
 import com.bzh.cloud.maintenance.util.JSONUtil;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 @Configuration
 public class InvokeDc2Config {
@@ -430,7 +429,9 @@ public class InvokeDc2Config {
 				String type = jo1.getString("type");
 				String enabled = jo1.getString("enabled");
 				newjo.put(type, enabled);
+
 			}
+			newjo.put("id","keystone");
 			newarr.add(newjo);
 			json.put("respdata", newarr);
 			return json.toJSONString();

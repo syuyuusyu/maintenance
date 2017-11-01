@@ -105,10 +105,10 @@ public class ClouderaInvokeService {
 	 */
 	public void hostHealth(){
 		final ThreadResultData trd=new ThreadResultData();
-		List<String> hostList=new Vector<String>();
+		List<String> hostList=new Vector<>();
 		InvokeCloudera invokeClouderaHosts=(InvokeCloudera) SpringUtil.getInvokes("clouderaHosts");
 		invokeClouderaHosts.addEvent((response,resultData)->{
-			JSONArray hostArr=JSON.parseArray(response.getArrayJson());
+			JSONArray hostArr = JSON.parseArray(response.getArrayJson());
 			
 			for(int i=0;i<hostArr.size();i++){
 				JSONObject hj=hostArr.getJSONObject(i);
