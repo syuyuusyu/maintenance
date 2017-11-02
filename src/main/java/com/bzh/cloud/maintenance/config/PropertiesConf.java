@@ -1,13 +1,13 @@
 package com.bzh.cloud.maintenance.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 
 
 @Configuration
@@ -80,17 +80,6 @@ public class PropertiesConf {
 	public void setStartTask(boolean startTask) {
 		this.startTask = startTask;
 	}
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
