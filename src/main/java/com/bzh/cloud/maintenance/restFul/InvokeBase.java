@@ -1,7 +1,5 @@
 package com.bzh.cloud.maintenance.restFul;
 
-
-
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 
@@ -121,8 +119,6 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
   
 	public String getResult() {
-		if(resultFun!=null)
-			return resultFun.apply(this.result);
 		return result;
 	}
 

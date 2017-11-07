@@ -157,7 +157,7 @@ public class PageController {
 			
 			return pageString;
 		}else{
-			return "redirect:"+ispUrl.replace("interfaces", "");
+			return "redirect:https://isp.yndlr.gov.cn:8443/isp/";
 		}
 	}
 	

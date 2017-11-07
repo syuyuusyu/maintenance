@@ -9,10 +9,7 @@ import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.invoke.InvokeDc2;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
-import com.bzh.cloud.maintenance.service.ClouderaInvokeService;
-import com.bzh.cloud.maintenance.service.Dc2InvokeService;
-import com.bzh.cloud.maintenance.service.SecurityInvokeService;
-import com.bzh.cloud.maintenance.service.UserService;
+import com.bzh.cloud.maintenance.service.*;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +35,9 @@ public class TestDc2 {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    Dc2InvokeFutureService dc2InvokeFutureService;
 
     @Test
     public void test() {
@@ -142,7 +142,7 @@ public class TestDc2 {
 
     @Test
     public void test7() {
-
+        dc2InvokeFutureService.getDc2Resource();
     }
 
 }

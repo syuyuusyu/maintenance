@@ -120,7 +120,7 @@ selfProperties:
       Accept: application/json
       Content-Type: application/json;charset=UTF-8
       keyid: FzPLkvSm8E
-      domain: 9.77.254.117
+      domain: 9.77.248.31
     url:
       ispUrl: http://172.16.100.131:8080/isp/interfaces
       #ispUrl: http://183.62.240.234:9000/isp/interfaces

@@ -266,7 +266,7 @@ public class TestJson {
 	@Test
 	@Transactional
 	public void test13(){
-		IntStream.rangeClosed(0,23).forEach(this::merageData);
+		IntStream.rangeClosed(0,23).parallel().forEach(this::merageData);
 		recordDao.deleteWithNoGroup();
 
 	}

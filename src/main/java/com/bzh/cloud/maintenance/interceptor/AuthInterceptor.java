@@ -1,18 +1,16 @@
 package com.bzh.cloud.maintenance.interceptor;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.bzh.cloud.maintenance.config.PropertiesConf;
+import com.bzh.cloud.maintenance.entity.Users;
+import com.bzh.cloud.maintenance.util.SpringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bzh.cloud.maintenance.config.PropertiesConf;
-import com.bzh.cloud.maintenance.entity.Users;
-import com.bzh.cloud.maintenance.util.SpringUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 public class AuthInterceptor implements HandlerInterceptor{
 
@@ -33,7 +31,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 		
 		if(!islogin(request, redisTemplate)){
 			PropertiesConf conf=(PropertiesConf) SpringUtil.getBean("propertiesConf");
-			response.sendRedirect(conf.getUrl().get("ispUrl").replace("interfaces", ""));
+			response.sendRedirect("https://isp.yndlr.gov.cn:8443/isp/");
 			return false;
 		}
 		

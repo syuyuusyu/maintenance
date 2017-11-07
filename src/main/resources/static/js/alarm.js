@@ -91,7 +91,7 @@ function createGrid(plateId){
 						case '0':
 							return '状态告警';
 						case '1':
-							return '阀值告警';				
+							return '阀值告警';
 					}				
 				}
                },
