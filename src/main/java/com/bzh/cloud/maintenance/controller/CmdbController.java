@@ -1,13 +1,11 @@
 package com.bzh.cloud.maintenance.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.bzh.cloud.maintenance.dao.CmdbEntityDao;
+import com.bzh.cloud.maintenance.dao.CmdbGroupDao;
+import com.bzh.cloud.maintenance.dao.CmdbRecordDao;
+import com.bzh.cloud.maintenance.entity.CmdbEntity;
+import com.bzh.cloud.maintenance.entity.CmdbGroup;
+import com.bzh.cloud.maintenance.service.CmdbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bzh.cloud.maintenance.dao.CmdbEntityDao;
-import com.bzh.cloud.maintenance.dao.CmdbGroupDao;
-import com.bzh.cloud.maintenance.dao.CmdbRecordDao;
-import com.bzh.cloud.maintenance.entity.CmdbEntity;
-import com.bzh.cloud.maintenance.entity.CmdbGroup;
-import com.bzh.cloud.maintenance.service.CmdbService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/cmdbConf")
@@ -113,7 +111,7 @@ public class CmdbController {
     
     @RequestMapping(value="/records")
     @ResponseBody
-    public Map<String, Object> records(Integer parentId,Integer page, Integer limit,Integer start){
+    public Map<String, Object> records(Integer parentId,Integer page, Integer limit){
     	Map<String, Object> map=new HashMap<String, Object>();
     	Pageable pa = new PageRequest(page - 1, limit);
     	List<Map<String, String>> result=cmdbService.records(parentId,pa);

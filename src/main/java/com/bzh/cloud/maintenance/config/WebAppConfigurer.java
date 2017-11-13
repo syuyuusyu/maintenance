@@ -1,6 +1,7 @@
 package com.bzh.cloud.maintenance.config;
 
 import com.bzh.cloud.maintenance.interceptor.AuthInterceptor;
+import com.bzh.cloud.maintenance.interceptor.InvokeInterceptor;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,8 +16,12 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter{
 		if(conf.isProduction()){
 	        registry.addInterceptor(new AuthInterceptor())
         	.addPathPatterns("/*")
-        	.excludePathPatterns("/index","/logOut","/error","/alarm");
-   
+        	.excludePathPatterns("/index","/logOut","/error","/alarm","/records","/entityInfo","/noAuth");
+
+
+	        registry.addInterceptor(new InvokeInterceptor())
+					.addPathPatterns("/records","/entityInfo");
+
 	        super.addInterceptors(registry);
 		}
 

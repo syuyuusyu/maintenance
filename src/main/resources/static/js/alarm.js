@@ -67,7 +67,7 @@ function createGrid(plateId){
                {dataIndex:'ruleId',text:'告警规则ID',hidden:true,width:100},
                {dataIndex:'ruleName',text:'告警规则名称',width:100},
                {dataIndex:'roleId',text:'角色ID',hidden:true,width:100},
-               {dataIndex:'step',text:'处理步骤',width:80,
+               {dataIndex:'step',text:'处理步骤',width:110,
             	   renderer:function(value){               
 			   				switch(value){
 							case '0':
@@ -79,9 +79,10 @@ function createGrid(plateId){
 						}				
 					}
                },
+                {dataIndex:'upId',text:'资源ID',width:200},
                {dataIndex:'groupId',text:'记录组ID',hidden:true,width:200},
                {dataIndex:'gcode',text:'记录组编码',hidden:true,width:100},
-               {dataIndex:'gname',text:'记录组名称',width:150},
+               {dataIndex:'gname',text:'记录组名称',width:250},
                {dataIndex:'recordId',text:'记录ID',hidden:true,width:200},
                {dataIndex:'rcode',text:'记录编码',hidden:true,width:100},
                {dataIndex:'rname',text:'记录名称',width:150},
@@ -113,7 +114,7 @@ function createGrid(plateId){
                {dataIndex:'alarmValue',text:'实际值',width:150},
                {dataIndex:'info',text:'处理信息',hidden:true,width:150}
                ];
-       var fields=['id','ruleId','ruleName','roleId','step','groupId','gcode','gname','recordId',
+       var fields=['id','ruleId','ruleName','roleId','step','upId','groupId','gcode','gname','recordId',
                    'rcode','rname','alarmType','valveValue','equalType','equalType','alarmValue','info'];
        var store=Ext.create('Ext.data.Store',{
            fields:fields,
@@ -137,7 +138,7 @@ function createGrid(plateId){
           enableTextSelection :true
       }	     
       ,plateId:plateId
-      ,forceFit:true
+      //,forceFit:true
       ,autohight:true
       ,autoScroll:true
       ,selModel: Ext.create("Ext.selection.CheckboxModel", {

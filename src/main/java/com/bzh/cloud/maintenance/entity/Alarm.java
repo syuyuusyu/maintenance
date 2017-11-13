@@ -1,17 +1,11 @@
 package com.bzh.cloud.maintenance.entity;
 
-import java.io.Serializable;
-import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 
 
@@ -78,6 +72,13 @@ public class Alarm implements Serializable{
 	
 	@Column(name = "rule_name")
 	private String ruleName;
+
+	@Column(name="plate_id")
+	private Integer plateId;
+
+	@Column(name="create_time")
+	@CreationTimestamp
+	private Date createTime;
 	
 	@Column(name = "info")
 	private String info;
@@ -195,13 +196,20 @@ public class Alarm implements Serializable{
 	public void setUpId(String upId) {
 		this.upId = upId;
 	}
-	
-	
-	
 
-	
-	
-	
-	
-	
+	public Integer getPlateId() {
+		return plateId;
+	}
+
+	public void setPlateId(Integer plateId) {
+		this.plateId = plateId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 }

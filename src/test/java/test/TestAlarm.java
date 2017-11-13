@@ -1,7 +1,14 @@
 package test;
 
-import java.util.List;
-
+import com.bzh.cloud.maintenance.MaintenApplication;
+import com.bzh.cloud.maintenance.dao.AlarmDao;
+import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
+import com.bzh.cloud.maintenance.dao.RecordGroupDao;
+import com.bzh.cloud.maintenance.entity.Alarm;
+import com.bzh.cloud.maintenance.entity.AlarmRule;
+import com.bzh.cloud.maintenance.entity.Record;
+import com.bzh.cloud.maintenance.entity.RecordGroup;
+import com.bzh.cloud.maintenance.service.AlarmService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bzh.cloud.maintenance.MaintenApplication;
-import com.bzh.cloud.maintenance.dao.AlarmDao;
-import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
-import com.bzh.cloud.maintenance.entity.Alarm;
-import com.bzh.cloud.maintenance.service.AlarmService;
+import java.util.List;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,6 +34,9 @@ public class TestAlarm {
 	
 	@Autowired
 	AlarmService alarmService;
+
+	@Autowired
+	RecordGroupDao recordGroupDao;
 	
 	@Test
 	public void test(){
@@ -55,10 +61,33 @@ public class TestAlarm {
 	@Test
 	public void test3(){
 		Pageable pa = new PageRequest(0, 5);
-		Page<Alarm> page=alarmDao.findByPlate( 2,pa);
+		Page<Alarm> page=alarmDao.findByPlateId( 2,pa);
 		//Page<Alarm> page=alarmDao.findByStep("0",pa);
 		List<Alarm> list=page.getContent();
 		System.out.println(list.size());
+	}
+
+	@Test
+	@Transactional
+	public void test4(){
+		AlarmRule rule=alarmRuleDao.findOne(5);
+		alarmService.doSearchAlarm(rule);
+	}
+
+	@Test
+	public void test14(){
+		alarmService.createAlarm();
+	}
+
+	@Test
+	@Transactional
+	public void test5(){
+
+		RecordGroup group=recordGroupDao.findOne(872861);
+		AlarmRule rule=alarmRuleDao.findOne(11);
+		Integer a=rule.getRelevantRecord();
+		List<Record> records=group.getRecords();
+		records.stream().filter(R->R.getEntityId()==a).findFirst().get();
 	}
 
 }

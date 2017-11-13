@@ -1,8 +1,7 @@
 package com.bzh.cloud.maintenance.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.bzh.cloud.maintenance.dao.AlarmDao;
+import com.bzh.cloud.maintenance.entity.Alarm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,8 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bzh.cloud.maintenance.dao.AlarmDao;
-import com.bzh.cloud.maintenance.entity.Alarm;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -24,7 +23,7 @@ public class AlarmController {
 	@RequestMapping(value = "/alarms")
 	public Page<Alarm> 	alarms(Integer plateId,Integer page, Integer limit){
 		Pageable pa = new PageRequest(page - 1, limit);
-		return alarmDao.findByPlate(plateId, pa);
+		return alarmDao.findByPlateId(plateId, pa);
 	}
 	
 	@RequestMapping(value = "/update")

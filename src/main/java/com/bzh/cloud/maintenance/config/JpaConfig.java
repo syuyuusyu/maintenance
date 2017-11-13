@@ -41,7 +41,7 @@ public class JpaConfig {
         factory.setDataSource(dataSource);
 
         Map<String, Object> jpaProperties = new HashMap<String, Object>();
-        jpaProperties.put("hibernate.ejb.naming_strategy","org.hibernate.cfg.ImprovedNamingStrategy");
+        //jpaProperties.put("hibernate.ejb.naming_strategy","org.hibernate.cfg.ImprovedNamingStrategy");
         jpaProperties.put("hibernate.jdbc.batch_size",50);
 
         factory.setJpaPropertyMap(jpaProperties);

@@ -49,7 +49,8 @@ public class InterfaceInfoTask {
 	/**
 	 * dc2信息
 	 */
-	@Scheduled(fixedDelay=ONE_Minute*5,initialDelay=ONE_Minute)
+	@Scheduled(fixedDelay=ONE_Minute*5,initialDelay=ONE_Minute
+	)
 	public void dc2Info(){
 		if(startTask)
 		dc2InvokeService.getDc2Resource();

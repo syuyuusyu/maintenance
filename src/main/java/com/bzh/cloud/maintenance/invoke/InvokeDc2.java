@@ -24,7 +24,6 @@ public class InvokeDc2 extends InvokeCommon{
 	
 	@Override
 	protected void beforeCall(){
-		this.setTicket("b30696b8-b6bb-4aad-827e-6953bafeb3b1");
 		if(StringUtils.isEmpty(this.requestEntity.getTicket())){
 			if(StringUtils.isEmpty(this.resultData.getSomething("currentTicket"))){
 				String ticket=RestfulClient.getColudTicket();

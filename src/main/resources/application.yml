@@ -104,13 +104,18 @@ management:
 
 server:
   port: 4400
+  ssl:
+    key-store: classpath:214257238670928.pfx
+    key-store-password: 214257238670928
+    keyStoreType: PKCS12
+    keyAlias: alias
 
 
 selfProperties:
   restFul:
     clouderaUsername: admin
     clouderaPassword: admin
-    isProduction: false
+    isProduction: true
     startTask: false
     requestMap:
       version: v1
@@ -120,12 +125,13 @@ selfProperties:
       Accept: application/json
       Content-Type: application/json;charset=UTF-8
       keyid: FzPLkvSm8E
-      domain: 9.77.248.31
+      domain: https://om.yndlr.gov.cn:80
     url:
-      ispUrl: http://172.16.100.131:8080/isp/interfaces
+      ispUrl: https://isp.yndlr.gov.cn/interfaces
       #ispUrl: http://183.62.240.234:9000/isp/interfaces
       #coludUrl: http://172.16.100.111:8080/dc2us2/rest/openstack/exmanager
-      coludUrl: http://9.77.254.13:8080/dc2us2/rest/openstack/exmanager
+      #coludUrl: http://9.77.254.13:8080/dc2us2/rest/openstack/exmanager
+      coludUrl: https://stcloud.yndlr.gov.cn:8443/dc2us2/rest/openstack/exmanager
       #coludUrl: http://9.77.254.236:8080/dc2us2/rest/openstack/exmanager
       #coluderaUrl: http://172.16.100.116:7180/api/v15
       coluderaUrl: http://9.77.254.19:7180/api/v15

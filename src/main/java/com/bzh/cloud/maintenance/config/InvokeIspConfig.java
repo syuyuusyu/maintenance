@@ -60,6 +60,19 @@ public class InvokeIspConfig {
 		return invoke;
 		
 	}
+
+	//接口调用验证
+	@Bean
+	@Scope("prototype")
+	public InvokeCommon keyverify(){
+		InvokeCommon invoke=new InvokeCommon("keyverify");
+		invoke.setUrl(ispUrl)
+				.setMethod("keyverify")
+				.setType("query");
+
+		return invoke;
+
+	}
 	
 
 }

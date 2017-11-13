@@ -111,6 +111,11 @@ public class PageController {
 	public String alarmRuleConf(){
 		return "alarmRuleConf";
 	}
+
+	@RequestMapping(value="/recordInfo")
+	public String recordInfo(){
+		return "recordInfo";
+	}
 	
 	@RequestMapping(value="/synUserRole")
 	@ResponseBody
@@ -157,7 +162,7 @@ public class PageController {
 			
 			return pageString;
 		}else{
-			return "redirect:https://isp.yndlr.gov.cn:8443/isp/";
+			return "redirect:https://isp.yndlr.gov.cn";
 		}
 	}
 	

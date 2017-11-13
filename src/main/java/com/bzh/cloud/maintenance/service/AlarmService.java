@@ -52,11 +52,10 @@ public class AlarmService {
 		List<RecordGroup> groups=recordGroupDao.findNewByEntitys(alarmRule.getRelevantGroup());
 		if(groups.size()<1) return;
 		RecordGroup group=groups.stream().max(Comparator.comparing(RecordGroup::getCreateTime)).get();
-		System.out.println(group.getGroupId());
 		RecordEntity groupEntity=recordEntityDao.findOne(group.getEntityId());
 
 		List<Record> records=group.getRecords();
-		Record record=records.stream().filter(R->R.getEntityId()==alarmRule.getRelevantRecord()).findFirst().get();
+		Record record=records.stream().filter(R->R.getEntityId().equals(alarmRule.getRelevantRecord())).findFirst().get();
 		Assert.notNull(record);
 		RecordEntity recordEntity=recordEntityDao.findOne(record.getEntityId());
 
@@ -82,23 +81,27 @@ public class AlarmService {
 			}
 		}
 		if(alert){
-			Alarm alarm=new Alarm();
-			alarm.setGroupId(group.getGroupId());
-			alarm.setRecordId(record.getRecordId());
-			alarm.setRoleId(alarmRule.getRoleId());
-			alarm.setRuleId(alarmRule.getId());
-			alarm.setStep("0");
-			alarm.setGcode(groupEntity.getEntityCode());
-			alarm.setRcode(recordEntity.getEntityCode());
-			alarm.setGname(groupEntity.getEntityName());
-			alarm.setRname(recordEntity.getEntityName());
-			alarm.setAlarmType(alarmRule.getType());
-			alarm.setEqualType(alarmRule.getEqualType());
-			alarm.setAlarmValue(record.getState());
-			alarm.setValveValue(alarmRule.getValveValue());
-			alarm.setRuleName(alarmRule.getName());
-			alarm.setUpId(group.getUpId());
-			alarmDao.save(alarm);
+			int count=alarmDao.countCurrentHour(alarmRule.getId());
+			if (count==0) {
+				Alarm alarm=new Alarm();
+				alarm.setGroupId(group.getGroupId());
+				alarm.setRecordId(record.getRecordId());
+				alarm.setRoleId(alarmRule.getRoleId());
+				alarm.setRuleId(alarmRule.getId());
+				alarm.setStep("0");
+				alarm.setGcode(groupEntity.getEntityCode());
+				alarm.setRcode(recordEntity.getEntityCode());
+				alarm.setGname(groupEntity.getEntityName());
+				alarm.setRname(recordEntity.getEntityName());
+				alarm.setAlarmType(alarmRule.getType());
+				alarm.setEqualType(alarmRule.getEqualType());
+				alarm.setAlarmValue(record.getState());
+				alarm.setValveValue(alarmRule.getValveValue());
+				alarm.setRuleName(alarmRule.getName());
+				alarm.setUpId(group.getUpId());
+				alarm.setPlateId(groupEntity.getParentId());
+				alarmDao.save(alarm);
+			}
 		}
 		
 		

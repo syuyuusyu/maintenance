@@ -11,7 +11,7 @@
     <meta name="author" content=""/>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/monstrous/emblem.jpg}"/>
-	<title>云南省不动产统一登记综合服务平台</title>
+	<title>自动化运维平台</title>
     <!-- Bootstrap Core CSS <link rel="stylesheet" type="text/css" th:href="@{/css/treeIcon.css}" />-->
     <link th:href="@{/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <!-- chartist CSS -->
@@ -172,7 +172,6 @@
                 <!-- Sidebar navigation  菜单栏-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
-                        <li class="nav-small-cap">PERSONAL</li>
 						<li><a href="javascript:;" onclick="jumpPage('.././alarmRuleConf')">告警规则配置</a></li>
 						<li><a href="javascript:;" onclick="jumpPage('.././recordEntity')">接口内容配置</a></li>
 						<li><a href="javascript:;" onclick="jumpPage('.././cmdbEntity')">CMDB关系配置</a></li>                       
@@ -199,7 +198,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <!-- Row -->
-				<iframe src=".././baseStatus"></iframe>
+				<iframe src=".././alarm"></iframe>
             <!-- ============================================================== -->
             <!-- End Right sidebar -->
             <!-- ============================================================== -->
@@ -262,7 +261,6 @@
 
     <script >
         function jumpPage(url){
-            console.log(url);
             $('.container-fluid').empty();
             $('.container-fluid').empty().append('<iframe src="'+url+'"></iframe>');
         }

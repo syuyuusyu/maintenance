@@ -17,4 +17,6 @@ public interface RecordEntityDao  extends PagingAndSortingRepository<RecordEntit
 	@Query(value="select o from RecordEntity o where o.hierarchy=2")
 	public List<RecordEntity> groupEntitys();
 
+	public List<RecordEntity> findByHierarchy(Integer hierarchy);
+
 }

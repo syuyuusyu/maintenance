@@ -31,7 +31,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 		
 		if(!islogin(request, redisTemplate)){
 			PropertiesConf conf=(PropertiesConf) SpringUtil.getBean("propertiesConf");
-			response.sendRedirect("https://isp.yndlr.gov.cn:8443/isp/");
+			response.sendRedirect("https://isp.yndlr.gov.cn");
 			return false;
 		}
 		

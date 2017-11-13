@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RecordDao extends PagingAndSortingRepository<Record,Integer> {
 
-    @Query(value="select o from Record o where o.group.groupId in ?1")
+    @Query(value="select o from Record o where o.group.groupId in ?1 order by o.group.createTime")
     public List<Record> findByGroupIds(List<Integer> ids);
 
     @Modifying
