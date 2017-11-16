@@ -80,6 +80,12 @@ function createGrid(plateId){
 					}
                },
                 {dataIndex:'upId',text:'资源ID',width:200},
+                {dataIndex:'createTime',text:'生成时间',width:170,
+                    renderer:function(value){
+                       return Ext.Date.format(new Date(value), 'Y年m月d日 H:i:s');
+
+                    }
+                },
                {dataIndex:'groupId',text:'记录组ID',hidden:true,width:200},
                {dataIndex:'gcode',text:'记录组编码',hidden:true,width:100},
                {dataIndex:'gname',text:'记录组名称',width:250},
@@ -114,7 +120,7 @@ function createGrid(plateId){
                {dataIndex:'alarmValue',text:'实际值',width:150},
                {dataIndex:'info',text:'处理信息',hidden:true,width:150}
                ];
-       var fields=['id','ruleId','ruleName','roleId','step','upId','groupId','gcode','gname','recordId',
+       var fields=['id','ruleId','ruleName','roleId','step','upId','createTime','groupId','gcode','gname','recordId',
                    'rcode','rname','alarmType','valveValue','equalType','equalType','alarmValue','info'];
        var store=Ext.create('Ext.data.Store',{
            fields:fields,

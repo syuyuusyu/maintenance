@@ -90,7 +90,7 @@ public class TestDc2 {
         System.out.println(System.currentTimeMillis() - t);
 
         try {
-            Thread.sleep(1000 * 10);
+            Thread.sleep(1000 * 200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

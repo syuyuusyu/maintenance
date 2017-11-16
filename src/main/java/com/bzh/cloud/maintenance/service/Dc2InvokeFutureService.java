@@ -71,7 +71,8 @@ public class Dc2InvokeFutureService {
             invokers.stream().map(invokeDc2 -> CompletableFuture.supplyAsync(
                 ()->{
                     System.out.println("invokeDc2.getInvokeName() = " + invokeDc2.getInvokeName());
-                    return invokeDc2.invoke();
+                    //return invokeDc2.invoke();
+                    return "sdsd";
                 })
         ).map(future->future.thenCompose(result->
                 CompletableFuture.supplyAsync(

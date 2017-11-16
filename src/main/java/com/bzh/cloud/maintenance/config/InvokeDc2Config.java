@@ -3,6 +3,7 @@ package com.bzh.cloud.maintenance.config;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bzh.cloud.maintenance.invoke.InvokeCloudera;
 import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.invoke.InvokeDc2;
 import com.bzh.cloud.maintenance.invoke.RequestEntity;
@@ -152,7 +153,7 @@ public class InvokeDc2Config {
 	@Scope("prototype")
 	public InvokeDc2 get_quoto_sets() {
 		InvokeDc2 invoke = new InvokeDc2("get-quoto-sets");
-		invoke.setUrl(coludUrl).setUrl("http://localhost:8080/get-quoto-sets")
+		invoke.setUrl(coludUrl)
 				.setMethod("get-quoto-sets").setType("query")
 				// TODO
 				.addReqDdata("regionName", "").addReqDdata("projectName", "")
@@ -529,6 +530,15 @@ public class InvokeDc2Config {
 				// TODO
 				.setSystem("S01");
 		invoke.setBiResultFun((BiFunction<RequestEntity, String, String>) avgFun());
+		return invoke;
+	}
+
+	/**
+	 *
+	 */
+	public InvokeCloudera entityInfo(){
+		InvokeCloudera invoke=new InvokeCloudera("entityInfo");
+
 		return invoke;
 	}
 }

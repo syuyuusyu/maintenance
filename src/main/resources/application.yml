@@ -11,11 +11,11 @@ spring:
     # schema: classpath:schema/inital.sql
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
-    #url: jdbc:mysql://9.77.248.31:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
-    #password: maintenance_123
+    #url: jdbc:mysql://127.0.0.1:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    url: jdbc:mysql://9.77.248.31:3306/maintenance?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    password: maintenance_123
     username: root
-    password: 1234
+    #password: 1234
     #password: 1q2w3e4r
     #初始化连接数量，最大最小连接数
     initial-size: 5
@@ -115,7 +115,7 @@ selfProperties:
   restFul:
     clouderaUsername: admin
     clouderaPassword: admin
-    isProduction: true
+    isProduction: false
     startTask: false
     requestMap:
       version: v1

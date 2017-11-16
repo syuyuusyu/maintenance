@@ -99,7 +99,7 @@ public class Dc2InvokeService {
 		
 		//keystone
 		InvokeDc2 keystone=(InvokeDc2) SpringUtil.getBean("keystone");
-		//keystone.save();
+		keystone.save();
 		
 		//mongodb
 		InvokeDc2 mongodb=(InvokeDc2) SpringUtil.getBean("mongodb");

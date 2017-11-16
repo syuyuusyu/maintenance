@@ -44,6 +44,10 @@ public class RecordInfoService {
 
         Page<RecordGroup> groupList=recordGroupDao.findByEntityId(parentId,pageable);
 
+        if(groupList.getContent().size()==0){
+            return new ArrayList<>();
+        }
+
 
         List<OrdeMap> result=new ArrayList<>();
         List<Integer> groupIds=groupList.getContent()

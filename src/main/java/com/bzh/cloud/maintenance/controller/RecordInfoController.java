@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +32,13 @@ public class RecordInfoController {
 
     @Autowired
     RecordEntityDao recordEntityDao;
-    @RequestMapping(value="/records")
-    public Map<String,Object> recordInfo(Integer entityId,Integer page,Integer  limit,HttpServletRequest request){
+    @RequestMapping(value="/records",method= RequestMethod.POST)
+    public Map<String,Object> recordInfo(@RequestBody Map<String,Object> rmap, String some,HttpServletRequest request){
+        System.out.println("request.getParameter(\"some\") = " + request.getParameter("some"));
+        Integer entityId= Integer.valueOf((String)rmap.get("entityId"));
+        Integer page=Integer.valueOf((String)rmap.get("page"));
+        Integer  limit= Integer.valueOf((String)rmap.get("limit"));
+
         Map<String,Object> map=new HashMap<>();
         RecordEntity re=  recordEntityDao.findOne(entityId);
         int exits=jdbcTemplate.queryForObject("select count(1) from record_entity where hierarchy=2 and id="+entityId,Integer.class);
@@ -51,18 +58,21 @@ public class RecordInfoController {
         return map;
     }
 
-    @RequestMapping(value="/entityInfo")
+    @RequestMapping(value="/entityInfo",method= RequestMethod.POST)
     public List<RecordEntity> entityInfo(){
         return (List<RecordEntity>) recordEntityDao.findByHierarchy(2);
     }
 
     @RequestMapping(value="/noAuth")
-    public Map<String,Object> noAuth(){
+    public Map<String,Object> noAuth(HttpServletRequest request){
         Map<String,Object> map=new HashMap<>();
+        String message= (String) request.getAttribute("request");
         map.put("success","false");
-        map.put("message","没有调用权限");
+        map.put("message",message);
         return map;
     }
+
+
 
 
 
