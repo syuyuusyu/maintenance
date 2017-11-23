@@ -7,8 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bzh.cloud.maintenance.MaintenApplication;
 import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.invoke.InvokeDc2;
-import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
-import com.bzh.cloud.maintenance.restFul.ThreadResultData;
+import com.bzh.cloud.maintenance.restFul.*;
 import com.bzh.cloud.maintenance.service.*;
 import com.bzh.cloud.maintenance.util.SpringUtil;
 import org.junit.Test;
@@ -38,6 +37,9 @@ public class TestDc2 {
 
     @Autowired
     Dc2InvokeFutureService dc2InvokeFutureService;
+
+    @Autowired
+    AlarmService alarmService;
 
     @Test
     public void test() {
@@ -90,7 +92,7 @@ public class TestDc2 {
         System.out.println(System.currentTimeMillis() - t);
 
         try {
-            Thread.sleep(1000 * 200);
+            Thread.sleep(1000 * 100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -145,4 +147,64 @@ public class TestDc2 {
         dc2InvokeFutureService.getDc2Resource();
     }
 
+    @Test
+    public void test8(){
+        ThreadResultData trd=new ThreadResultData();
+        InvokeUniversal entityInfo=new InvokeUniversal("entityInfo");
+        entityInfo.setUrl("https://om.yndlr.gov.cn:80/entityInfo")
+                //.setUrl("http://9.77.254.117:4400/entityInfo")
+                .addHead("Accept","application/json")
+                .addHead("Content-Type","application/json;charset=UTF-8")
+                .addHead("keyid","XAWmZnhvvI")
+                .setMethod(RestfulClient.Method.POST)
+                .addHead("domain","h");
+
+        entityInfo.addEvent((JsonResponseEntity data,final ThreadResultData resultData)->{
+
+            JSONArray ja=JSON.parseArray(data.getArrayJson());
+            for(int i=0;i<ja.size();i++){
+                String id=ja.getJSONObject(i).getString("id");
+                String entityName=ja.getJSONObject(i).getString("entityName");
+                InvokeUniversal invoke=record(id,entityName);
+                resultData.addInvoker(invoke);
+            }
+        });
+        trd.addInvoker(entityInfo);
+
+
+        try {
+            trd.waitForResult();
+        } catch (InvokeTimeOutException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+//            Thread.sleep(1000*20);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+    }
+
+
+    private InvokeUniversal record(String entityId,String entityName){
+
+        InvokeUniversal invoke=new InvokeUniversal("record-"+entityId+"-"+entityName);
+        invoke.setUrl("https://om.yndlr.gov.cn:80/records")
+                //.setUrl("http://9.77.254.117:4400/records")
+                .addHead("Accept","application/json")
+                .addHead("Content-Type","application/json;charset=UTF-8")
+                .addHead("keyid","XAWmZnhvvI")
+                .addHead("domain","h")
+                .addBody("entityId",entityId)
+                .addBody("page","1")
+                .setMethod(RestfulClient.Method.POST)
+                .addBody("limit","100");
+        return invoke;
+    }
+
+    @Test
+    public void test9(){
+        alarmService.createAlarm();
+    }
 }

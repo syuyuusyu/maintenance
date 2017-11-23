@@ -14,7 +14,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(value = "/alarm")
+//@RequestMapping(value = "/alarm")
 public class AlarmController {
 	
 	@Autowired

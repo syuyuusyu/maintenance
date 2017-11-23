@@ -15,6 +15,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,8 +25,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -313,11 +319,19 @@ public class TestJson {
 
 	@Test
 	public void test15(){
-		Long time=System.currentTimeMillis();
-		List<Map<String,String>> result=info.records(5,null);
-		result.forEach(System.out::println);
-		System.out.println("result.size() = " + result.size());
-		System.out.println(System.currentTimeMillis()-time);
+
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date= null;
+		try {
+			date = sdf.parse("2017-11-21 10:00:00");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		System.out.println("date = " + date);
+		Pageable pa = new PageRequest(0, 7);
+		Page<RecordGroup> page= recordGroupDao.findByEntityIdAndCreateTime(5,date,pa);
+		page.getTotalPages();
+		System.out.println("page.getTotalPages() = " + page.getTotalPages());
 	}
 
 }

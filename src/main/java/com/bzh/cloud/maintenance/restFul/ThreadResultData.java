@@ -8,9 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ThreadResultData {
 
@@ -20,8 +18,18 @@ public class ThreadResultData {
     private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
     private int count=0;
     private int current=0;
-    private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
-    public ExecutorService getFixedThreadPool() {
+    //private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
+
+	private final Executor fixedThreadPool = Executors.newFixedThreadPool( 100, new ThreadFactory() {
+		public Thread newThread(Runnable r) {
+			Thread t = new Thread( r);
+			t. setDaemon( true);
+			return t;
+		}
+	});
+
+
+	public Executor getFixedThreadPool() {
         return fixedThreadPool;
     }
 

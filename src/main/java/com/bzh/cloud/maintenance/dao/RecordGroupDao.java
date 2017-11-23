@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RecordGroupDao extends PagingAndSortingRepository<RecordGroup,Integer> {
@@ -36,6 +37,10 @@ public interface RecordGroupDao extends PagingAndSortingRepository<RecordGroup,I
 
 	@Query(value="select o from RecordGroup o where o.entityId=?1 order by o.createTime desc,o.groupId")
 	public Page<RecordGroup> findByEntityId(Integer entityId,Pageable pa);
+
+
+	@Query(value="select o from RecordGroup o where o.entityId=?1 and o.createTime>?2  order by o.createTime desc,o.groupId")
+	public Page<RecordGroup> findByEntityIdAndCreateTime(Integer entityId, Date createTime, Pageable pa);
 
 
 }

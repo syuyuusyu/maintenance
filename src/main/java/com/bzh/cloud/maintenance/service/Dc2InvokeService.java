@@ -70,6 +70,9 @@ public class Dc2InvokeService {
 			
 			//物理CPU
 			argList.stream().map(this::cpu_report).forEach(rdata::addInvoker);
+
+//			InvokeDc2 invo=argList.stream().map(this::cpu_report).findFirst().get();
+//			rdata.addInvoker(invo);
 			//各节点物理服务器内存、swap空间使用情况
 			argList.stream().map(this::mem_report).forEach(rdata::addInvoker);
 			

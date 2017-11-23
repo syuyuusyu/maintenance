@@ -37,33 +37,39 @@ public class InvokeInterceptor implements HandlerInterceptor {
         invoke.addReqDdata("interface",interfaceStr);
         log.info("keyid:"+keyid+" domain:"+domain+" interface:"+interfaceStr);
         final ThreadResultData trd=new ThreadResultData();
+        trd.setTimeOut(5000L);
         trd.addInvoker(invoke);
         try {
             trd.waitForResult();
         }catch (InvokeTimeOutException e){
+            log.info("调用综合集成验证超时");
             request.setAttribute("message","调用综合集成验证超时");
+            request.getSession().setAttribute("message","调用综合集成验证超时");
             response.sendRedirect("/noAuth");
             return false;
         }
 
         JsonResponseEntity responseEntity=trd.getResult("keyverify");
         if(!responseEntity.status()){
-            request.setAttribute("message","调用综合集成验证错误");
-            response.sendRedirect("/noAuth");
-            return false;
+            if("809".equals(responseEntity.getStatus())){
+                log.info("没有调用权限,请联系综合集成管理员");
+                request.setAttribute("message","没有调用权限,请联系综合集成管理员");
+                request.getSession().setAttribute("message","没有调用权限,请联系综合集成管理员");
+                response.sendRedirect("/noAuth");
+                return false;
+            }else{
+                log.info("调用综合集成验证错误");
+                request.setAttribute("message","调用综合集成验证错误");
+                request.getSession().setAttribute("message","调用综合集成验证错误");
+                response.sendRedirect("/noAuth");
+                return false;
+            }
         }
         String status=responseEntity.getArrayJson();
         JSONArray jarr=JSONArray.parseArray(status);
         JSONObject jo=jarr.getJSONObject(0);
         String result=jo.getString("flag");
-        if("true".equals(result)){
-
-        }else{
-            request.setAttribute("message","没有调用权限,请联系综合集成管理员");
-            response.sendRedirect("/noAuth");
-            return false;
-        }
-
+        log.info("接口调用验证权限通过");
         return true;
 
     }

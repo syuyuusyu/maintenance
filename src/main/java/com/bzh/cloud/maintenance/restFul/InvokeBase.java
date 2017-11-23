@@ -68,12 +68,12 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
 
     public void run(){
-		System.out.println();
-		log.info("\n----------------------");
-    	log.info("调用接口:"+invokeName+"-"+Thread.currentThread().getName());
+		//System.out.println();
+		//log.info("\n----------------------");
+    	//log.info("调用接口:"+invokeName+"-"+Thread.currentThread().getName());
     	invoke();
     	resultData.addResult(invokeName, this.getResponseData());
-    	//log.info(invokeName+"获得接口信息:"+this.getResponseData().getArrayJson());
+    	log.info(invokeName+"获得接口信息:"+this.getResponseData().getArrayJson());
     	filrEvent();
     }
     
@@ -106,7 +106,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
 			}        	
         }
         responseEntity.init(this.result);
-        log.info(invokeName+"-接口返回:"+result);       
+        //log.info(invokeName+"-接口返回:"+result);
         return this.result;
     }
     

@@ -35,7 +35,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 			response.sendRedirect("https://isp.yndlr.gov.cn");
 			return false;
 		}
-		
+		log.info("用户已经登录");
 		return true;
 	}
 
@@ -58,14 +58,19 @@ public class AuthInterceptor implements HandlerInterceptor{
 	
 	public static boolean islogin(HttpServletRequest request,RedisTemplate<String, String> redisTemplate){
 		log.info("验证用户是否在登录状态");
+		log.info(request.getSession().getAttribute("currentUser")+"--------------");
+
 		if(request.getSession().getAttribute("currentUser")!=null){
+			log.info("从session获取用户");
 			Users u=(Users) request.getSession().getAttribute("currentUser");
 			log.info("当前用户:"+u.getUserid());
 			log.info("当前用户是否保存在redis:"+redisTemplate.hasKey(u.getUserid()));
 			if(redisTemplate.hasKey(u.getUserid())){
+				log.info("redisy用户时间延长30分钟");
 				redisTemplate.expire(u.getUserid(), 30L, TimeUnit.MINUTES);
 				return true;
 			}else{
+				log.info("从session清除当前用户");
 				request.getSession().removeAttribute("currentUser");
 				return false;
 			}

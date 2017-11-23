@@ -10,7 +10,7 @@ public class InvokeUniversal extends InvokeBase<CommonRequestEntity,CommonRespon
     }
 
     public InvokeUniversal setMethod(RestfulClient.Method method){
-        super.setHttpMethod(httpMethod);
+        super.setHttpMethod(method);
         return this;
     }
 

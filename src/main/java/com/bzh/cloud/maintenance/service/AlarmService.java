@@ -4,22 +4,19 @@ import com.bzh.cloud.maintenance.dao.AlarmDao;
 import com.bzh.cloud.maintenance.dao.AlarmRuleDao;
 import com.bzh.cloud.maintenance.dao.RecordEntityDao;
 import com.bzh.cloud.maintenance.dao.RecordGroupDao;
-import com.bzh.cloud.maintenance.entity.Alarm;
-import com.bzh.cloud.maintenance.entity.AlarmRule;
-import com.bzh.cloud.maintenance.entity.Record;
-import com.bzh.cloud.maintenance.entity.RecordEntity;
-import com.bzh.cloud.maintenance.entity.RecordGroup;
-
+import com.bzh.cloud.maintenance.entity.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class AlarmService {
+
+	public static Logger log = Logger.getLogger(AlarmService.class);
 	@Autowired
 	RecordGroupDao recordGroupDao;
 	@Autowired
@@ -49,14 +46,17 @@ public class AlarmService {
 	 * @param alarmRule
 	 */
 	public void doSearchAlarm(final AlarmRule alarmRule){
+		log.info(alarmRule.getName());
 		List<RecordGroup> groups=recordGroupDao.findNewByEntitys(alarmRule.getRelevantGroup());
 		if(groups.size()<1) return;
 		RecordGroup group=groups.stream().max(Comparator.comparing(RecordGroup::getCreateTime)).get();
 		RecordEntity groupEntity=recordEntityDao.findOne(group.getEntityId());
 
 		List<Record> records=group.getRecords();
-		Record record=records.stream().filter(R->R.getEntityId().equals(alarmRule.getRelevantRecord())).findFirst().get();
-		Assert.notNull(record);
+		Record record=records.stream().filter(R->R.getEntityId().equals(alarmRule.getRelevantRecord())).findFirst().orElse(null);
+		if(record==null){
+			return;
+		}
 		RecordEntity recordEntity=recordEntityDao.findOne(record.getEntityId());
 
 		boolean alert=false;

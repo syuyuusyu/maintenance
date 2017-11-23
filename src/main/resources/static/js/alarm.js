@@ -126,7 +126,7 @@ function createGrid(plateId){
            fields:fields,
            proxy : {
                type : 'ajax',
-               url : './../alarm/alarms',
+               url : './../../alarms',
                extraParams:{plateId:plateId},
                reader: {
                    type: 'json',
@@ -199,7 +199,7 @@ function alarmInfo(record,e,grid){
 			        }
 			        Ext.Ajax.request({
 			            method:'post',
-			            url:'./../alarm/update',
+			            url:'./../../update',
 			            params:alarm,
 			            failure:function(r,data){
 			

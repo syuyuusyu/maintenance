@@ -53,7 +53,7 @@ public class RestfulClient {
 		} catch (IOException e) {
 			log.error("调用接口错误");
 			log.error("\n调用url:" + url+"\n调用报文:" + requestJson+"\n请求头:" + head);
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		int statusCode=httppHttpResponse.getStatusLine().getStatusCode();
 		log.info("statusCode:"+statusCode);

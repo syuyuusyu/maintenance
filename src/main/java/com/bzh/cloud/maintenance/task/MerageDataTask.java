@@ -59,7 +59,7 @@ public class MerageDataTask {
         int index= LocalDateTime.now().getHour()-1;
         if(index>0) {
             List<RecordEntity> entitys=recordEntityDao.groupEntitys();
-            List<CompletableFuture<String>> futures=entitys.stream().filter(entity->112!=entity.getId())
+            List<CompletableFuture<String>> futures=entitys.stream()//.filter(entity->112!=entity.getId())
                     .map(entity->CompletableFuture.supplyAsync(
                             ()->{
                                 List<RecordGroup> list=recordGroupDao.todayByHour(index,entity.getId());

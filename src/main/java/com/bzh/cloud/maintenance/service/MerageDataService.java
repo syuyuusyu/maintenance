@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -99,8 +100,12 @@ public class MerageDataService {
             result.add(strMap);
         });
         log.info("idField:"+idField+" entity:"+entity.getEntityName());
-        Map<String,List<Map<String, String>>> groupList=result.parallelStream().collect(Collectors.groupingBy(M->{
-            return M.get(idField);
+        Map<String,List<Map<String, String>>> groupList=result.stream().collect(Collectors.groupingBy(M->{
+            String id=M.get(idField);
+            if(StringUtils.isEmpty(id)){
+                id="null";
+            }
+            return id;
         }));
 
         //合并去重后的结果

@@ -14,13 +14,14 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter{
     public void addInterceptors(InterceptorRegistry registry) {
 		PropertiesConf conf=(PropertiesConf) SpringUtil.getBean("propertiesConf");
 		if(conf.isProduction()){
+			//单点登录验证
 	        registry.addInterceptor(new AuthInterceptor())
         	.addPathPatterns("/*")
-        	.excludePathPatterns("/index","/logOut","/error","/alarm","/records","/entityInfo","/noAuth");
+        	.excludePathPatterns("/index","/logOut","/error","/alarm","/records","/entityInfo","/noAuth","/alarmInfo","/swagger-resources");
 
-
+			//接口权限验证
 	        registry.addInterceptor(new InvokeInterceptor())
-					.addPathPatterns("/records","/entityInfo");
+					.addPathPatterns("/records","/entityInfo","/alarmInfo");
 
 	        super.addInterceptors(registry);
 		}

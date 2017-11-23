@@ -42,7 +42,7 @@ public class AlarmTask {
 	public final static long ONE_Hour =  ONE_Minute*60;
 	
 	//生成告警
-	@Scheduled(fixedDelay=ONE_Minute*5,initialDelay=ONE_Minute*4)
+	@Scheduled(fixedDelay=ONE_Minute*15,initialDelay=ONE_Minute*4)
     public void searchAlarm(){
 		if(startTask){
 			log.info("根据规则生成告警");

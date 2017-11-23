@@ -76,11 +76,11 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
 	
 	@Bean
 	public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory factory){
-		synchronized (factory) {
+
 			StringRedisTemplate redisTemplate = new StringRedisTemplate();
 			redisTemplate.setConnectionFactory(factory);
 			return redisTemplate;
-		}
+
 		
 	}
 	

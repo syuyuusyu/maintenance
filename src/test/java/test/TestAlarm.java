@@ -9,6 +9,7 @@ import com.bzh.cloud.maintenance.entity.AlarmRule;
 import com.bzh.cloud.maintenance.entity.Record;
 import com.bzh.cloud.maintenance.entity.RecordGroup;
 import com.bzh.cloud.maintenance.service.AlarmService;
+import com.bzh.cloud.maintenance.task.MerageDataTask;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,14 @@ public class TestAlarm {
 
 	@Autowired
 	RecordGroupDao recordGroupDao;
+
+	@Autowired
+	MerageDataTask merageDataTask;
 	
 	@Test
 	public void test(){
 		//生成告警
-		alarmService.createAlarm();
+		merageDataTask.merageOnhourAgo();
 	}
 	
 	

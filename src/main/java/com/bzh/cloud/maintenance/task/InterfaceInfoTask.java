@@ -40,7 +40,7 @@ public class InterfaceInfoTask {
 	/**
 	 * cdh信息
 	 */
-	@Scheduled(fixedDelay=ONE_Minute*5)
+	@Scheduled(fixedDelay=ONE_Minute*15)
 	public void clouderaInfo(){
 		if(startTask)
 		clouderaInvokeService.clouderaInfo();
@@ -49,7 +49,7 @@ public class InterfaceInfoTask {
 	/**
 	 * dc2信息
 	 */
-	@Scheduled(fixedDelay=ONE_Minute*5,initialDelay=ONE_Minute
+	@Scheduled(fixedDelay=ONE_Minute*15,initialDelay=ONE_Minute
 	)
 	public void dc2Info(){
 		if(startTask)
@@ -59,7 +59,7 @@ public class InterfaceInfoTask {
 	/**
 	 * 安全平台
 	 */
-	@Scheduled(fixedDelay=ONE_Minute*5,initialDelay=ONE_Minute*3)
+	@Scheduled(fixedDelay=ONE_Hour*12,initialDelay=ONE_Minute*3)
 	public void securityInfo(){
 		if(startTask)
 		securityInvokeService.securityInfo();

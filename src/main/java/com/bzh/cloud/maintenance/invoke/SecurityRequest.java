@@ -1,9 +1,11 @@
 package com.bzh.cloud.maintenance.invoke;
 
+import com.bzh.cloud.maintenance.config.PropertiesConf;
+import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
+import com.bzh.cloud.maintenance.util.SpringUtil;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.bzh.cloud.maintenance.restFul.JsonResquestEntity;
 
 public class SecurityRequest implements JsonResquestEntity{
 	
@@ -26,6 +28,8 @@ public class SecurityRequest implements JsonResquestEntity{
 
 	@Override
 	public Map<String, String> getHead() {
+		PropertiesConf pconf=(PropertiesConf) SpringUtil.getBean("propertiesConf");
+		headMap=pconf.getHeadMap();
 		headMap.put("Authorization", "Basic ZWxhc3RpYzpjaGFuZ2VtZQ==");
 		return headMap;
 	}
