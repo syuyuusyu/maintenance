@@ -85,26 +85,27 @@ var tree=Ext.create('Ext.tree.Panel', {
     }
 	,deleteEntity:function(id){
 		Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-	        if(btn=='no'){
-	            return;							
+	        if(btn=='yes'){
+                Ext.Ajax.request({
+                    method:'post',
+                    url:'./../entity/deleteTree',
+                    params:{entityId:id},
+                    failure:function(r,data){
+
+                    },
+                    success:function(r,data){
+                        var result = Ext.JSON.decode(r.responseText);
+                        if(result.success=='true'){
+                            Ext.Msg.alert('!','成功删除');
+                            treeStore.load();
+                        }
+
+                    }
+                });
+
 	          }else{
-            	Ext.Ajax.request({
-            		method:'post',        		
-            		url:'./../entity/deleteTree',
-            		params:{entityId:id},
-            		failure:function(r,data){
-
-            		},
-            		success:function(r,data){
-            			var result = Ext.JSON.decode(r.responseText);
-            			if(result.success=='true'){
-            				Ext.Msg.alert('!','成功删除');
-            				treeStore.load();
-            			}
-
-            		}
-            	});
-	          }
+                return;
+            }
 		})
         
 	}
@@ -254,9 +255,7 @@ function createGrid(records){
                           var data=grid.getSelectionModel().getSelection()[0].getData();
                           console.log(data);
                           Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-                              if(btn=='no'){
-                                  return;
-                              }else{
+                              if(btn=='yes'){
                                   Ext.Ajax.request({
                                       method:'post',
                                       url:'./../cmdbConf/deleteRecord',
@@ -274,10 +273,13 @@ function createGrid(records){
                                               treeStore.reload();
                                           }else{
                                               Ext.Msg.alert('!','错误');
-	                                          }
+                                          }
 
-	                                      }
-	                                  });
+                                      }
+                                  });
+
+                              }else{
+                                  return;
 	                              }
 	                          });
 	                      }
@@ -292,9 +294,9 @@ function createGrid(records){
 
 function createGridFormItems(grid,action){
 	var records=grid.records;
-    var items=[{columnWidth:.5,type:'form',padding:'10 0 0 5',id:'column1',items:[]},
-                   {columnWidth:.5,type:'form',padding:'10 0 0 5',id:'column2',items:[]},
-    			   {columnWidth:.5,type:'form',padding:'10 0 0 5',id:'column3',items:[]}];
+    var items=[{columnWidth:.33,type:'form',padding:'10 0 0 5',id:'column1',items:[]},
+                   {columnWidth:.33,type:'form',padding:'10 0 0 5',id:'column2',items:[]},
+    			   {columnWidth:.33,type:'form',padding:'10 0 0 5',id:'column3',items:[]}];
     for(var i=0;i<grid.records.length;i++){
     	switch(i%3){
    		case 0:

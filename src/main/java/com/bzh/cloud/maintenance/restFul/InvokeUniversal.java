@@ -1,5 +1,8 @@
 package com.bzh.cloud.maintenance.restFul;
 
+import com.bzh.cloud.maintenance.util.JSONUtil;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class InvokeUniversal extends InvokeBase<CommonRequestEntity,CommonResponseEntity>{
@@ -24,9 +27,23 @@ public class InvokeUniversal extends InvokeBase<CommonRequestEntity,CommonRespon
         return this;
     }
 
+    public InvokeUniversal setRequestBody(String body){
+        Map<String,Object> map= JSONUtil.toMap(body);
+        return setRequestBody(map);
+    }
+
     public InvokeUniversal setRequstHead(Map<String, String> map){
         this.requestEntity.setRequstHead(map);
         return this;
+    }
+
+    public InvokeUniversal setRequstHead(String head){
+        Map<String,Object> map= JSONUtil.toMap(head);
+        Map<String,String> map2=new HashMap<>();
+        map.forEach((K,V)->{
+            map2.put(K,(String)V);
+        });
+        return setRequstHead(map2);
     }
 
     public InvokeUniversal addBody(String key,Object value){

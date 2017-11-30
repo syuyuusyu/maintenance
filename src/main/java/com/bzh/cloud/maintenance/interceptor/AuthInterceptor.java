@@ -28,7 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor{
 		
 		RedisTemplate<String, String> redisTemplate=(RedisTemplate<String, String>) SpringUtil.getBean("redisTemplate");
 		log.info("拦截请求:"+request.getRequestURI());
-		log.info("请求IP:"+request.getLocalAddr());
+		log.info("请求IP:"+request.getRemoteUser());
 		
 		if(!islogin(request, redisTemplate)){
 			PropertiesConf conf=(PropertiesConf) SpringUtil.getBean("propertiesConf");

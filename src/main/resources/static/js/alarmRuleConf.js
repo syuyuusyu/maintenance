@@ -68,7 +68,7 @@ Ext.define('valveStatue',{
 	extend:'Ext.form.ComboBox',
 	xtype:'valveStatue',
 	store:Ext.create('Ext.data.Store',{
-        fields:['dicText','dicValue'],
+        fields:['dicValue','dicText'],
         proxy: {
             type: 'ajax',
             url:'./../alarmRule/dictionary',
@@ -83,8 +83,8 @@ Ext.define('valveStatue',{
     }),
     fieldLabel: '告警状态',
     name:'valveValue',
-    displayField: 'dicText',
-    valueField: 'dicValue',
+    displayField: 'dicValue',
+    valueField: 'dicText',
     allowBlank:false,
     triggerAction:'all'
 });
@@ -113,7 +113,7 @@ var grid=Ext.create('Ext.grid.Panel',{
         {dataIndex:'relevantPlate',text:'relevantPlate',hidden:true},
         {dataIndex:'relevantGroup',text:'relevantGroup',hidden:true},
         {dataIndex:'relevantRecord',text:'relevantRecord',hidden:true},
-        {dataIndex:'name',text:'规则名称',width:100},
+        {dataIndex:'name',text:'规则名称',width:150},
         {dataIndex:'plateName',text:'所属平台',width:100},
         {dataIndex:'groupName',text:'组名称',width:200},
         {dataIndex:'recordName',text:'记录名称',width:200},
@@ -230,9 +230,7 @@ var grid=Ext.create('Ext.grid.Panel',{
                         var data=grid.getSelectionModel().getSelection()[0].getData();
                         console.log(data);
                         Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-                            if(btn=='no'){
-                                return;
-                            }else{
+                            if(btn=='yes'){
                                 Ext.Ajax.request({
                                     method:'post',
                                     url:'./../alarmRule/delete',
@@ -253,6 +251,73 @@ var grid=Ext.create('Ext.grid.Panel',{
 
                                     }
                                 });
+
+                            }else{
+                                return;
+                            }
+                        });
+                    }
+                },{
+                    xtype: 'button',
+                    text: '调用接口获取信息',
+                    iconCls:'icon-delete',
+                    handler:function(){
+                        Ext.Msg.confirm('!','确定获取接口信息？',function(btn){
+                            if(btn=='yes'){
+                                var m = Ext.MessageBox.wait("查询正在进行中...", "查询");
+                                Ext.Ajax.request({
+                                    method:'post',
+                                    url:'./../alarmRule/invoke',
+                                    params:{},
+                                    failure:function(r,data){
+
+                                    },
+                                    success:function(r,data){
+                                        var result = Ext.JSON.decode(r.responseText);
+                                        if(result.success=='true'){
+                                            m.hide();
+                                            Ext.Msg.alert('!','成功');
+                                        }else{
+                                            Ext.Msg.alert('!','错误');
+                                        }
+
+                                    }
+                                });
+
+                            }else{
+                                return;
+                            }
+                        });
+                    }
+                },{
+                    xtype: 'button',
+                    text: '生成告警',
+                    iconCls:'icon-delete',
+                    handler:function(){
+                        Ext.Msg.confirm('!','确定生成告警？',function(btn){
+                            if(btn=='yes'){
+                                var m = Ext.MessageBox.wait("查询正在进行中...", "查询");
+                                Ext.Ajax.request({
+                                    method:'post',
+                                    url:'./../alarmRule/createAlarm',
+                                    params:{},
+                                    failure:function(r,data){
+
+                                    },
+                                    success:function(r,data){
+                                        var result = Ext.JSON.decode(r.responseText);
+                                        if(result.success=='true'){
+                                            m.hide();
+                                            Ext.Msg.alert('!','成功');
+                                        }else{
+                                            Ext.Msg.alert('!','错误');
+                                        }
+
+                                    }
+                                });
+
+                            }else{
+                                return;
                             }
                         });
                     }

@@ -20,9 +20,9 @@ public class ThreadResultData {
     private int current=0;
     //private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
 
-	private final Executor fixedThreadPool = Executors.newFixedThreadPool( 100, new ThreadFactory() {
+	private static final Executor fixedThreadPool = Executors.newFixedThreadPool( 100, new ThreadFactory() {
 		public Thread newThread(Runnable r) {
-			Thread t = new Thread( r);
+			Thread t = new Thread( r,"ThreadResultData-");
 			t. setDaemon( true);
 			return t;
 		}

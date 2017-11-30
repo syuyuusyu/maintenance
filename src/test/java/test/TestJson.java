@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -332,6 +334,16 @@ public class TestJson {
 		Page<RecordGroup> page= recordGroupDao.findByEntityIdAndCreateTime(5,date,pa);
 		page.getTotalPages();
 		System.out.println("page.getTotalPages() = " + page.getTotalPages());
+	}
+
+
+	@Test
+	public void test16(){
+		Matcher m= Pattern.compile("^#(\\w+)$").matcher("#syu");
+		while(m.find()){
+			String s=m.group(1);
+			System.out.println("s = " + s);
+		}
 	}
 
 }

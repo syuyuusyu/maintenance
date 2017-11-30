@@ -16,6 +16,7 @@ var treeStore = Ext.create('Ext.data.TreeStore', {
     }
 });
 
+
 var tree=Ext.create('Ext.tree.Panel', {
     title: '告警处理',
     region:'west',
@@ -38,6 +39,10 @@ var tree=Ext.create('Ext.tree.Panel', {
         'select': function(node, record,item) {
         	console.log(record.raw);
 	        if(record.raw.hierarchy=2){
+	            if(Ext.getCmp('tab_'+record.raw.text)){
+                    mainPanle.setActiveTab(Ext.getCmp('tab_'+record.raw.text));
+                    return;
+                }
 	        	var grid=createGrid(record.raw.id);
     			var panel=Ext.create('Ext.Panel',{
 					id:'tab_'+record.raw.text,
@@ -65,7 +70,7 @@ function createGrid(plateId){
   var columns=[
                {dataIndex:'id',text:'ID',hidden:true,width:100},
                {dataIndex:'ruleId',text:'告警规则ID',hidden:true,width:100},
-               {dataIndex:'ruleName',text:'告警规则名称',width:100},
+               {dataIndex:'ruleName',text:'告警规则名称',width:200},
                {dataIndex:'roleId',text:'角色ID',hidden:true,width:100},
                {dataIndex:'step',text:'处理步骤',width:110,
             	   renderer:function(value){               
@@ -192,7 +197,12 @@ function alarmInfo(record,e,grid){
 			        var form = this.up('form');
 			        var baseForm=form.getForm();
 			        var data = baseForm.getValues();
-			        alarm.info=data.info
+			        alarm.info=data.info;
+                    //alarm.createTime=new Date(alarm.createTime);
+                    alarm.createTime=Ext.Date.format(new Date(alarm.createTime), 'Y-m-d H:i:s');
+			       // delete alarm.createTime;
+			        console.log(alarm);
+
 			        if(!form.isValid()){
 			            Ext.Msg.alert('!','填入合法内容');
 			            return;
@@ -223,6 +233,8 @@ function alarmInfo(record,e,grid){
 			}     		         
 		];
 	}
+
+
 	var form=Ext.create('Ext.form.Panel',{
         autoScroll: true,
         spilt:true,
@@ -247,6 +259,7 @@ function alarmInfo(record,e,grid){
         buttons:buttons
 
     });
+
     Ext.create('Ext.window.Window', {
         //id:'win_'+entity.entityName,
         title: '告警处理信息',

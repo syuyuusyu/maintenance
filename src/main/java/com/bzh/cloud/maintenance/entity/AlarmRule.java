@@ -167,7 +167,7 @@ public class AlarmRule implements Serializable {
 		this.plateName = plateName;
 	}
 	
-	
+
 	public String getName() {
 		return name;
 	}

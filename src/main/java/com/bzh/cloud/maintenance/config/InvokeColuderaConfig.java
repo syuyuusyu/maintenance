@@ -68,7 +68,7 @@ public class InvokeColuderaConfig {
 		InvokeCloudera invoke=new InvokeCloudera("clouderaServices");
 		invoke
 			.setUrl(coluderaUrl+"/clusters/{clusterName}/services")
-			.setEntityId(55);
+			.setEntityId(182);
 			
 		return invoke;
 	}

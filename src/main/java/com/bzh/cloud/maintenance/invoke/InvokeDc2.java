@@ -1,11 +1,10 @@
 package com.bzh.cloud.maintenance.invoke;
 
+import com.bzh.cloud.maintenance.restFul.RestfulClient;
+import com.bzh.cloud.maintenance.util.SpringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.StringUtils;
-
-import com.bzh.cloud.maintenance.restFul.RestfulClient;
-import com.bzh.cloud.maintenance.util.SpringUtil;
 
 public class InvokeDc2 extends InvokeCommon{
 
@@ -26,7 +25,7 @@ public class InvokeDc2 extends InvokeCommon{
 	protected void beforeCall(){
 		if(StringUtils.isEmpty(this.requestEntity.getTicket())){
 			if(StringUtils.isEmpty(this.resultData.getSomething("currentTicket"))){
-				String ticket=RestfulClient.getColudTicket();
+				String ticket= RestfulClient.getColudTicket();
 				this.setTicket(ticket);
 				this.resultData.putSometing("currentTicket", ticket);
 			}else{

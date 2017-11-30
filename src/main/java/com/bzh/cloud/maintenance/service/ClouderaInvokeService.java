@@ -1,11 +1,5 @@
 package com.bzh.cloud.maintenance.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -13,6 +7,11 @@ import com.bzh.cloud.maintenance.invoke.InvokeCloudera;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 
 
@@ -35,6 +34,7 @@ public class ClouderaInvokeService {
 			}
 			//查询服务
 			nameList.stream().map(this::clouderaServices).forEach(rdata::addInvoker);
+
 		});
 		//查询CM服务
 		InvokeCloudera invokeClouderaServices=(InvokeCloudera) SpringUtil.getInvokes("clouderaCmServer");
@@ -147,6 +147,7 @@ public class ClouderaInvokeService {
 		InvokeCloudera clouderaServices=(InvokeCloudera) SpringUtil.getBean("clouderaServices");
 		clouderaServices.setClusterName(name).setInvokeName(name);
 		clouderaServices.save();
+
 		return clouderaServices;
 		
 	}

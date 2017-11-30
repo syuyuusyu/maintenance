@@ -99,6 +99,18 @@ public class TestDc2 {
     }
 
     @Test
+    public void network(){
+        final ThreadResultData trd = new ThreadResultData();
+        InvokeDc2 invoke = (InvokeDc2) SpringUtil.getBean("network");
+        trd.addInvoker(invoke);
+        try {
+            trd.waitForResult();
+        } catch (InvokeTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void test3() {
         final ThreadResultData trd = new ThreadResultData();
         InvokeDc2 invoke = (InvokeDc2) SpringUtil.getBean("network_report");

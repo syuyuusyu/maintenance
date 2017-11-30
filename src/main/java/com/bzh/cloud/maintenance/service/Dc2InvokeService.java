@@ -29,6 +29,7 @@ public class Dc2InvokeService {
 	public void getDc2Resource(){
 		final ThreadResultData trd=new ThreadResultData();
 		trd.sleep(500L);
+		trd.setTimeOut(1000*1000L);
 		//云区
 		InvokeDc2 invokeRegions=(InvokeDc2) SpringUtil.getBean("invokeRegions");
 		invokeRegions.addEvent((Jo,rdata)->{
@@ -111,10 +112,10 @@ public class Dc2InvokeService {
 		//mysql
 		InvokeDc2 mysql=(InvokeDc2) SpringUtil.getBean("mysql");
 		mysql.save();
-		
-		
-		trd.addInvoker(invokeRegions);
+
 		trd.addInvoker(monitorArgs);
+		trd.addInvoker(invokeRegions);
+
 		trd.addInvoker(ganglia);
 		trd.addInvoker(virtualmachine);
 		trd.addInvoker(network);
@@ -125,6 +126,11 @@ public class Dc2InvokeService {
 		trd.addInvoker(mongodb);
 		trd.addInvoker(mysql);
 
+//		try {
+//			trd.waitForResult();
+//		} catch (InvokeTimeOutException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**

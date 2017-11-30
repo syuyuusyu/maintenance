@@ -17,4 +17,7 @@ public interface RecordDao extends PagingAndSortingRepository<Record,Integer> {
             "(select t.id from (select r.record_id id from record r where not EXISTS (select 1 from record_group g where g.group_id=r.group_id)) t)"
             ,nativeQuery=true)
     public void deleteWithNoGroup();
+
+    @Query(value="select o from Record  o where o.group.groupId in ?1 and o.entityId=?2")
+    public List<Record> byGidandEntity(List<Integer> ids,Integer entityId);
 }

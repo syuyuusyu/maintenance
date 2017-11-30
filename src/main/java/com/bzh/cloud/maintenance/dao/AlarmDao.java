@@ -18,9 +18,9 @@ public interface AlarmDao extends PagingAndSortingRepository<Alarm,Integer> {
 			nativeQuery=true)
 	public  Page<Alarm> findByStep(String step,Pageable pageable);
 
-	@Query(value="select count(1) from alarm where rule_id=?1  and date(create_time)=date_sub(CURDATE(),INTERVAL '0' DAY) and hour(create_time)=hour(now())"
+	@Query(value="select count(1) from alarm where rule_id=?1 and ip_id=?2  and date(create_time)=date_sub(CURDATE(),INTERVAL '0' DAY) and hour(create_time)=hour(now())"
 		,nativeQuery=true)
-	public int countCurrentHour(Integer ruleId);
+	public int countCurrentHour(Integer ruleId,String upId);
 	
 
 }

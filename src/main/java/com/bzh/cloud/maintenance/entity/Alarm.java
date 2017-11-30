@@ -78,6 +78,7 @@ public class Alarm implements Serializable{
 
 	@Column(name="create_time")
 	@CreationTimestamp
+	//@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 	
 	@Column(name = "info")
@@ -211,5 +212,31 @@ public class Alarm implements Serializable{
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	@Override
+	public String toString() {
+		return "Alarm{" +
+				"id=" + id +
+				", ruleId=" + ruleId +
+				", roleId='" + roleId + '\'' +
+				", step='" + step + '\'' +
+				", groupId=" + groupId +
+				", recordId=" + recordId +
+				", gcode='" + gcode + '\'' +
+				", rcode='" + rcode + '\'' +
+				", gname='" + gname + '\'' +
+				", rname='" + rname + '\'' +
+				", upId='" + upId + '\'' +
+				", process=" + process +
+				", alarmType='" + alarmType + '\'' +
+				", equalType='" + equalType + '\'' +
+				", valveValue='" + valveValue + '\'' +
+				", alarmValue='" + alarmValue + '\'' +
+				", ruleName='" + ruleName + '\'' +
+				", plateId=" + plateId +
+				", createTime=" + createTime +
+				", info='" + info + '\'' +
+				'}';
 	}
 }

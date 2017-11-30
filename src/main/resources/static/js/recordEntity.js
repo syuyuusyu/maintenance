@@ -95,26 +95,27 @@ var tree=Ext.create('Ext.tree.Panel', {
     }
 	,deleteEntity:function(id){
 		Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-	        if(btn=='no'){
-	            return;							
+	        if(btn=='yes'){
+                Ext.Ajax.request({
+                    method:'post',
+                    url:'./../entity/deleteTree',
+                    params:{entityId:id},
+                    failure:function(r,data){
+
+                    },
+                    success:function(r,data){
+                        var result = Ext.JSON.decode(r.responseText);
+                        if(result.success=='true'){
+                            Ext.Msg.alert('!','成功删除');
+                            treeStore.load();
+                        }
+
+                    }
+                });
+
 	          }else{
-            	Ext.Ajax.request({
-            		method:'post',        		
-            		url:'./../entity/deleteTree',
-            		params:{entityId:id},
-            		failure:function(r,data){
-
-            		},
-            		success:function(r,data){
-            			var result = Ext.JSON.decode(r.responseText);
-            			if(result.success=='true'){
-            				Ext.Msg.alert('!','成功删除');
-            				treeStore.load();
-            			}
-
-            		}
-            	});
-	          }
+                return;
+            }
 		})
         
 	}
@@ -286,9 +287,7 @@ function createGrid(entity){
                           var data=grid.getSelectionModel().getSelection()[0].getData();
                           console.log(data);
                           Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-                              if(btn=='no'){
-                                  return;
-                              }else{
+                              if(btn=='yes'){
                                   Ext.Ajax.request({
                                       method:'post',
                                       url:'./../recordConf/delete',
@@ -312,6 +311,9 @@ function createGrid(entity){
 
                                       }
                                   });
+
+                              }else{
+                                  return;
                               }
                           });
                       }

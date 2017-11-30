@@ -107,25 +107,25 @@ var tree=Ext.create('Ext.tree.Panel', {
     }
 	,deleteEntity:function(id){
 		Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-	        if(btn=='no'){
-	            return;							
+	        if(btn=='yes'){
+                Ext.Ajax.request({
+                    method:'post',
+                    url:'./../entity/deleteTree',
+                    params:{entityId:id},
+                    failure:function(r,data){
+
+                    },
+                    success:function(r,data){
+                        var result = Ext.JSON.decode(r.responseText);
+                        if(result.success=='true'){
+                            Ext.Msg.alert('!','成功删除');
+                            treeStore.load();
+                        }
+
+                    }
+                });
 	          }else{
-            	Ext.Ajax.request({
-            		method:'post',        		
-            		url:'./../entity/deleteTree',
-            		params:{entityId:id},
-            		failure:function(r,data){
-
-            		},
-            		success:function(r,data){
-            			var result = Ext.JSON.decode(r.responseText);
-            			if(result.success=='true'){
-            				Ext.Msg.alert('!','成功删除');
-            				treeStore.load();
-            			}
-
-            		}
-            	});
+                return;
 	          }
 		})
         
@@ -288,9 +288,7 @@ function createGrid(entity,grid){
                           var data=grid.getSelectionModel().getSelection()[0].getData();
                           console.log(data);
                           Ext.Msg.confirm('!','确定删除选中记录？',function(btn){
-                              if(btn=='no'){
-                                  return;
-                              }else{
+                              if(btn=='yes'){
                                   Ext.Ajax.request({
                                       method:'post',
                                       url:'./../cmdbConf/delete',
@@ -314,6 +312,9 @@ function createGrid(entity,grid){
 
                                       }
                                   });
+
+                              }else{
+                                  return;
                               }
                           });
                       }
@@ -327,10 +328,9 @@ function createGrid(entity,grid){
 }
 
 function createGridFormItems(grid,action){
-	console.log(grid.entityId+" "+grid.parentEntityId);
     if(grid.gridType==5 && grid.gridHierarchy==2){
         var formItems=[
-            {columnWidth:.5,type:'form',padding:'10 0 0 5',id:'column1'
+            {   columnWidth:.5,type:'form',padding:'10 0 0 5',id:'column1'
                 ,items:[
                 {xtype:'textfield',fieldLabel: grid.entityCodeText,name:'entityCode',allowBlank:false},
                 {
@@ -391,7 +391,7 @@ function createGridFormItems(grid,action){
                 }
             ]
             },
-            {columnWidth:.5,type:'form',padding:'10 0 0 5',id:'column2'
+            {columnWidth:.49,type:'form',padding:'10 0 0 5',id:'column2'
                 ,items:[
                 {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
                 ,{
@@ -441,7 +441,7 @@ function createGridFormItems(grid,action){
                 {xtype:'textfield',fieldLabel: grid.entityCodeText,name:'entityCode',allowBlank:false}
             ]
             },
-            {columnWidth:.5,type:'form',padding:'10 0 0 5'
+            {columnWidth:.49,type:'form',padding:'10 0 0 5'
                 ,items:[
                 {xtype:'textfield',fieldLabel: grid.entityNameText,name:'entityName',allowBlank:false}
             ]

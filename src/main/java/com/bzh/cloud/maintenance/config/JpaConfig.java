@@ -30,7 +30,7 @@ public class JpaConfig {
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
-    	log.info("inital entityManagerFactory");
+        log.info("inital entityManagerFactory");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(false);
 
