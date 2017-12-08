@@ -339,7 +339,7 @@ function createForm(){
         items:[
             {columnWidth:.33,type:'form',padding:'10 0 0 5',id:'colum1'
                 ,items:[
-                {xtype:'textfield',fieldLabel:'规则名称',name:'name',allowblank:false},
+                {xtype:'textfield',fieldLabel:'规则名称',name:'name',allowBlank:false},
                 {
                     xtype:'combo',
                     store:Ext.create('Ext.data.Store',{
@@ -423,7 +423,7 @@ function createForm(){
             },
             {columnWidth:.33,type:'form',padding:'10 0 0 5',id:'colum2'
                 ,items:[
-                    {xtype:'numberfield',fieldLabel:'告警等级',name:'alarmLevel',allowblank:false},
+                    {xtype:'numberfield',fieldLabel:'告警等级',name:'alarmLevel',allowBlank:false},
 					{
 					    xtype:'combo',
 					    store:Ext.create('Ext.data.Store',{

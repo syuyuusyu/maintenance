@@ -23,6 +23,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -152,8 +153,9 @@ public class RestfulClient {
 		} catch (InvokeTimeOutException e) {
 			e.printStackTrace();
 		}
+		List<String> invokeNames=threadData.invokeNames();
 
-		JsonResponseEntity ticketResukt = threadData.getResult("cloudTicket");
+		JsonResponseEntity ticketResukt = threadData.getResult(invokeNames.get(0));
 		ticket = ticketResukt.getArrayJson();
 		if(!ticketResukt.status()){
 			log.info("获取云平台ticket获取失败");

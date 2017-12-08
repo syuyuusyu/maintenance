@@ -5,10 +5,11 @@ import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class ThreadResultData {
 
@@ -16,17 +17,19 @@ public class ThreadResultData {
     private Map<String, JsonResponseEntity> resultMap=new ConcurrentHashMap<>();
     private Map<String, Object> someThingMap=new ConcurrentHashMap<String, Object>();
     private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
+    private List<String> invokeNames=new ArrayList<>();
     private int count=0;
     private int current=0;
     //private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
 
 	private static final Executor fixedThreadPool = Executors.newFixedThreadPool( 100, new ThreadFactory() {
 		public Thread newThread(Runnable r) {
-			Thread t = new Thread( r,"ThreadResultData-");
+			Thread t = new Thread( r);
 			t. setDaemon( true);
 			return t;
 		}
 	});
+
 
 
 	public Executor getFixedThreadPool() {
@@ -80,9 +83,15 @@ public class ThreadResultData {
 				e.printStackTrace();
 			}
 		}
+		this.increaseCount();
+
+		//invoker.setInvokeName(invoker.getInvokeName()+"-"+this.count);
+
+		this.invokeNames.add(invoker.getInvokeName());
+
 		this.invoker.add(invoker);
 		invoker.setResultData(this);
-		this.increaseCount();
+
 		fixedThreadPool.execute(invoker);
 		//new Thread(invoker).start();
 				
@@ -149,5 +158,9 @@ public class ThreadResultData {
 	
 	public Object getSomething(String key){
 		return this.someThingMap.get(key);
+	}
+
+	public List<String> invokeNames(){
+		return this.invokeNames;
 	}
 }

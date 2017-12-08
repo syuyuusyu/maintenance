@@ -55,6 +55,7 @@ public class ResponseEntity implements JsonResponseEntity{
 		return arrayJson;
 	}
 
+
 	public String getStatus() {
 		return status;
 	}

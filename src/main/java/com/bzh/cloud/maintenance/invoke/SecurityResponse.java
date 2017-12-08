@@ -64,6 +64,7 @@ public class SecurityResponse implements JsonResponseEntity{
 		return arrayJson;
 	}
 
+
 	public Integer getEntityId() {
 		return entityId;
 	}

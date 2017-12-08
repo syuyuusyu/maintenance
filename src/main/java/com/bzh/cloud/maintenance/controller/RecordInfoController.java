@@ -108,8 +108,12 @@ public class RecordInfoController {
         return alarmDao.findByPlateId(plateId, pa);
     }
 
-
-
-
+    //告警统计
+    @RequestMapping(value = "/alarmStatistics")
+    public List<Map<String,Object>> alarmStatistics(){
+        return jdbcTemplate.queryForList("select a.plate_id plateId,e.entity_name plateName," +
+                " a.rule_id ruleId,a.rule_name ruleName,count(a.id) `count`,a.step from alarm a join record_entity e on e.id=a.plate_id  " +
+                "group by a.rule_id,a.rule_name,a.plate_id,a.step");
+    }
 
 }

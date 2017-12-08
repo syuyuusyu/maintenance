@@ -17,6 +17,18 @@ public class InvokeUniversal extends InvokeBase<CommonRequestEntity,CommonRespon
         return this;
     }
 
+    public InvokeUniversal setMethod(String method){
+        switch (method){
+            case "post":
+                this.setHttpMethod(RestfulClient.Method.POST);
+                break;
+            case "get":
+                this.setHttpMethod(RestfulClient.Method.GET);
+                break;
+        }
+        return this;
+    }
+
     public InvokeUniversal setUrl(String url){
         this.requestEntity.setUrl(url);
         return this;

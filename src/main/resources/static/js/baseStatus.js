@@ -280,7 +280,6 @@ var optionT = {
 
 function pieChart(resultData) {
 
-	console.log(11111);
 	var width = 1200;
 	var height = 600;
 	function initData() {

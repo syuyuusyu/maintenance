@@ -1,12 +1,11 @@
 package com.bzh.cloud.maintenance.restFul;
 
-import org.apache.log4j.Logger;
-import org.springframework.util.Assert;
-
 import com.bzh.cloud.maintenance.invoke.SaveEvent;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -40,14 +39,13 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
     
     public void save(){
-    	isSave(true);
+		events.add(new SaveEvent());
     }
-    
-    public void isSave(boolean isSave){
-    	if(isSave){
-        	events.add(new SaveEvent());
-        }
-    }
+
+    public void putTransfer(String key,Object value){
+    	this.responseEntity.putTransfer(key, value);
+	}
+
     
     public void setRequestEntity(Q requestEntity){
     	this.requestEntity=requestEntity;
@@ -87,7 +85,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
     }
 
     public final String invoke(){
-    	Assert.notNull(requestEntity);
+		Objects.nonNull(requestEntity);
         beforeCall();
         this.result=RestfulClient.invokRestFul(requestEntity,httpMethod);
         afterCall();

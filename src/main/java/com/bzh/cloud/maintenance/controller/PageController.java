@@ -116,7 +116,12 @@ public class PageController {
 	public String recordInfo(){
 		return "recordInfo";
 	}
-	
+
+	@RequestMapping(value="/invokeConfig")
+	public String invokeConfig(){
+		return "invokeConfig";
+	}
+
 	@RequestMapping(value="/synUserRole")
 	@ResponseBody
 	public Map<String, Object> synUserRole(){
@@ -162,7 +167,7 @@ public class PageController {
 			
 			return pageString;
 		}else{
-			return "redirect:https://isp.yndlr.gov.cn";
+			return "redirect:https://isp.yndlr.gov.cn/toLogin";
 		}
 	}
 	

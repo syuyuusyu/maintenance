@@ -42,6 +42,9 @@ public class SaveEvent implements InvokeCompleteEvent{
 			
 		}else{
 			Integer entityId=null;
+			if(data.getTransfer("entityId")!=null){
+				entityId=(Integer)data.getTransfer("entityId");
+			}
 			if(data instanceof ResponseEntity)
 				entityId=((ResponseEntity)data).getEntityId();
 			if(data instanceof ClouderaResponseEntity)
@@ -49,6 +52,7 @@ public class SaveEvent implements InvokeCompleteEvent{
 			if(data instanceof SecurityResponse)
 				entityId=((SecurityResponse)data).getEntityId();
 			Assert.notNull(entityId);
+
 			RecordEntityDao recordEntityDao= (RecordEntityDao) SpringUtil.getBean("recordEntityDao");
 
 			RecordGroupDao recordGroupDao=(RecordGroupDao) SpringUtil.getBean("recordGroupDao");

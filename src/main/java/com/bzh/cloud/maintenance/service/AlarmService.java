@@ -171,7 +171,6 @@ public class AlarmService {
 					alarm.setRuleName(alarmRule.getName());
 					alarm.setUpId(group.getUpId());
 					alarm.setPlateId(groupEntity.getParentId());
-					log.info("生成告警 "+alarm);
 					alarmDao.save(alarm);
 				}
 			}

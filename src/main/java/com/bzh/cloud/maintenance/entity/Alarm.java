@@ -80,6 +80,9 @@ public class Alarm implements Serializable{
 	@CreationTimestamp
 	//@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
+
+	@Column
+	private String handler;
 	
 	@Column(name = "info")
 	private String info;
@@ -212,6 +215,14 @@ public class Alarm implements Serializable{
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getHandler() {
+		return handler;
+	}
+
+	public void setHandler(String handler) {
+		this.handler = handler;
 	}
 
 	@Override

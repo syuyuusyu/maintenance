@@ -11,6 +11,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface AlarmDao extends PagingAndSortingRepository<Alarm,Integer> {
 
 	public Page<Alarm> findByPlateId(Integer plateId,Pageable pageable);
+
+	public Page<Alarm> findByPlateIdAndStep(Integer plateId,String step,Pageable pageable);
+
+	public Page<Alarm> findByPlateIdAndStepAndRuleId(Integer plateId,String step,Integer ruleId,Pageable pageable);
 	
 	
 	@Query(value="select * from alarm a where a.step=?1 ORDER BY ?#{#pageable}",

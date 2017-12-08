@@ -17,11 +17,13 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter{
 			//单点登录验证
 	        registry.addInterceptor(new AuthInterceptor())
         	.addPathPatterns("/*")
-        	.excludePathPatterns("/index","/logOut","/error","/alarm","/records","/entityInfo","/noAuth","/alarmInfo","/swagger-resources");
+        	.excludePathPatterns("/index","/logOut",
+					"/error","/alarm","/records",
+					"/entityInfo","/noAuth","/alarmInfo","/swagger-resources","/alarmStatistics");
 
 			//接口权限验证
 	        registry.addInterceptor(new InvokeInterceptor())
-					.addPathPatterns("/records","/entityInfo","/alarmInfo");
+					.addPathPatterns("/records","/entityInfo","/alarmInfo","/alarmStatistics");
 
 	        super.addInterceptors(registry);
 		}

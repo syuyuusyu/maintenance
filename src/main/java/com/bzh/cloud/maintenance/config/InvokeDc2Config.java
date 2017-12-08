@@ -77,6 +77,16 @@ public class InvokeDc2Config {
 				eachJson.put(K + "_avg", V.get(0).get("avg"));
 				eachJson.put("host_name", V.get(0).get("host_name"));
 			});
+			if(eachJson.containsKey("bmem_total_avg") && eachJson.containsKey("bmem_used_avg")){
+				try {
+					double used=eachJson.getDouble("bmem_used_avg");
+					double total=eachJson.getDouble("bmem_total_avg");
+					double percent=used/total*100;
+					eachJson.put("percent",percent);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			JSONArray newArr = new JSONArray();
 			newArr.add(eachJson);
 			json.replace("respdata", newArr);

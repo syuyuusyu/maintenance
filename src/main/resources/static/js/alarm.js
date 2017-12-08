@@ -1,3 +1,82 @@
+Ext.define('Syu.Combox',{
+    extend:'Ext.form.ComboBox',
+    xtype:'syuCombo',
+    initComponent:function(){
+        this.callParent(arguments);
+        this.tpl=Ext.create('Ext.XTemplate',
+            '<tpl for=".">',
+            '<div class="x-boundlist-item" >',
+            '{[typeof values === "string" ? values : values["'+this.displayField+'"]?values["'+this.displayField+'"]:"&nbsp"   ]}',
+            '</div>',
+            '</tpl>');
+        var mc=this.store.getProxy().getModel(),
+            mod=new mc(),
+            displayField=this.displayField,
+            valueField=this.valueField;
+        mod.set(displayField,'');
+        mod.set(valueField,null);
+        this.store.on('load',Ext.Function.pass(function(store,combo){
+            store.insert(0,mod);
+        },[this.store,this]));
+        if(this.multiSelect){
+            this.on('select',function(combo,record){
+                if(record.length>1){
+                    for(var i=0;i<record.length;i++){
+                        if(!record[i].data[valueField]){
+                            combo.setValue(null);
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+    ,listeners:{
+        beforequery:function(e){
+            var combo = e.combo;
+            if(!e.forceAll){
+                var input = e.query;
+                // 检索的正则
+                var regExp = new RegExp('.*'+input+'.*','i');
+                // 执行检索
+                combo.store.filterBy(function(record,id){
+                    var text = record.get(combo.displayField);
+                    return regExp.test(text);
+                });
+                combo.expand();
+                return false;
+            }
+        }
+    }
+});
+
+
+Ext.define('WdatePickerTime',{
+    extend:'Ext.form.TextField',
+    itemCls:'required-field',
+    xtype:'WdatePickerTime',
+    getRawValue: function() {
+        v = this.callParent();
+        v=v.replace('年','-');
+        v=v.replace('月','-');
+        v=v.replace('日','');
+        return v;
+
+    },
+    listeners : {
+        render : function(p) {
+            Ext.get(p.getInputId()).on('click', function() {
+                WdatePicker({
+                    dateFmt : 'yyyy年MM月dd日 HH:mm:ss',
+                    realFullFmt : 'yyyy-MM-dd HH:mm:ss',
+                    readOnly : true
+                    //,vel : 'startTime'
+                });
+            });
+        }
+    }
+});
+
 var mainPanle=Ext.create('Ext.tab.Panel',{
     region:'center',
     layout: 'fit'
@@ -37,22 +116,34 @@ var tree=Ext.create('Ext.tree.Panel', {
 	    	
 	    },
         'select': function(node, record,item) {
-        	console.log(record.raw);
 	        if(record.raw.hierarchy=2){
-	            if(Ext.getCmp('tab_'+record.raw.text)){
-                    mainPanle.setActiveTab(Ext.getCmp('tab_'+record.raw.text));
+	            if(Ext.getCmp('tab_'+record.raw.text+"0")){
+                    mainPanle.setActiveTab(Ext.getCmp('tab_'+record.raw.text+"0"));
                     return;
                 }
-	        	var grid=createGrid(record.raw.id);
-    			var panel=Ext.create('Ext.Panel',{
-					id:'tab_'+record.raw.text,
-					title:record.raw.text,
+                if(Ext.getCmp('tab_'+record.raw.text+"2")){
+                    mainPanle.setActiveTab(Ext.getCmp('tab_'+record.raw.text+"2"));
+                    return;
+                }
+	        	var grid1=createGrid(record.raw.id,"0");
+    			var panel1=Ext.create('Ext.Panel',{
+					id:'tab_'+record.raw.text+"0",
+					title:record.raw.text+"待处理",
 					closable:true,
 					layout:'fit',
-					items:[grid]
+					items:[grid1]
 				});
-				mainPanle.add(panel);
-				mainPanle.setActiveTab(panel);
+                var grid2=createGrid(record.raw.id,"2");
+                var panel2=Ext.create('Ext.Panel',{
+                    id:'tab_'+record.raw.text+"2",
+                    title:record.raw.text+"已处理",
+                    closable:true,
+                    layout:'fit',
+                    items:[grid2]
+                });
+				mainPanle.add(panel1);
+                mainPanle.add(panel2);
+				mainPanle.setActiveTab(panel1);
 	        	
 	        }
 
@@ -66,24 +157,38 @@ var tree=Ext.create('Ext.tree.Panel', {
 });
 
 
-function createGrid(plateId){
+function createGrid(plateId,step){
   var columns=[
                {dataIndex:'id',text:'ID',hidden:true,width:100},
                {dataIndex:'ruleId',text:'告警规则ID',hidden:true,width:100},
                {dataIndex:'ruleName',text:'告警规则名称',width:200},
                {dataIndex:'roleId',text:'角色ID',hidden:true,width:100},
-               {dataIndex:'step',text:'处理步骤',width:110,
-            	   renderer:function(value){               
-			   				switch(value){
-							case '0':
-								return "<input type='button' style='color:red' value='处理告警'>";
-							case '1':
-								return "<input type='button' style='color:red' value='处理告警'>'";
-							case '2':
-								return "<input type='button' style='color:green' value='查看处理结果'>";;					
-						}				
-					}
-               },
+                (function(){
+                    if(step==0){
+                        return {
+                            dataIndex:'step', text:'处理步骤',width:110,
+                            renderer:function(value){
+                                switch(value){
+                                    case '0':
+                                        return "<input type='button' style='color:red' value='处理告警'>";
+                                    case '1':
+                                        return "<input type='button' style='color:red' value='处理告警'>'";
+                                    case '2':
+                                        return "<input type='button' style='color:green' value='查看处理结果'>";;
+                                }
+                        }
+                        }
+                    }else{
+                        return {dataIndex:'handler',text:'处理人',width:100};
+                    }
+                })(),
+                (function(){
+                    if(step==2){
+                        return {dataIndex:'info',text:'告警处理记录',width:200};
+                    }
+                    return {};
+                })(),
+
                 {dataIndex:'upId',text:'资源ID',width:200},
                 {dataIndex:'createTime',text:'生成时间',width:170,
                     renderer:function(value){
@@ -125,14 +230,15 @@ function createGrid(plateId){
                {dataIndex:'alarmValue',text:'实际值',width:150},
                {dataIndex:'info',text:'处理信息',hidden:true,width:150}
                ];
+       console.log(columns);
        var fields=['id','ruleId','ruleName','roleId','step','upId','createTime','groupId','gcode','gname','recordId',
-                   'rcode','rname','alarmType','valveValue','equalType','equalType','alarmValue','info'];
+                   'rcode','rname','alarmType','valveValue','equalType','equalType','alarmValue','handler','info'];
        var store=Ext.create('Ext.data.Store',{
            fields:fields,
            proxy : {
                type : 'ajax',
-               url : './../../alarms',
-               extraParams:{plateId:plateId},
+               url : './../alarm/alarms',
+               extraParams:{plateId:plateId,step:step},
                reader: {
                    type: 'json',
                    root: 'content',
@@ -165,7 +271,56 @@ function createGrid(plateId){
                         store: store,
                         dock: 'bottom',
                         displayInfo: true
-                    }]
+                    },{
+                        xtype: 'toolbar',
+                        dock: 'top',
+                        height :35,
+                        items:[
+                            {
+                                xtype:'syuCombo',
+                                store:Ext.create('Ext.data.Store',{
+                                    fields:['id','name'],
+                                    proxy: {
+                                        type: 'ajax',
+                                        url:'./../alarm/alarmRule',
+                                        reader: {
+                                            type: 'json',
+                                            root: 'result'
+                                        },
+                                        scope:this
+                                    },
+                                    autoLoad:true
+                                }),
+                                fieldLabel: '告警规则名称',
+                                name:'ruleId',
+                                displayField: 'name',
+                                valueField: 'id',
+                                allowBlank:true,
+                                triggerAction:'all'
+                                //multiSelect:true,
+                                //width:200,
+
+                            },'-',{
+                                xtype:'WdatePickerTime',
+                                name: 'startTime',
+                                fieldLabel: '生成开始时间',
+                                anchor: '100%',
+                                allowBlank:true
+                            },'-',{
+                                xtype:'WdatePickerTime',
+                                name: 'endTime',
+                                fieldLabel: '生成结束时间',
+                                anchor: '100%',
+                                allowBlank:true
+                            },'->',
+                            {
+                                xtype: 'button',
+                                text : '查询'
+                            }
+
+                        ]
+                    }
+        ]
       ,listeners:{
      	cellclick:function( _this, td, cellIndex, record, tr, rowIndex, e, eOpts ){
      		console.log(_this);
@@ -197,11 +352,10 @@ function alarmInfo(record,e,grid){
 			        var form = this.up('form');
 			        var baseForm=form.getForm();
 			        var data = baseForm.getValues();
-			        alarm.info=data.info;
+			        Ext.apply(alarm,data);
                     //alarm.createTime=new Date(alarm.createTime);
                     alarm.createTime=Ext.Date.format(new Date(alarm.createTime), 'Y-m-d H:i:s');
 			       // delete alarm.createTime;
-			        console.log(alarm);
 
 			        if(!form.isValid()){
 			            Ext.Msg.alert('!','填入合法内容');
@@ -209,7 +363,7 @@ function alarmInfo(record,e,grid){
 			        }
 			        Ext.Ajax.request({
 			            method:'post',
-			            url:'./../../update',
+			            url:'./../alarm/update',
 			            params:alarm,
 			            failure:function(r,data){
 			
@@ -253,8 +407,13 @@ function alarmInfo(record,e,grid){
                  height    : 150,
                  anchor    : '100%',
                  value	   : record.raw.info,
-                 allowblank: false
-             }  
+                 allowBlank: false
+             },{
+                xtype : 'textfield',
+                name :'handler',
+                fieldLabel: '处理人',
+                allowBlank: false
+            }
         ],
         buttons:buttons
 

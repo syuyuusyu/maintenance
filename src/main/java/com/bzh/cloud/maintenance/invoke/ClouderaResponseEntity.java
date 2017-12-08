@@ -31,7 +31,6 @@ public class ClouderaResponseEntity implements JsonResponseEntity {
 		return isOk;
 	}
 
-	@Override
 	public String getStatus() {
 		if(isOk) return "OK";
 		else return "ERR";		
@@ -50,6 +49,7 @@ public class ClouderaResponseEntity implements JsonResponseEntity {
 		}
 		return JSON.parseArray("["+json.toJSONString()+"]").toJSONString();
 	}
+
 
 	public void setResponseClass(Class<?> responseClass) {
 		this.responseClass = responseClass;
