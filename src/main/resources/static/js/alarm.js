@@ -255,6 +255,7 @@ function createGrid(plateId,step){
           enableTextSelection :true
       }	     
       ,plateId:plateId
+        ,step:step
       //,forceFit:true
       ,autohight:true
       ,autoScroll:true
@@ -315,7 +316,22 @@ function createGrid(plateId,step){
                             },'->',
                             {
                                 xtype: 'button',
-                                text : '查询'
+                                text : '查询',
+                                iconCls:'icon-search',
+                                handler:function(){
+                                    var grid=this.up('grid');
+                                    var toolbar=this.up('toolbar');
+                                    console.log(grid);
+                                    console.log(toolbar);
+                                    var query={
+                                        plateId:grid.plateId,
+                                        step:grid.step,
+                                        ruleId:toolbar.down('[name="ruleId"]').getValue(),
+                                        startTime:toolbar.down('[name="startTime"]').getValue(),
+                                        endTime:toolbar.down('[name="endTime"]').getValue()
+                                    }
+                                    console.log(query);
+                                }
                             }
 
                         ]

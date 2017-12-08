@@ -35,7 +35,8 @@ public class AlarmController {
 	AlarmRuleDao alarmRuleDao;
 	
 	@RequestMapping(value = "/alarms")
-	public Page<Alarm> 	alarms(Integer plateId,String step,Integer page, Integer limit){
+	public Page<Alarm> 	alarms(Integer plateId,String step,Integer roleId,Date startTime,Date endTime, Integer page, Integer limit){
+		System.out.println("startTime = " + startTime);
 		Pageable pa = new PageRequest(page - 1, limit);
 		if(StringUtils.isEmpty(step)){
 			return alarmDao.findByPlateId(plateId, pa);
