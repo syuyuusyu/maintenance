@@ -36,12 +36,21 @@ public class AlarmController {
 	
 	@RequestMapping(value = "/alarms")
 	public Page<Alarm> 	alarms(Integer plateId,String step,Integer roleId,Date startTime,Date endTime, Integer page, Integer limit){
-		System.out.println("startTime = " + startTime);
 		Pageable pa = new PageRequest(page - 1, limit);
-		if(StringUtils.isEmpty(step)){
-			return alarmDao.findByPlateId(plateId, pa);
+		if(StringUtils.isEmpty(roleId)){
+			if(startTime==null){
+				return alarmDao.findByPlateIdAndStep(plateId, step, pa);
+			}else{
+				System.out.println("startTime = " + startTime);
+				System.out.println("endTime = " + endTime);
+				return alarmDao.findByPlateIdAndStepAndCreateTimeBetween(plateId, step, startTime, endTime, pa);
+			}
 		}else{
-			return alarmDao.findByPlateIdAndStep(plateId, step, pa);
+			if(startTime==null){
+				return alarmDao.findByPlateIdAndStepAndRuleId(plateId, step, roleId, pa);
+			}else{
+				return alarmDao.findByPlateIdAndStepAndRuleIdAndCreateTimeBetween(plateId, step, roleId, startTime, endTime, pa);
+			}
 		}
 
 	}

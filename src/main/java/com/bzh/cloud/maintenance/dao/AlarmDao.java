@@ -2,11 +2,12 @@ package com.bzh.cloud.maintenance.dao;
 
 
 import com.bzh.cloud.maintenance.entity.Alarm;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.Date;
 
 public interface AlarmDao extends PagingAndSortingRepository<Alarm,Integer> {
 
@@ -14,7 +15,11 @@ public interface AlarmDao extends PagingAndSortingRepository<Alarm,Integer> {
 
 	public Page<Alarm> findByPlateIdAndStep(Integer plateId,String step,Pageable pageable);
 
+	public Page<Alarm> findByPlateIdAndStepAndCreateTimeBetween(Integer plateId, String step, Date startTime,Date endTime,Pageable pageable);
+
 	public Page<Alarm> findByPlateIdAndStepAndRuleId(Integer plateId,String step,Integer ruleId,Pageable pageable);
+
+	public Page<Alarm> findByPlateIdAndStepAndRuleIdAndCreateTimeBetween(Integer plateId,String step,Integer ruleId,Date startTime,Date endTime,Pageable pageable);
 	
 	
 	@Query(value="select * from alarm a where a.step=?1 ORDER BY ?#{#pageable}",

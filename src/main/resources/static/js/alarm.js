@@ -31,6 +31,17 @@ Ext.define('Syu.Combox',{
         }
 
     }
+    ,getValue:function () {
+        var v = this.callParent();
+        console.log(v);
+        return v;
+    }
+    , getRawValue: function() {
+        var v = this.callParent();
+        console.log(v);
+        return v;
+
+    }
     ,listeners:{
         beforequery:function(e){
             var combo = e.combo;
@@ -56,7 +67,7 @@ Ext.define('WdatePickerTime',{
     itemCls:'required-field',
     xtype:'WdatePickerTime',
     getRawValue: function() {
-        v = this.callParent();
+        var v = this.callParent();
         v=v.replace('年','-');
         v=v.replace('月','-');
         v=v.replace('日','');
@@ -321,16 +332,17 @@ function createGrid(plateId,step){
                                 handler:function(){
                                     var grid=this.up('grid');
                                     var toolbar=this.up('toolbar');
-                                    console.log(grid);
-                                    console.log(toolbar);
                                     var query={
                                         plateId:grid.plateId,
                                         step:grid.step,
                                         ruleId:toolbar.down('[name="ruleId"]').getValue(),
-                                        startTime:toolbar.down('[name="startTime"]').getValue(),
-                                        endTime:toolbar.down('[name="endTime"]').getValue()
+                                        startTime:toolbar.down('[name="startTime"]').getValue()?toolbar.down('[name="startTime"]').getValue():Ext.Date.format(new Date(2000), 'Y-m-d H:i:s'),
+                                        endTime:toolbar.down('[name="endTime"]').getValue()?toolbar.down('[name="endTime"]').getValue():Ext.Date.format(new Date(), 'Y-m-d H:i:s')
                                     }
-                                    console.log(query);
+                                    for(p in query){
+                                        grid.store.getProxy().setExtraParam(p,query[p]);
+                                    }
+                                    grid.store.reload();
                                 }
                             }
 
