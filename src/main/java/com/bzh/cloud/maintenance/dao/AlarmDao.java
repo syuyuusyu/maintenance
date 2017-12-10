@@ -20,6 +20,8 @@ public interface AlarmDao extends PagingAndSortingRepository<Alarm,Integer> {
 	public Page<Alarm> findByPlateIdAndStepAndRuleId(Integer plateId,String step,Integer ruleId,Pageable pageable);
 
 	public Page<Alarm> findByPlateIdAndStepAndRuleIdAndCreateTimeBetween(Integer plateId,String step,Integer ruleId,Date startTime,Date endTime,Pageable pageable);
+
+	public Page<Alarm> queryAlarms(Integer plateId, String step, Integer ruleId, Date startTime, Date endTime, String handler, Integer page, Integer limit);
 	
 	
 	@Query(value="select * from alarm a where a.step=?1 ORDER BY ?#{#pageable}",

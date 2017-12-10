@@ -72,7 +72,18 @@ public class PageController {
 	
 	@RequestMapping(value="/alarm")
 	public String alarm(Model model,HttpServletRequest request,String token){
+		System.out.println("model = " + model);
 		return vailifyLogin(request, "alarm", token);
+	}
+
+	@RequestMapping(value="/newAlarm")
+	public String newAlarm(Model model,HttpServletRequest request,String token){
+		return vailifyLogin(request, "newAlarm", token);
+	}
+
+	@RequestMapping(value="/oldAlarm")
+	public String oldAlarm(Model model,HttpServletRequest request,String token){
+		return vailifyLogin(request, "oldAlarm", token);
 	}
 
 

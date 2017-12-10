@@ -7,9 +7,7 @@ import com.bzh.cloud.maintenance.entity.AlarmRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,25 +31,14 @@ public class AlarmController {
 
 	@Autowired
 	AlarmRuleDao alarmRuleDao;
+
+	@Autowired
+	JdbcTemplate jdbcTemplate;
 	
 	@RequestMapping(value = "/alarms")
-	public Page<Alarm> 	alarms(Integer plateId,String step,Integer roleId,Date startTime,Date endTime, Integer page, Integer limit){
-		Pageable pa = new PageRequest(page - 1, limit);
-		if(StringUtils.isEmpty(roleId)){
-			if(startTime==null){
-				return alarmDao.findByPlateIdAndStep(plateId, step, pa);
-			}else{
-				System.out.println("startTime = " + startTime);
-				System.out.println("endTime = " + endTime);
-				return alarmDao.findByPlateIdAndStepAndCreateTimeBetween(plateId, step, startTime, endTime, pa);
-			}
-		}else{
-			if(startTime==null){
-				return alarmDao.findByPlateIdAndStepAndRuleId(plateId, step, roleId, pa);
-			}else{
-				return alarmDao.findByPlateIdAndStepAndRuleIdAndCreateTimeBetween(plateId, step, roleId, startTime, endTime, pa);
-			}
-		}
+	public Page<Alarm> 	alarms(Integer plateId,String step,Integer roleId,Date startTime,Date endTime,String handler, Integer page, Integer limit){
+		System.out.println("+handler = " + "-"+handler+"-");
+		return alarmDao.queryAlarms(plateId,step,roleId,startTime,endTime,handler,page,limit);
 
 	}
 	
@@ -73,6 +60,10 @@ public class AlarmController {
 		return (List<AlarmRule>) alarmRuleDao.findAll();
 	}
 
+	@RequestMapping(value = "/handler")
+	public List<Map<String,Object>> handler(){
+		return jdbcTemplate.queryForList("select DISTINCT handler from alarm where handler is not null and step=2");
+	}
 	@InitBinder
 	protected void init(HttpServletRequest request, ServletRequestDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

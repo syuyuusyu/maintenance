@@ -78,6 +78,7 @@ function pieChart(){
 
         },
         success:function(r,data){
+            console.log(data);
             var result = Ext.JSON.decode(r.responseText);
             console.log(result);
             var coloudOn={
@@ -126,21 +127,21 @@ function pieChart(){
                 var data=result[i];
                 if(data.plateId==2){
                     if(data.step==2){
-                        coloudOn.data.push({value:data.count,name:data.ruleName});
+                        coloudOn.data.push({value:data.count,name:data.ruleName,plateId:data.plateId,ruleId:data.ruleId,step:data.step});
                     }else{
-                        coloudOf.data.push({value:data.count,name:data.ruleName});
+                        coloudOf.data.push({value:data.count,name:data.ruleName,plateId:data.plateId,ruleId:data.ruleId,step:data.step});
                     }
                 }else if(data.plateId==3){
                     if(data.step==2){
-                        dataOn.data.push({value:data.count,name:data.ruleName});
+                        dataOn.data.push({value:data.count,name:data.ruleName,plateId:data.plateId,ruleId:data.ruleId,step:data.step});
                     }else{
-                        dataOf.data.push({value:data.count,name:data.ruleName});
+                        dataOf.data.push({value:data.count,name:data.ruleName,plateId:data.plateId,ruleId:data.ruleId,step:data.step});
                     }
                 }else if(data.plateId==4){
                     if(data.step==2){
-                        sON.data.push({value:data.count,name:data.ruleName});
+                        sON.data.push({value:data.count,name:data.ruleName,plateId:data.plateId,ruleId:data.ruleId,step:data.step});
                     }else{
-                        soff.data.push({value:data.count,name:data.ruleName});
+                        soff.data.push({value:data.count,name:data.ruleName,plateId:data.plateId,ruleId:data.ruleId,step:data.step});
                     }
                 }
 
@@ -161,9 +162,26 @@ function pieChart(){
                 function(ec) {
                     console.log(op);
                     var myChart = ec.init(document.getElementById('cloud-canv'));
-                    console.log(myChart);
-                    //console.log(initData());
                     myChart.setOption(op);
+                    var ecConfig = require('echarts/config');
+                    myChart.on(ecConfig.EVENT.CLICK,function(param){
+                        console.log(param.data);
+                        if(typeof param.data !='object'){
+                            var i=param.dataIndex;
+                            console.log(param);
+                        }
+                        var grid=createGrid(param.data.plateId,param.data.step)
+                        console.log(grid);
+                        Ext.create('Ext.window.Window', {
+                            //id:'win_'+entity.entityName,
+                            title: '告警处理信息',
+                            height: 600,
+                            width: 1000,
+                            layout: 'fit',
+                            items: [grid]
+                        }).show();
+                    });
+
 
                 });
         }

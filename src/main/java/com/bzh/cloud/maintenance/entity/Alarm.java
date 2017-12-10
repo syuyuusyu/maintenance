@@ -5,7 +5,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 
 
@@ -55,8 +54,8 @@ public class Alarm implements Serializable{
 	@Column(name = "up_id")
 	private String upId;
 	
-	@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="alarm")
-	private List<AlarmProcess> process;
+//	@OneToMany(cascade= CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="alarm")
+//	private List<AlarmProcess> process;
 	
 	@Column(name = "alarm_type")
 	private String alarmType;
@@ -106,12 +105,12 @@ public class Alarm implements Serializable{
 	public void setStep(String step) {
 		this.step = step;
 	}
-	public List<AlarmProcess> getProcess() {
-		return process;
-	}
-	public void setProcess(List<AlarmProcess> process) {
-		this.process = process;
-	}
+//	public List<AlarmProcess> getProcess() {
+//		return process;
+//	}
+//	public void setProcess(List<AlarmProcess> process) {
+//		this.process = process;
+//	}
 
 	public Integer getGroupId() {
 		return groupId;
@@ -239,7 +238,6 @@ public class Alarm implements Serializable{
 				", gname='" + gname + '\'' +
 				", rname='" + rname + '\'' +
 				", upId='" + upId + '\'' +
-				", process=" + process +
 				", alarmType='" + alarmType + '\'' +
 				", equalType='" + equalType + '\'' +
 				", valveValue='" + valveValue + '\'' +

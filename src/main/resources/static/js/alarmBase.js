@@ -1,3 +1,4 @@
+
 Ext.define('Syu.Combox',{
     extend:'Ext.form.ComboBox',
     xtype:'syuCombo',
@@ -107,65 +108,6 @@ var treeStore = Ext.create('Ext.data.TreeStore', {
 });
 
 
-var tree=Ext.create('Ext.tree.Panel', {
-    title: '告警处理',
-    region:'west',
-    store: treeStore,
-    width:200,
-    useArrows: true,
-    frame: true,
-    autoScroll: true,
-    collapsible: true,
-    containerScroll: true,
-    split: true,
-    rootVisible: false,
-    listeners: {
-        beforeitemexpand: function (node, opt){
-
-        },
-        beforeitemcollapse: function (node, opt){
-
-        },
-        'select': function(node, record,item) {
-            if(record.raw.hierarchy=2){
-                if(Ext.getCmp('tab_'+record.raw.text+"0")){
-                    mainPanle.setActiveTab(Ext.getCmp('tab_'+record.raw.text+"0"));
-                    return;
-                }
-                if(Ext.getCmp('tab_'+record.raw.text+"2")){
-                    mainPanle.setActiveTab(Ext.getCmp('tab_'+record.raw.text+"2"));
-                    return;
-                }
-                var grid1=createGrid(record.raw.id,"0");
-                var panel1=Ext.create('Ext.Panel',{
-                    id:'tab_'+record.raw.text+"0",
-                    title:record.raw.text+"待处理",
-                    closable:true,
-                    layout:'fit',
-                    items:[grid1]
-                });
-                var grid2=createGrid(record.raw.id,"2");
-                var panel2=Ext.create('Ext.Panel',{
-                    id:'tab_'+record.raw.text+"2",
-                    title:record.raw.text+"已处理",
-                    closable:true,
-                    layout:'fit',
-                    items:[grid2]
-                });
-                mainPanle.add(panel1);
-                mainPanle.add(panel2);
-                mainPanle.setActiveTab(panel1);
-
-            }
-
-        }
-        ,'itemcontextmenu': function(_this, record, item, index, e, eOpts) {
-
-        }
-
-    }
-
-});
 
 
 function createGrid(plateId,step){
@@ -197,7 +139,7 @@ function createGrid(plateId,step){
             if(step==2){
                 return {dataIndex:'info',text:'告警处理记录',width:200};
             }
-            return {};
+            return {dataIndex:'info',text:'告警处理记录',width:200,hidden:true};
         })(),
 
         {dataIndex:'upId',text:'资源ID',width:200},
@@ -241,7 +183,6 @@ function createGrid(plateId,step){
         {dataIndex:'alarmValue',text:'实际值',width:150},
         {dataIndex:'info',text:'处理信息',hidden:true,width:150}
     ];
-    console.log(columns);
     var fields=['id','ruleId','ruleName','roleId','step','upId','createTime','groupId','gcode','gname','recordId',
         'rcode','rname','alarmType','valveValue','equalType','equalType','alarmValue','handler','info'];
     var store=Ext.create('Ext.data.Store',{
@@ -324,7 +265,41 @@ function createGrid(plateId,step){
                         fieldLabel: '生成结束时间',
                         anchor: '100%',
                         allowBlank:true
-                    },'->',
+                    },
+                    (function(){
+                        if(step==2){
+                            return '-'
+                        }
+                        return '';
+                    })(),
+                    (function(){
+                        if(step==2){
+                            return {
+                                xtype:'syuCombo',
+                                store:Ext.create('Ext.data.Store',{
+                                    fields:['handler','handler'],
+                                    proxy: {
+                                        type: 'ajax',
+                                        url:'./../alarm/handler',
+                                        reader: {
+                                            type: 'json',
+                                            root: 'result'
+                                        },
+                                        scope:this
+                                    },
+                                    autoLoad:true
+                                }),
+                                fieldLabel: '处理人',
+                                name:'handler',
+                                displayField: 'handler',
+                                valueField: 'handler',
+                                allowBlank:true,
+                                triggerAction:'all'
+                            };
+                        }
+                        return '';
+                    })(),
+                    '->',
                     {
                         xtype: 'button',
                         text : '查询',
@@ -337,8 +312,10 @@ function createGrid(plateId,step){
                                 step:grid.step,
                                 ruleId:toolbar.down('[name="ruleId"]').getValue(),
                                 startTime:toolbar.down('[name="startTime"]').getValue()?toolbar.down('[name="startTime"]').getValue():Ext.Date.format(new Date(2000), 'Y-m-d H:i:s'),
-                                endTime:toolbar.down('[name="endTime"]').getValue()?toolbar.down('[name="endTime"]').getValue():Ext.Date.format(new Date(), 'Y-m-d H:i:s')
+                                endTime:toolbar.down('[name="endTime"]').getValue()?toolbar.down('[name="endTime"]').getValue():Ext.Date.format(new Date(), 'Y-m-d H:i:s'),
+                                handler:toolbar.down('[name="handler"]')?toolbar.down('[name="handler"]').getValue():null
                             }
+
                             for(p in query){
                                 grid.store.getProxy().setExtraParam(p,query[p]);
                             }
@@ -350,12 +327,25 @@ function createGrid(plateId,step){
             }
         ]
         ,listeners:{
-            cellclick:function( _this, td, cellIndex, record, tr, rowIndex, e, eOpts ){
-                console.log(_this);
-                if(cellIndex==5){
-                    alarmInfo(record,e,_this);
+            // cellclick:function( _this, td, cellIndex, record, tr, rowIndex, e, eOpts ){
+            //     console.log(_this.step);
+            //     if(cellIndex==5 && _this.step==0){
+            //         alarmInfo(record,e,_this);
+            //     }
+            // },
+            cellclick:(function(step){
+                alert(step);
+                if(step==0){
+                    return function( _this, td, cellIndex, record, tr, rowIndex, e, eOpts ) {
+
+                        if (cellIndex == 5) {
+                            alarmInfo(record, e, _this);
+                        }
+                    }
+                }else{
+                    return function(){};
                 }
-            }
+            })(step)
         }
 
     });
@@ -462,12 +452,3 @@ function alarmInfo(record,e,grid){
 
 
 
-Ext.onReady(function(){
-    Ext.getDoc().on("contextmenu", function(e){
-        e.stopEvent();
-    });
-    var view=new Ext.Viewport({
-        layout:'border',
-        items: [tree,mainPanle]
-    });
-});

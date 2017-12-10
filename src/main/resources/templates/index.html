@@ -173,12 +173,13 @@
                 <!-- Sidebar navigation  菜单栏-->
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
+                        <li><a href="javascript:;" onclick="jumpPage('.././baseStatus.html')">基本状况</a></li>
 						<li><a href="javascript:;" onclick="jumpPage('.././alarmRuleConf')">告警规则配置</a></li>
 						<li><a href="javascript:;" onclick="jumpPage('.././recordEntity')">接口内容配置</a></li>
 						<li><a href="javascript:;" onclick="jumpPage('.././cmdbEntity')">CMDB关系配置</a></li>                       
           				<li><a href="javascript:;" onclick="jumpPage('.././cmdbInput')">CMDB源数据录入</a></li>
-          				<li><a href="javascript:;" onclick="jumpPage('.././alarm')">告警管理</a></li>
-                        <li><a href="javascript:;" onclick="jumpPage('.././baseStatus.html')">基本状况</a></li>
+          				<li><a href="javascript:;" onclick="jumpPage('.././newAlarm')">告警处理</a></li>
+                        <li><a href="javascript:;" onclick="jumpPage('.././oldAlarm')">告警处理记录</a></li>
                     </ul>
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -200,7 +201,7 @@
                 <!-- Start Page Content -->
                 <!-- ============================================================== -->
                 <!-- Row -->
-				<iframe src=".././alarm"></iframe>
+				<iframe src=".././baseStatus"></iframe>
             <!-- ============================================================== -->
             <!-- End Right sidebar -->
             <!-- ============================================================== -->

@@ -155,6 +155,11 @@ public class TestStearm {
 
 	}
 
+	@Test
+	public void test7(){
+		Page<Alarm> page=alarmDao.queryAlarms(2,"2",null,null,null,"syu",1,5);
+	}
+
 
 
 

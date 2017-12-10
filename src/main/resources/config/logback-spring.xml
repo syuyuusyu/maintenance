@@ -38,13 +38,13 @@
     </appender>
     
     <!-- hibernate日志输入 -->
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder"
-        level="TRACE" />
-    <logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
-        level="TRACE" />
-    <logger name="org.hibernate.SQL" level="INFO" />
-    <logger name="org.hibernate.engine.QueryParameters" level="INFO" />
-    <logger name="org.hibernate.engine.query.HQLQueryPlan" level="INFO" />
+    <!--<logger name="org.hibernate.type.descriptor.sql.BasicBinder"-->
+        <!--level="TRACE" />-->
+    <!--<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"-->
+        <!--level="TRACE" />-->
+    <!--<logger name="org.hibernate.SQL" level="INFO" />-->
+    <!--<logger name="org.hibernate.engine.QueryParameters" level="INFO" />-->
+    <!--<logger name="org.hibernate.engine.query.HQLQueryPlan" level="INFO" />-->
 
     <logger name="org.hibernate.SQL" level="ERROR" additivity="false"/>
 
