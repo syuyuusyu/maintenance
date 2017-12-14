@@ -334,7 +334,6 @@ function createGrid(plateId,step){
             //     }
             // },
             cellclick:(function(step){
-                alert(step);
                 if(step==0){
                     return function( _this, td, cellIndex, record, tr, rowIndex, e, eOpts ) {
 

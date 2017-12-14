@@ -39,6 +39,10 @@ var option = {
         text: '告警信息统计',
         x:'center'
     },
+    legend: {
+        y:300,
+        data:['云平台已处理告警','云平台未处理告警','大数据已处理告警','大数据未处理告警','安全平台已处理告警','安全平台未处理告警']
+    },
     tooltip : {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -86,6 +90,25 @@ function pieChart(){
                 type:'pie',
                 radius : '25%',
                 center: ['25%', '25%'],
+                itemStyle : {
+                    normal : {
+                        label : {
+                            show : true,
+                            formatter: '{b} : {c} ({d}%)'
+                        },
+                        labelLine : {
+                            show : true
+                        }
+                    },
+                    emphasis : {
+                        label : {
+                            show : true
+                        },
+                        labelLine : {
+                            show : true
+                        }
+                    }
+                },
                 data:[]
             };
             var coloudOf={
@@ -176,9 +199,14 @@ function pieChart(){
                             //id:'win_'+entity.entityName,
                             title: '告警处理信息',
                             height: 600,
-                            width: 1000,
-                            layout: 'fit',
-                            items: [grid]
+                            width: 1280,
+                            layout: 'border',
+                            items: [{
+                                xtype:'panel',
+                                region : 'center',
+                                layout: 'fit',
+                                items:[grid]
+                            }]
                         }).show();
                     });
 
