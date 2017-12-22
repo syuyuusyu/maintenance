@@ -3,9 +3,10 @@ package com.bzh.cloud.maintenance.service;
 import com.bzh.cloud.maintenance.dao.RecordDao;
 import com.bzh.cloud.maintenance.dao.RecordEntityDao;
 import com.bzh.cloud.maintenance.dao.RecordGroupDao;
-import com.bzh.cloud.maintenance.entity.*;
+import com.bzh.cloud.maintenance.entity.Record;
+import com.bzh.cloud.maintenance.entity.RecordEntity;
+import com.bzh.cloud.maintenance.entity.RecordGroup;
 import com.bzh.cloud.maintenance.util.TimeUtil;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -96,7 +97,7 @@ public class RecordInfoService {
         }
 
         @Override
-        public int compareTo(@NotNull Object o) {
+        public int compareTo(Object o) {
             if(!(o instanceof OrdeMap)){
                 return 0;
             }

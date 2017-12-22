@@ -49,7 +49,7 @@ public class MerageDataService {
 
     public void merageByhour(int index){
         List<RecordEntity> entitys=recordEntityDao.groupEntitys();
-        List<CompletableFuture<String>> futures=entitys.stream().filter(entity->112!=entity.getId()).map(entity->CompletableFuture.supplyAsync(
+        List<CompletableFuture<String>> futures=entitys.stream().map(entity->CompletableFuture.supplyAsync(
                 ()->{
                     List<RecordGroup> list=recordGroupDao.yestdayByHour(index,entity.getId());
                     return byEntityHour(list,entity);

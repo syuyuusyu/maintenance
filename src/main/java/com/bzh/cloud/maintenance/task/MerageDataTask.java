@@ -77,7 +77,7 @@ public class MerageDataTask {
 
     private void merageData(int index){
         List<RecordEntity> entitys=recordEntityDao.groupEntitys();
-        List<CompletableFuture<String>> futures=entitys.stream().filter(entity->112!=entity.getId())
+        List<CompletableFuture<String>> futures=entitys.stream()
                 .map(entity->CompletableFuture.supplyAsync(
                 ()->{
                     List<RecordGroup> list=recordGroupDao.yestdayByHour(index,entity.getId());
