@@ -65,13 +65,13 @@ public class Dc2InvokeService {
 				});
 			}
 			//物理磁盘
-//			argList.stream().map(this::p_disk).forEach(rdata::addInvoker);
+			argList.stream().map(this::p_disk).forEach(rdata::addInvoker);
 			
 			//物理网络
-//			argList.stream().map(this::network_report).forEach(rdata::addInvoker);
+			argList.stream().map(this::network_report).forEach(rdata::addInvoker);
 			
 			//物理CPU
-//			argList.stream().map(this::cpu_report).forEach(rdata::addInvoker);
+			argList.stream().map(this::cpu_report).forEach(rdata::addInvoker);
 
 			//各节点物理服务器内存、swap空间使用情况
 			argList.stream().map(this::mem_report).forEach(rdata::addInvoker);
@@ -113,17 +113,17 @@ public class Dc2InvokeService {
 		mysql.save();
 
 		trd.addInvoker(monitorArgs);
-//		trd.addInvoker(invokeRegions);
-//
-//		trd.addInvoker(ganglia);
-//		trd.addInvoker(virtualmachine);
-//		trd.addInvoker(network);
-//		trd.addInvoker(nova);
-//		trd.addInvoker(neutron);
-//		trd.addInvoker(cinder);
-//		trd.addInvoker(keystone);
-//		trd.addInvoker(mongodb);
-//		trd.addInvoker(mysql);
+		trd.addInvoker(invokeRegions);
+
+		trd.addInvoker(ganglia);
+		trd.addInvoker(virtualmachine);
+		trd.addInvoker(network);
+		trd.addInvoker(nova);
+		trd.addInvoker(neutron);
+		trd.addInvoker(cinder);
+		trd.addInvoker(keystone);
+		trd.addInvoker(mongodb);
+		trd.addInvoker(mysql);
 
 		try {
 			trd.waitForResult();
