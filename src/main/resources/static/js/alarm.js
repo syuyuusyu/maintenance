@@ -364,7 +364,6 @@ function createGrid(plateId,step){
 }
 
 function alarmInfo(record,e,grid){
-    console.log(record.raw);
     var alarm=record.raw;
     var buttons=[];
     if(record.raw.step==1||record.raw.step==0){
@@ -450,7 +449,7 @@ function alarmInfo(record,e,grid){
     Ext.create('Ext.window.Window', {
         //id:'win_'+entity.entityName,
         title: '告警处理信息',
-        height: 240,
+        height: 260,
         width: 400,
         layout: 'fit',
         items: [form]

@@ -72,7 +72,7 @@ public class ClouderaInvokeService {
 			e.printStackTrace();
 		}
 		
-		String clustersNameStr= trd.getResult("clustersName").getArrayJson();
+		String clustersNameStr= trd.getResult("clustersName-1").getArrayJson();
 		JSONArray namesArr=JSON.parseArray(clustersNameStr);
 		List<String> nameList=new ArrayList<>();
 		for (int i = 0; i < namesArr.size(); i++) {

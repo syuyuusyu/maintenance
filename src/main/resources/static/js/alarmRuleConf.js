@@ -184,7 +184,7 @@ var grid=Ext.create('Ext.grid.Panel',{
                         var form=createForm();
                         Ext.create('Ext.window.Window', {
                             //id:'win_'+entity.entityName,
-                            title: '修改',
+                            title: '增加',
                             height: 200,
                             width: 830,
                             layout: 'fit',

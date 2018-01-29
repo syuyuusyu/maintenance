@@ -36,9 +36,9 @@ public class AlarmController {
 	JdbcTemplate jdbcTemplate;
 	
 	@RequestMapping(value = "/alarms")
-	public Page<Alarm> 	alarms(Integer plateId,String step,Integer roleId,Date startTime,Date endTime,String handler, Integer page, Integer limit){
+	public Page<Alarm> 	alarms(Integer plateId,String step,Integer ruleId,Date startTime,Date endTime,String handler, Integer page, Integer limit){
 		System.out.println("+handler = " + "-"+handler+"-");
-		return alarmDao.queryAlarms(plateId,step,roleId,startTime,endTime,handler,page,limit);
+		return alarmDao.queryAlarms(plateId,step,ruleId,startTime,endTime,handler,page,limit);
 
 	}
 	
@@ -56,8 +56,8 @@ public class AlarmController {
 	}
 
 	@RequestMapping(value = "/alarmRule")
-	public List<AlarmRule> alarmRule(){
-		return (List<AlarmRule>) alarmRuleDao.findAll();
+	public List<AlarmRule> alarmRule(Integer plateId){
+		return  alarmRuleDao.findByRelevantPlate(plateId);
 	}
 
 	@RequestMapping(value = "/handler")
@@ -69,6 +69,13 @@ public class AlarmController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+	}
+
+	@RequestMapping(value = "/alarmStatistics")
+	public List<Map<String,Object>> alarmStatistics(){
+		return jdbcTemplate.queryForList("select a.plate_id plateId,e.entity_name plateName," +
+				" a.rule_id ruleId,a.rule_name ruleName,count(a.id) `count`,a.step from alarm a join record_entity e on e.id=a.plate_id  " +
+				"group by a.rule_id,a.rule_name,a.plate_id,a.step");
 	}
 	
 	

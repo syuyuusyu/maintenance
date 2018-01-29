@@ -1,14 +1,7 @@
 package com.bzh.cloud.maintenance.service;
 
-import java.util.List;
-
-import com.bzh.cloud.maintenance.dao.RolesDao;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.fastjson.JSON;
+import com.bzh.cloud.maintenance.dao.RolesDao;
 import com.bzh.cloud.maintenance.dao.UsersDao;
 import com.bzh.cloud.maintenance.entity.Roles;
 import com.bzh.cloud.maintenance.entity.Users;
@@ -16,6 +9,11 @@ import com.bzh.cloud.maintenance.invoke.InvokeCommon;
 import com.bzh.cloud.maintenance.restFul.InvokeTimeOutException;
 import com.bzh.cloud.maintenance.restFul.ThreadResultData;
 import com.bzh.cloud.maintenance.util.SpringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -46,8 +44,8 @@ public class UserService {
 			e.printStackTrace();
 		}
 
-		List<Users> users=JSON.parseArray(trd.getResult("invokeUsers").getArrayJson(), Users.class);
-		List<Roles> roles=JSON.parseArray(trd.getResult("invokeRoles").getArrayJson(), Roles.class);
+		List<Users> users=JSON.parseArray(trd.getResult("invokeUsers-1").getArrayJson(), Users.class);
+		List<Roles> roles=JSON.parseArray(trd.getResult("invokeRoles-2").getArrayJson(), Roles.class);
 		if(users.size()>0 && roles.size()>0 ){
 			rDao.deleteAll();
 			uDao.deleteAll();

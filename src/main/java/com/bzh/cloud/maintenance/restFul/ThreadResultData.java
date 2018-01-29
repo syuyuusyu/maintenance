@@ -1,38 +1,43 @@
 package com.bzh.cloud.maintenance.restFul;
 
 
+import com.bzh.cloud.maintenance.util.JSONUtil;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 public class ThreadResultData {
 
     private static Logger log = Logger.getLogger(ThreadResultData.class);
     private Map<String, JsonResponseEntity> resultMap=new ConcurrentHashMap<>();
-    private Map<String, Object> someThingMap=new ConcurrentHashMap<String, Object>();
-    private List<InvokeBase<?,?>> invoker=new ArrayList<InvokeBase<?,?>>();
+    private Map<String, Object> someThingMap=new ConcurrentHashMap<>();
+    private Map<String,String> bodyMap=new ConcurrentHashMap<>();
+    private Map<String,String> headMap=new ConcurrentHashMap<>();
+    private Map<String,String> urlMap=new ConcurrentHashMap<>();
+    private List<InvokeBase<?,?>> invoker=new ArrayList<>();
     private List<String> invokeNames=new ArrayList<>();
     private int count=0;
     private int current=0;
+    private boolean allInfo=false;
     //private static ExecutorService fixedThreadPool = Executors.newCachedThreadPool();
 
-	private static final Executor fixedThreadPool = Executors.newFixedThreadPool( 100, new ThreadFactory() {
-		public Thread newThread(Runnable r) {
-			Thread t = new Thread( r);
-			t. setDaemon( true);
-			return t;
-		}
-	});
+	private static final Executor fixedThreadPool = Executors.newFixedThreadPool( 100, r -> {
+        Thread t = new Thread( r);
+        t. setDaemon( true);
+        return t;
+    });
 
 
 
-	public Executor getFixedThreadPool() {
+	Executor getFixedThreadPool() {
         return fixedThreadPool;
     }
 
@@ -47,7 +52,7 @@ public class ThreadResultData {
 
     public ThreadResultData(){
         this.timeOut=10*1000L;
-        threadPoolCapacity=50;
+        threadPoolCapacity=100;
     }
 
     public Long getTimeOut() {
@@ -74,7 +79,20 @@ public class ThreadResultData {
     public JsonResponseEntity getResult(String invokeName){
     	return resultMap.get(invokeName);
 	}
-    
+	public String getRequestBody(String invokeName){
+    	return bodyMap.get(invokeName);
+	}
+	public String getUrl(String invokeName){
+		return urlMap.get(invokeName);
+	}
+
+	public String getRequestHead(String invokeName){
+		return headMap.get(invokeName);
+	}
+	public void setAllInfo(boolean flag){
+		this.allInfo=flag;
+	}
+
 	public synchronized void addInvoker(InvokeBase<?,?> invoker){
 		if(sleepTime>0){
 			try {
@@ -85,12 +103,20 @@ public class ThreadResultData {
 		}
 		this.increaseCount();
 
-		//invoker.setInvokeName(invoker.getInvokeName()+"-"+this.count);
-
+		invoker.setInvokeName(invoker.getInvokeName()+"-"+this.count);
 		this.invokeNames.add(invoker.getInvokeName());
-
 		this.invoker.add(invoker);
+
 		invoker.setResultData(this);
+		if(allInfo){
+			bodyMap.put(invoker.getInvokeName(),JSONUtil.mapToJson(invoker.getRequestEntity().getRequest()));
+			Map<String,Object> map=new HashMap<>();
+			invoker.getRequestEntity().getHead().forEach((k,v)->{
+				map.put(k,(Object)v);
+			});
+			headMap.put(invoker.getInvokeName(),JSONUtil.mapToJson(map));
+			urlMap.put(invoker.getInvokeName(),invoker.getRequestEntity().getUrl());
+		}
 
 		fixedThreadPool.execute(invoker);
 		//new Thread(invoker).start();

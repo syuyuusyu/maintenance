@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
+import java.util.List;
 
 public class AlarmDaoImpl {
 
@@ -22,7 +23,6 @@ public class AlarmDaoImpl {
 
     @Transactional
     public Page<Alarm> queryAlarms(Integer plateId, String step, Integer ruleId, Date startTime, Date endTime, String handler, Integer page, Integer limit){
-        System.out.println("startTime = " + startTime);
         HibernateEntityManager hEntityManager = (HibernateEntityManager)em;
         Session session = hEntityManager.getSession();
         int start=page*limit;
@@ -36,7 +36,7 @@ public class AlarmDaoImpl {
 
         if(ruleId!=null){
             hql.append(" and a.ruleId=:ruleId");
-            hqlCount.append(" a.and ruleId=:ruleId");
+            hqlCount.append(" and ruleId=:ruleId");
         }
         if(startTime!=null){
             hql.append(" and a.createTime between :startTime and :endTime");
@@ -62,11 +62,11 @@ public class AlarmDaoImpl {
             query.setTimestamp("startTime",startTime).setTimestamp("endTime",endTime);
             countQuery.setTimestamp("startTime",startTime).setTimestamp("endTime",endTime);
         }
-        query.setFirstResult(page).setMaxResults(limit);
+        //System.out.println("pa.getOffset() = " + pa.getOffset());
+        query.setFirstResult(pa.getOffset()).setMaxResults(limit);
+        List<Alarm> list=query.list();
         Long totals = Long.valueOf(countQuery.uniqueResult().toString());
-        String s=countQuery.getQueryString();
-        System.out.println("s = " + query.list().size());
-        Page<Alarm> result=new PageImpl<>(query.list(),pa,totals);
+        Page<Alarm> result=new PageImpl<>(list,pa,totals);
         return result;
     }
 }

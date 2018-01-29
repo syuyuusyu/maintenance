@@ -94,6 +94,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
         		this.result=resultFun.apply(this.result);
 			} catch (Exception e) {
 				e.printStackTrace();
+				log.error(result);
 			}
         }       	
         if(biResultFun!=null){
@@ -101,6 +102,7 @@ public  class InvokeBase<Q extends JsonResquestEntity,P extends JsonResponseEnti
         		this.result=biResultFun.apply(requestEntity, result);
 			} catch (Exception e) {
 				e.printStackTrace();
+				log.error(result);
 			}        	
         }
         responseEntity.init(this.result);

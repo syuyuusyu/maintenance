@@ -133,8 +133,8 @@ selfProperties:
       keyid: FzPLkvSm8E
       domain: https://om.yndlr.gov.cn:80
     url:
-      ispUrl: https://isp.yndlr.gov.cn/interfaces
-      #ispUrl: http://183.62.240.234:9000/isp/interfaces
+      #ispUrl: https://isp.yndlr.gov.cn/interfaces
+      ispUrl: http://9.77.254.177:8080/interfaces
       #coludUrl: http://172.16.100.111:8080/dc2us2/rest/openstack/exmanager
       #coludUrl: http://9.77.254.13:8080/dc2us2/rest/openstack/exmanager
       coludUrl: https://stcloud.yndlr.gov.cn:8443/dc2us2/rest/openstack/exmanager

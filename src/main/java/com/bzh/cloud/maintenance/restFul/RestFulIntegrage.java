@@ -3,6 +3,7 @@ package com.bzh.cloud.maintenance.restFul;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.oracle.tools.packager.Log;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.springframework.util.StringUtils;
 
@@ -17,7 +18,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RestFulIntegrage {
-
 
     public  void invoke(List<InvokeEntity> ens,final ThreadResultData trd){
         ens.forEach(e->{invoke(e,trd);});
@@ -57,6 +57,7 @@ public class RestFulIntegrage {
 
                 } catch (ScriptException e) {
                     e.printStackTrace();
+                    Log.info(function);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 }
@@ -77,7 +78,8 @@ public class RestFulIntegrage {
                 JSONArray arrJson=JSON.parseArray(result);
                 for(int i=0;i<arrJson.size();i++){
                     JSONObject json=arrJson.getJSONObject(i);
-                    en.next().stream().map(e->{
+                    List<InvokeEntity> next=en.next();
+                    next.stream().map(e->{
                         List<String> params=e.queryParams();
                         Map<String,String> queryMap=e.getQueryMap()!=null?e.getQueryMap():new HashMap<>();
 

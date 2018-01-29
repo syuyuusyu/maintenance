@@ -46,7 +46,7 @@
     <!--<logger name="org.hibernate.engine.QueryParameters" level="INFO" />-->
     <!--<logger name="org.hibernate.engine.query.HQLQueryPlan" level="INFO" />-->
 
-    <logger name="org.hibernate.SQL" level="ERROR" additivity="false"/>
+    <!--<logger name="org.hibernate.SQL" level="ERROR" additivity="false"/>-->
 
     <root level="INFO">
         <appender-ref ref="INFO_FILE" />

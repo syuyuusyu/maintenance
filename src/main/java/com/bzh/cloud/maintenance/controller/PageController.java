@@ -90,8 +90,9 @@ public class PageController {
 	@RequestMapping(value="/index")
 	public String index(Model model,String token,HttpServletRequest request){
 		return vailifyLogin(request, "index", token);
-		
 	}
+
+
 	
 	@RequestMapping(value="/logOut")
 	@ResponseBody
@@ -133,6 +134,11 @@ public class PageController {
 		return "invokeConfig";
 	}
 
+	@RequestMapping(value="/invokeEntityInfo")
+	public String invokeEntityInfo(){
+		return "invokeEntityInfo";
+	}
+
 	@RequestMapping(value="/synUserRole")
 	@ResponseBody
 	public Map<String, Object> synUserRole(){
@@ -165,7 +171,7 @@ public class PageController {
 			e.printStackTrace();
 		}
 		
-		JsonResponseEntity data=td.getResult("verifications");
+		JsonResponseEntity data=td.getResult(td.invokeNames().get(0));
 		if(data.status()){
 			//验证通过，获取当前用户
 			JSONArray jrr=JSON.parseArray(data.getArrayJson());

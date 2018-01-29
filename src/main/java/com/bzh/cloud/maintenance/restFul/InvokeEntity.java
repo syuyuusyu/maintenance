@@ -25,6 +25,11 @@ public interface InvokeEntity extends Serializable {
     InvokeCompleteEvent invokeCompleteEvent();
     Map<String,Object> transferMap();
 
+    default void clearQueryMap(){
+        if(this.getQueryMap()!=null)
+        this.getQueryMap().clear();
+    }
+
     default  String parseUrl(){
         String url=this.getUrl();
         Matcher m= Pattern.compile("(@(\\w+))").matcher(url);

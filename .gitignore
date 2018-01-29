@@ -1,6 +1,7 @@
 /target/
 /.settings/
-/.idea
+/.idea/
+/.vertx/
 
 .DS_Store
 .project

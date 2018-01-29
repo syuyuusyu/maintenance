@@ -219,4 +219,18 @@ public class TestDc2 {
     public void test9(){
         alarmService.createAlarm();
     }
+
+    @Test
+    public void test10(){
+        InvokeCommon verifications=SpringUtil.getComInvoke("verifications");
+        final ThreadResultData td=new ThreadResultData();
+        verifications.addReqDdata("token", "sdsd");
+        td.addInvoker(verifications);
+
+        try {
+            td.waitForResult();
+        } catch (InvokeTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
 }

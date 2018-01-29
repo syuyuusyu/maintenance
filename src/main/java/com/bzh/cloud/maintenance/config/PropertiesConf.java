@@ -16,11 +16,11 @@ import java.util.Map;
 public class PropertiesConf {
 	
 	private String clouderaUsername;
-	
+
 	private String clouderaPassword;
-	
+
 	private boolean isProduction;
-	
+
 	private boolean startTask;
 	
 	private Map<String, String> url=new HashMap<String, String>();

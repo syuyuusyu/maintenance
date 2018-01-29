@@ -34,12 +34,10 @@ Ext.define('Syu.Combox',{
     }
     ,getValue:function () {
         var v = this.callParent();
-        console.log(v);
         return v;
     }
     , getRawValue: function() {
         var v = this.callParent();
-        console.log(v);
         return v;
 
     }
@@ -110,7 +108,7 @@ var treeStore = Ext.create('Ext.data.TreeStore', {
 
 
 
-function createGrid(plateId,step){
+function createGrid(plateId,step,ruleId){
     var columns=[
         {dataIndex:'id',text:'ID',hidden:true,width:100},
         {dataIndex:'ruleId',text:'告警规则ID',hidden:true,width:100},
@@ -190,7 +188,7 @@ function createGrid(plateId,step){
         proxy : {
             type : 'ajax',
             url : './../alarm/alarms',
-            extraParams:{plateId:plateId,step:step},
+            extraParams:{plateId:plateId,step:step,ruleId:ruleId},
             reader: {
                 type: 'json',
                 root: 'content',
@@ -236,6 +234,7 @@ function createGrid(plateId,step){
                             proxy: {
                                 type: 'ajax',
                                 url:'./../alarm/alarmRule',
+                                extraParams:{plateId:plateId},
                                 reader: {
                                     type: 'json',
                                     root: 'result'
@@ -439,7 +438,7 @@ function alarmInfo(record,e,grid){
     Ext.create('Ext.window.Window', {
         //id:'win_'+entity.entityName,
         title: '告警处理信息',
-        height: 240,
+        height: 260,
         width: 400,
         layout: 'fit',
         items: [form]

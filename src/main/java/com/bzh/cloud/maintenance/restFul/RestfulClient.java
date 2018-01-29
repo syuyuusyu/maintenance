@@ -184,7 +184,7 @@ public class RestfulClient {
 			e.printStackTrace();
 		}
 
-		JsonResponseEntity ticketResukt = threadData.getResult("ispticket");
+		JsonResponseEntity ticketResukt = threadData.getResult(threadData.invokeNames().get(0));
 		String ticketStr = ticketResukt.getArrayJson();
 		JSONArray jarr=JSON.parseArray(ticketStr);
 		JSONObject json=jarr.getJSONObject(0);

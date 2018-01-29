@@ -48,8 +48,8 @@ public class InvokeInterceptor implements HandlerInterceptor {
             response.sendRedirect("/noAuth");
             return false;
         }
-
-        JsonResponseEntity responseEntity=trd.getResult("keyverify");
+        String invokeName=trd.invokeNames().get(0);
+        JsonResponseEntity responseEntity=trd.getResult(invokeName);
         if(!responseEntity.status()){
             if("809".equals(responseEntity.getStatus())){
                 log.info("没有调用权限,请联系综合集成管理员");

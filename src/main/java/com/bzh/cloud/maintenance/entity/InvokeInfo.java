@@ -28,7 +28,9 @@ public class InvokeInfo implements InvokeEntity {
             InvokeInfo in=dao.findOne(id);
             invokeMap.put(id,in);
         }
-        return invokeMap.get(id);
+        InvokeEntity e=invokeMap.get(id);
+        e.clearQueryMap();
+        return e;
     }
 
     @Id
